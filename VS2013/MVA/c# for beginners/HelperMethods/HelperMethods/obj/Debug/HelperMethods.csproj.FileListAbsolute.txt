@@ -1,0 +1,6 @@
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\HelperMethods\HelperMethods\bin\Debug\HelperMethods.exe.config
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\HelperMethods\HelperMethods\bin\Debug\HelperMethods.exe
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\HelperMethods\HelperMethods\bin\Debug\HelperMethods.pdb
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\HelperMethods\HelperMethods\obj\Debug\HelperMethods.csprojResolveAssemblyReference.cache
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\HelperMethods\HelperMethods\obj\Debug\HelperMethods.exe
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\HelperMethods\HelperMethods\obj\Debug\HelperMethods.pdb

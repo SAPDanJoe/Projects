@@ -1,0 +1,5 @@
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\Decisions\Decisions\bin\Debug\Decisions.exe.config
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\Decisions\Decisions\bin\Debug\Decisions.exe
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\Decisions\Decisions\bin\Debug\Decisions.pdb
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\Decisions\Decisions\obj\Debug\Decisions.exe
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\Decisions\Decisions\obj\Debug\Decisions.pdb

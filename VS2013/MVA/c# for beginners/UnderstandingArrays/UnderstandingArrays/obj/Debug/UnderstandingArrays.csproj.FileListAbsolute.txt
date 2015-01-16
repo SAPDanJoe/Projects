@@ -1,0 +1,6 @@
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\UnderstandingArrays\UnderstandingArrays\bin\Debug\UnderstandingArrays.exe.config
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\UnderstandingArrays\UnderstandingArrays\bin\Debug\UnderstandingArrays.exe
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\UnderstandingArrays\UnderstandingArrays\bin\Debug\UnderstandingArrays.pdb
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\UnderstandingArrays\UnderstandingArrays\obj\Debug\UnderstandingArrays.csprojResolveAssemblyReference.cache
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\UnderstandingArrays\UnderstandingArrays\obj\Debug\UnderstandingArrays.exe
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\UnderstandingArrays\UnderstandingArrays\obj\Debug\UnderstandingArrays.pdb

@@ -1,0 +1,6 @@
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\Variables\Variables\bin\Debug\Variables.exe.config
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\Variables\Variables\bin\Debug\Variables.exe
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\Variables\Variables\bin\Debug\Variables.pdb
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\Variables\Variables\obj\Debug\Variables.csprojResolveAssemblyReference.cache
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\Variables\Variables\obj\Debug\Variables.exe
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\Variables\Variables\obj\Debug\Variables.pdb

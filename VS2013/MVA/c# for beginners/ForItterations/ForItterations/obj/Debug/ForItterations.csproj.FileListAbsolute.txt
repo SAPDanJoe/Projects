@@ -1,0 +1,6 @@
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\ForItterations\ForItterations\bin\Debug\ForItterations.exe.config
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\ForItterations\ForItterations\bin\Debug\ForItterations.exe
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\ForItterations\ForItterations\bin\Debug\ForItterations.pdb
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\ForItterations\ForItterations\obj\Debug\ForItterations.csprojResolveAssemblyReference.cache
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\ForItterations\ForItterations\obj\Debug\ForItterations.exe
+C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\ForItterations\ForItterations\obj\Debug\ForItterations.pdb
