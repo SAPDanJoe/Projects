@@ -1,0 +1,36 @@
+
+Object oriented programing
+
+HumanResources.dll
+public class Person
+{
+	public string FirstName;
+	public string LastName;
+	public stringPrintName()
+	{
+		return FirstName + " " + LastName;
+	}
+}
+
+//a class is a template for an object
+//from that class, we can create instances
+//of that class known as objects.
+//class=blueprint
+//object=house
+
+in VB.net:
+HumanResources.dll
+public class Person
+	public FirstName as string
+	public LastName as string
+	public function PrintName() as string
+		return FirstName + " " + LastName
+	end function
+end class
+
+to access the object from VB Script:
+	Dim PersonObject
+	Set PersonObject = CreateObject("HR.Preson")
+	PersonObject.FirstName = "Chuck"
+	PersonObject.LastName = "Berry"
+	msgbox PersonObject.PrintName()

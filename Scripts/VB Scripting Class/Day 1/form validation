@@ -1,0 +1,16 @@
+Option Explicit
+
+Dim password, i
+i = 0
+
+Do
+	select case i
+		case 0
+			password = inputBox("Enter your password: ", "form validation", 0)
+		case else
+			password = inputBox("Your entry was not valid.  Enter your password: ", "form validation", 0)
+	End Select
+	i = i + 1
+Loop Until password = "your password"
+
+msgBox "You correctly entered " + password  + "."

@@ -1,0 +1,63 @@
+On Error Resume Next
+Dim strComputer
+Dim objWMIService
+Dim propValue
+Dim objItem
+Dim SWBemlocator
+Dim UserName
+Dim Password
+Dim colItems
+
+strComputer = "."
+UserName = ""
+Password = ""
+Set SWBemlocator = CreateObject("WbemScripting.SWbemLocator")
+Set objWMIService = SWBemlocator.ConnectServer(strComputer,"root\CIMV2",UserName,Password)
+Set colItems = objWMIService.ExecQuery("Select * from Win32_MemoryDevice",,48)
+For Each objItem in colItems
+	WScript.Echo "Access: " & objItem.Access
+	for each propValue in objItem.AdditionalErrorData
+		WScript.Echo "AdditionalErrorData: " & propValue
+	next
+	WScript.Echo "Availability: " & objItem.Availability
+	WScript.Echo "BlockSize: " & objItem.BlockSize
+	WScript.Echo "Caption: " & objItem.Caption
+	WScript.Echo "ConfigManagerErrorCode: " & objItem.ConfigManagerErrorCode
+	WScript.Echo "ConfigManagerUserConfig: " & objItem.ConfigManagerUserConfig
+	WScript.Echo "CorrectableError: " & objItem.CorrectableError
+	WScript.Echo "CreationClassName: " & objItem.CreationClassName
+	WScript.Echo "Description: " & objItem.Description
+	WScript.Echo "DeviceID: " & objItem.DeviceID
+	WScript.Echo "EndingAddress: " & objItem.EndingAddress
+	WScript.Echo "ErrorAccess: " & objItem.ErrorAccess
+	WScript.Echo "ErrorAddress: " & objItem.ErrorAddress
+	WScript.Echo "ErrorCleared: " & objItem.ErrorCleared
+	for each propValue in objItem.ErrorData
+		WScript.Echo "ErrorData: " & propValue
+	next
+	WScript.Echo "ErrorDataOrder: " & objItem.ErrorDataOrder
+	WScript.Echo "ErrorDescription: " & objItem.ErrorDescription
+	WScript.Echo "ErrorGranularity: " & objItem.ErrorGranularity
+	WScript.Echo "ErrorInfo: " & objItem.ErrorInfo
+	WScript.Echo "ErrorMethodology: " & objItem.ErrorMethodology
+	WScript.Echo "ErrorResolution: " & objItem.ErrorResolution
+	WScript.Echo "ErrorTime: " & objItem.ErrorTime
+	WScript.Echo "ErrorTransferSize: " & objItem.ErrorTransferSize
+	WScript.Echo "InstallDate: " & objItem.InstallDate
+	WScript.Echo "LastErrorCode: " & objItem.LastErrorCode
+	WScript.Echo "Name: " & objItem.Name
+	WScript.Echo "NumberOfBlocks: " & objItem.NumberOfBlocks
+	WScript.Echo "OtherErrorDescription: " & objItem.OtherErrorDescription
+	WScript.Echo "PNPDeviceID: " & objItem.PNPDeviceID
+	for each propValue in objItem.PowerManagementCapabilities
+		WScript.Echo "PowerManagementCapabilities: " & propValue
+	next
+	WScript.Echo "PowerManagementSupported: " & objItem.PowerManagementSupported
+	WScript.Echo "Purpose: " & objItem.Purpose
+	WScript.Echo "StartingAddress: " & objItem.StartingAddress
+	WScript.Echo "Status: " & objItem.Status
+	WScript.Echo "StatusInfo: " & objItem.StatusInfo
+	WScript.Echo "SystemCreationClassName: " & objItem.SystemCreationClassName
+	WScript.Echo "SystemLevelAddress: " & objItem.SystemLevelAddress
+	WScript.Echo "SystemName: " & objItem.SystemName
+Next

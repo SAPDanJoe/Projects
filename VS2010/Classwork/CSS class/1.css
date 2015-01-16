@@ -1,0 +1,72 @@
+body{
+	background: grey url("https://farm8.staticflickr.com/7341/10319737936_4c1962a606_k.jpg") no-repeat fixed center;
+	background-size: 90%;
+	background-position: 20px 10px;
+	font-family: sans-serif;
+}
+
+h1{
+	color: white;
+	text-align: center;
+	width: 100%;
+	margin: initial;	
+	text-shadow: 2px 2px black;
+}
+
+h2 {
+	color: darkgrey;
+	text-align: center;
+	font-style: italic;
+	font-weight: normal;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+	background: black;
+}
+
+a {
+	text-decoration: none;
+}
+
+li{
+	display: inline;
+}
+
+/*paragraph IDs*/
+p#header{
+	font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+p#footer{
+	font-weight: bold;
+    margin: 0;
+    padding: 0;	
+}
+
+div.page{
+	background-color: blue;
+	max-width: 75%;
+	margin-left: auto;
+	margin-right: auto;
+
+}
+/*div classes*/
+div.header{
+	color: white;
+	position: static;
+}
+div.content{
+	position: static;
+	text-indent: 35px;
+	color: grey;
+	
+}
+div.footer{
+	text-align: center;
+	position: static;
+	
+}

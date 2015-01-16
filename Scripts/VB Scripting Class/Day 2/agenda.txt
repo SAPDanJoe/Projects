@@ -1,0 +1,17 @@
+SEH - structured exception handling
+introductions to editors
+playground
+ssis
+access to MOC labs and all labs
+ch2: classes and object oop
+
+automation
+	sendkeys
+	ole
+	excel
+	adsi
+		using ads
+		query editor/generator
+		querying ad
+
+for next, string funtions, naming
