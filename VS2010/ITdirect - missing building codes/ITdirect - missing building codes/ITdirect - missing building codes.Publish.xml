@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="W:\" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="ITEUSOAK" publishMethod="FileSystem" replaceMatchingFiles="True" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+    <file relUrl="Web.config" publishTime="04/23/2014 16:49:22" />
+    <file relUrl="bin/ITdirect - missing building codes.dll" publishTime="04/25/2014 14:44:10" />
+    <file relUrl="Site.Master" publishTime="04/25/2014 14:25:14" />
+    <file relUrl="Account/Register.aspx" publishTime="04/23/2014 14:32:17" />
+    <file relUrl="bin/ITdirect - missing building codes.pdb" publishTime="04/25/2014 14:44:10" />
+    <file relUrl="Account/Web.config" publishTime="04/23/2014 14:32:17" />
+    <file relUrl="Account/Login.aspx" publishTime="04/23/2014 14:32:17" />
+    <file relUrl="Styles/Site.css" publishTime="04/23/2014 16:36:01" />
+    <file relUrl="Scripts/jquery-1.4.1.js" publishTime="04/23/2014 14:32:17" />
+    <file relUrl="Account/ChangePassword.aspx" publishTime="04/23/2014 14:32:17" />
+    <file relUrl="BuildingCodes.aspx" publishTime="04/25/2014 14:47:52" />
+    <file relUrl="Global.asax" publishTime="04/23/2014 14:32:17" />
+    <file relUrl="Scripts/jquery-1.4.1-vsdoc.js" publishTime="04/23/2014 14:32:17" />
+    <file relUrl="About.aspx" publishTime="04/23/2014 14:32:17" />
+    <file relUrl="Account/ChangePasswordSuccess.aspx" publishTime="04/23/2014 14:32:17" />
+    <file relUrl="Default.aspx" publishTime="04/23/2014 17:33:34" />
+    <file relUrl="Scripts/jquery-1.4.1.min.js" publishTime="04/23/2014 14:32:17" />
+    <file relUrl="bin/ITdirect - missing building codes.xml" publishTime="04/25/2014 14:44:10" />
+  </publishProfile>
+</publishData>

@@ -1,0 +1,1 @@
+﻿Get-childitem  -path C:\logs | where {$_.lastwritetime -lt (date).adddays(90)} | Move-Item -Destination \\

@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="supporting_files/SAPITSetup.xsl"?>
+<Package Name="Internet Explorer Settings 1.0 (32bit)" Revision="C" LicenseType="Global" CreationDate="16.10.2009 00:00:00" LastRevisionDate="15.07.2010 00:00:00" Comment="Supports IE6 - IE8 Windows XP/Vista/7 32bit">
+  <Compatibility>
+    <Model>DESKTOP</Model>
+    <Model>NOTEBOOK</Model>
+    <OS Description="XP-SP0x32">XP-SP0x32</OS>
+    <OS Description="XP-SP1x32">XP-SP1x32</OS>
+    <OS Description="XP-SP2x32">XP-SP2x32</OS>
+    <OS Description="XP-SP3x32">XP-SP3x32</OS>
+    <OS Description="Vista-SP0x32">Vista-SP0x32</OS>
+    <OS Description="Vista-SP1x32">Vista-SP1x32</OS>
+    <OS Description="Vista-SP2x32">Vista-SP2x32</OS>
+    <OS Description="Win7-SP0x32">Win7-SP0x32</OS>
+    <OS Description="Server03-SP0x32">Server03-SP0x32</OS>
+    <OS Description="Server03-SP1x32">Server03-SP1x32</OS>
+    <OS Description="Server03-SP2x32">Server03-SP2x32</OS>
+    <OS Description="Server03-SP3x32">Server03-SP3x32</OS>
+    <OS Description="Server08-SP1x32">Server08-SP1x32</OS>
+  </Compatibility>
+  <Application Vendor="SAP-IT" Name="Internet Explorer Settings (32bit)" Version="1.0">
+    <Installation ReqFreeSpace="10" MUI="True" NonAdminCompatible="True" RebootOnComplete="True" Schedule="True" ScheduleGraceful="False">
+      <Constraints />
+      <File Name="{ECE72A17-C249-498E-B1BD-2CD958C5137B}" Path="" Args="/qb!" SilentArgs="/qn" LogName="SAP-IT Internet Explorer Settings (32bit) 1.0 Uninstall Before install.log" RetryOnFailure="False" ExitOnError="False" VerboseLogging="False" />
+      <File Name="SAP-IT Internet Explorer Settings 1.0 x86.msi" Path="" Args="/qb!" SilentArgs="/qn" LogName="SAP-IT Internet Explorer Settings 1.0 x86.msi.log" RetryOnFailure="True" ExitOnError="False" VerboseLogging="True" />
+    </Installation>
+    <Uninstallation ReqFreeSpace="10" MUI="True" NonAdminCompatible="True" RebootOnComplete="True" Schedule="False" ScheduleGraceful="False">
+      <Constraints />
+      <File Name="SAP-IT Internet Explorer Settings 1.0 x86.msi" Path="" Args="/qb!" SilentArgs="/qn" LogName="SAP-IT Internet Explorer Settings 1.0 x86.msi.log" RetryOnFailure="True" ExitOnError="False" VerboseLogging="False" />
+    </Uninstallation>
+  </Application>
+  <Popup>
+    <GeneralInfo>
+      <li>The Package will set and/or restore the default settings for Internet Explorer as configured by SAP-IT.</li>
+    </GeneralInfo>
+    <KnownIssues>
+      <li>No Known Issues</li>
+    </KnownIssues>
+    <Requirements>
+      <li>Estimated Time Needed: Approximately 3-5 minute(s)</li>
+      <li>
+        Operating Systems Supported: <b>Microsoft Windows XP/Vista/Win7 - 32bit</b></li>
+    </Requirements>
+    <Installation>
+      <li>
+        To <b>Install</b> this software NOW, click <b>Install Now</b> button below.
+      </li>
+      <li>
+        To install this software package at a later date, click <b>Cancel</b> now.  When ready to install the software go to
+        Control Panel &gt; Run Advertised Programs, highlight the folowing software package in the list and click the Run button:
+<br></br><b>Internet Explorer Settings 1.0 (32bit) - Install</b></li>
+    </Installation>
+    <KnownIssuesUninstall>
+      <li>Uninstalling this package removes favorites and the desktop icon only, the settings are not restored to any former state.</li>
+    </KnownIssuesUninstall>
+    <RequirementsUninstall>
+      <li>Estimated Time Needed: Approximately 3-5 minute(s)</li>
+      <li>
+        Operating Systems Supported: <b>Windows XP 32bit, Vista 32 or 64 bit</b></li>
+    </RequirementsUninstall>
+    <Uninstallation>
+      <li>
+        To uninstall this software NOW, just click the <b>Uninstall Now</b> button.
+      </li>
+    </Uninstallation>
+    <Help>
+      <li>
+        To provide feedback or report errors, please create an <a target="Blank" href="https://css.wdf.sap.corp/itibc/default.htm?~bcsm10-themkext=0000043787"><b>IT Support Ticket</b></a> in <b>CSS</b>, component <b>PC-WORK_SW</b>.
+      </li>
+    </Help>
+    <Buttons />
+    <ButtonsUninstall />
+  </Popup>
+  <RSAKeyValue>
+    <Modulus>3IcTQIiuV1wn2ge6sId0+uBj1n2SztWGhsQUHLr5dQz5S/Ct+0fpi9xMF3fLRBPOWWzUtY56r/aSivXpzuUUzrURLtKN43RYRGqA9hpUmhf4rtz7AalsaxoNLepZn2f/golnZwokGxjNHvrRpti19mB9M3A09eQYIlT8Fbzu8zk=</Modulus>
+    <Exponent>AQAB</Exponent>
+  </RSAKeyValue>
+</Package>

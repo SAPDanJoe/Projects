@@ -1,0 +1,17 @@
+C:\Users\i837633\documents\visual studio 2010\Projects\ITdirect - missing building codes\ITdirect - missing building codes\bin\ITdirect - missing building codes.dll
+C:\Users\i837633\documents\visual studio 2010\Projects\ITdirect - missing building codes\ITdirect - missing building codes\bin\ITdirect - missing building codes.pdb
+C:\Users\i837633\documents\visual studio 2010\Projects\ITdirect - missing building codes\ITdirect - missing building codes\bin\ITdirect - missing building codes.xml
+C:\Users\i837633\documents\visual studio 2010\Projects\ITdirect - missing building codes\ITdirect - missing building codes\obj\Debug\ITdirect___missing_building_codes.Resources.resources
+C:\Users\i837633\documents\visual studio 2010\Projects\ITdirect - missing building codes\ITdirect - missing building codes\obj\Debug\ITdirect - missing building codes.vbproj.GenerateResource.Cache
+C:\Users\i837633\documents\visual studio 2010\Projects\ITdirect - missing building codes\ITdirect - missing building codes\obj\Debug\ITdirect - missing building codes.dll
+C:\Users\i837633\documents\visual studio 2010\Projects\ITdirect - missing building codes\ITdirect - missing building codes\obj\Debug\ITdirect - missing building codes.xml
+C:\Users\i837633\documents\visual studio 2010\Projects\ITdirect - missing building codes\ITdirect - missing building codes\obj\Debug\ITdirect - missing building codes.pdb
+C:\Users\i837633\Mobile Docs\My Documents\Documents\Application Documetns\Visual Studio 2010\Projects\ITdirect - missing building codes\ITdirect - missing building codes\bin\ITdirect - missing building codes.dll
+C:\Users\i837633\Mobile Docs\My Documents\Documents\Application Documetns\Visual Studio 2010\Projects\ITdirect - missing building codes\ITdirect - missing building codes\bin\ITdirect - missing building codes.pdb
+C:\Users\i837633\Mobile Docs\My Documents\Documents\Application Documetns\Visual Studio 2010\Projects\ITdirect - missing building codes\ITdirect - missing building codes\bin\ITdirect - missing building codes.xml
+C:\Users\i837633\Mobile Docs\My Documents\Documents\Application Documetns\Visual Studio 2010\Projects\ITdirect - missing building codes\ITdirect - missing building codes\obj\Debug\ITdirect___missing_building_codes.Resources.resources
+C:\Users\i837633\Mobile Docs\My Documents\Documents\Application Documetns\Visual Studio 2010\Projects\ITdirect - missing building codes\ITdirect - missing building codes\obj\Debug\ITdirect - missing building codes.vbproj.GenerateResource.Cache
+C:\Users\i837633\Mobile Docs\My Documents\Documents\Application Documetns\Visual Studio 2010\Projects\ITdirect - missing building codes\ITdirect - missing building codes\obj\Debug\ITdirect - missing building codes.dll
+C:\Users\i837633\Mobile Docs\My Documents\Documents\Application Documetns\Visual Studio 2010\Projects\ITdirect - missing building codes\ITdirect - missing building codes\obj\Debug\ITdirect - missing building codes.xml
+C:\Users\i837633\Mobile Docs\My Documents\Documents\Application Documetns\Visual Studio 2010\Projects\ITdirect - missing building codes\ITdirect - missing building codes\obj\Debug\ITdirect - missing building codes.pdb
+C:\Users\i837633\Mobile Docs\My Documents\Documents\Application Documetns\Visual Studio 2010\Projects\ITdirect - missing building codes\ITdirect - missing building codes\bin\ITdirect - missing building codes.dll.config

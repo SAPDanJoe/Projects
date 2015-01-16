@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile>2014-09-09T14:56:19.4276478-07:00</TimeStampOfAssociatedLegacyPublishXmlFile>
+    <_PublishTargetUrl>\\oakd00465226a\d$\inetpub\wwwroot\ITdirect</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="About.aspx">
+      <publishTime>10/03/2014 13:26:23</publishTime>
+    </File>
+    <File Include="Account/ChangePassword.aspx">
+      <publishTime>10/03/2014 13:26:27</publishTime>
+    </File>
+    <File Include="Account/ChangePasswordSuccess.aspx">
+      <publishTime>10/03/2014 13:26:27</publishTime>
+    </File>
+    <File Include="Account/Login.aspx">
+      <publishTime>10/03/2014 13:26:28</publishTime>
+    </File>
+    <File Include="Account/Register.aspx">
+      <publishTime>10/03/2014 13:26:28</publishTime>
+    </File>
+    <File Include="Account/Web.config">
+      <publishTime>10/03/2014 13:26:49</publishTime>
+    </File>
+    <File Include="bin/ITdirect - missing building codes.dll">
+      <publishTime>10/03/2014 13:27:23</publishTime>
+    </File>
+    <File Include="bin/ITdirect - missing building codes.xml">
+      <publishTime>10/03/2014 13:27:23</publishTime>
+    </File>
+    <File Include="Default.aspx">
+      <publishTime>10/03/2014 13:26:24</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>10/03/2014 13:26:24</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.4.1-vsdoc.js">
+      <publishTime>10/03/2014 13:26:30</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.4.1.js">
+      <publishTime>10/03/2014 13:26:30</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.4.1.min.js">
+      <publishTime>10/03/2014 13:26:30</publishTime>
+    </File>
+    <File Include="Site.Master">
+      <publishTime>09/09/2014 14:56:18</publishTime>
+    </File>
+    <File Include="SiteCodesUpload.aspx">
+      <publishTime>10/03/2014 13:26:25</publishTime>
+    </File>
+    <File Include="Styles/Site.css">
+      <publishTime>10/03/2014 13:26:30</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>10/03/2014 13:26:26</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

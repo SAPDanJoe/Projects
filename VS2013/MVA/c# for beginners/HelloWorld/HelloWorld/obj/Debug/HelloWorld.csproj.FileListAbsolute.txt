@@ -4,3 +4,6 @@ C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\Hell
 C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\HelloWorld\HelloWorld\obj\Debug\HelloWorld.csprojResolveAssemblyReference.cache
 C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\HelloWorld\HelloWorld\obj\Debug\HelloWorld.exe
 C:\Users\i837633\Documents\Visual Studio 2013\Projects\MVA\c# for beginners\HelloWorld\HelloWorld\obj\Debug\HelloWorld.pdb
+C:\Users\i837633\Mobile Docs\My Documents\Documents\Application Documetns\Visual Studio 2013\Projects\MVA\c# for beginners\HelloWorld\HelloWorld\bin\Debug\HelloWorld.exe.config
+C:\Users\i837633\Mobile Docs\My Documents\Documents\Application Documetns\Visual Studio 2013\Projects\MVA\c# for beginners\HelloWorld\HelloWorld\obj\Debug\HelloWorld.exe
+C:\Users\i837633\Mobile Docs\My Documents\Documents\Application Documetns\Visual Studio 2013\Projects\MVA\c# for beginners\HelloWorld\HelloWorld\obj\Debug\HelloWorld.pdb
