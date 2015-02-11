@@ -1,6 +1,6 @@
 ﻿namespace CS_MonsoonProjectSelector
 {
-    partial class mainForm
+    partial class MonsoonSettingsMainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,11 +29,39 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MonsoonSettingsMainForm));
             this.ProjectNameToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.ProjectNameToolTipPictureBox = new System.Windows.Forms.PictureBox();
             this.WorkstationInformationTab = new System.Windows.Forms.TabPage();
+            this.VagrantInstallationGroupBox = new System.Windows.Forms.GroupBox();
+            this.VagrantEmbeddedTextBox = new System.Windows.Forms.TextBox();
+            this.VagrantEmbeddedLabel = new System.Windows.Forms.Label();
+            this.VagrantEmbeddedBinLabel = new System.Windows.Forms.Label();
+            this.VagrantEmbeddedBinTextBox = new System.Windows.Forms.TextBox();
+            this.GEMSourcesGroupBox = new System.Windows.Forms.GroupBox();
+            this.GEMPathLabel = new System.Windows.Forms.Label();
+            this.GEMPathTextBox = new System.Windows.Forms.TextBox();
+            this.GEMNoteLabel = new System.Windows.Forms.Label();
+            this.GEMSourcesTextBox = new System.Windows.Forms.TextBox();
+            this.GEMSourcesLabel = new System.Windows.Forms.Label();
+            this.EC2CLISettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.EC2NoteLabel = new System.Windows.Forms.Label();
+            this.EC2HomeTextBox = new System.Windows.Forms.TextBox();
+            this.EC2HomeLabel = new System.Windows.Forms.Label();
+            this.EC2UrlLabel = new System.Windows.Forms.Label();
+            this.EC2UrlTextBox = new System.Windows.Forms.TextBox();
+            this.GitGroupBox = new System.Windows.Forms.GroupBox();
+            this.ApplyGitSettingsButton = new System.Windows.Forms.Button();
+            this.GitSSHTextBox = new System.Windows.Forms.TextBox();
+            this.GitSSHPathLabel = new System.Windows.Forms.Label();
+            this.GitEmailAddressTextBox = new System.Windows.Forms.TextBox();
+            this.GitFirstNameLabel = new System.Windows.Forms.Label();
+            this.GitEmailAddressLabel = new System.Windows.Forms.Label();
+            this.GitFirstNameTextBox = new System.Windows.Forms.TextBox();
+            this.GitLastNameTextBox = new System.Windows.Forms.TextBox();
+            this.GitLastNameLabel = new System.Windows.Forms.Label();
             this.ChefGroupBox = new System.Windows.Forms.GroupBox();
+            this.KitchentLogLevelComboBox = new System.Windows.Forms.ComboBox();
             this.ChefRootTextBox = new System.Windows.Forms.TextBox();
             this.KitchenLogLevelLabel = new System.Windows.Forms.Label();
             this.ChefRootLabel = new System.Windows.Forms.Label();
@@ -44,18 +72,18 @@
             this.MinGWBinTextBox = new System.Windows.Forms.TextBox();
             this.MinGWBinLabel = new System.Windows.Forms.Label();
             this.MonsoonAccountInformationTab = new System.Windows.Forms.TabPage();
-            this.label25 = new System.Windows.Forms.Label();
+            this.noteToSelf = new System.Windows.Forms.Label();
             this.DashboardLink = new System.Windows.Forms.LinkLabel();
             this.ProjectSettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.ProjectSettingsLink = new System.Windows.Forms.LinkLabel();
-            this.ApplyButton = new System.Windows.Forms.Button();
+            this.ApplyProjectSettingsButton = new System.Windows.Forms.Button();
             this.KeyIDTextBox = new System.Windows.Forms.TextBox();
             this.AccessKeyTextBox = new System.Windows.Forms.TextBox();
             this.KeyIDLabel = new System.Windows.Forms.Label();
             this.ProjectNameLabel = new System.Windows.Forms.Label();
             this.OrgTextBox = new System.Windows.Forms.TextBox();
             this.AccessKeyLabel = new System.Windows.Forms.Label();
-            this.orgLabel = new System.Windows.Forms.Label();
+            this.OrgLabel = new System.Windows.Forms.Label();
             this.SecretKeyLabel = new System.Windows.Forms.Label();
             this.ProjectNameComboBox = new System.Windows.Forms.ComboBox();
             this.SecretKeyTextBox = new System.Windows.Forms.TextBox();
@@ -63,55 +91,27 @@
             this.MonsoonKeysLink = new System.Windows.Forms.LinkLabel();
             this.UserIDLink = new System.Windows.Forms.LinkLabel();
             this.PublicKeyTextBox = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.RevertAccountSettingsButton = new System.Windows.Forms.Button();
             this.PublicKeyLabel = new System.Windows.Forms.Label();
             this.PrivateKeyTextBox = new System.Windows.Forms.TextBox();
-            this.button3 = new System.Windows.Forms.Button();
+            this.ApplyAccoutnSettingsButton = new System.Windows.Forms.Button();
             this.UserIDComboBox = new System.Windows.Forms.ComboBox();
             this.PrivateKeyLabel = new System.Windows.Forms.Label();
             this.UserIDLabel = new System.Windows.Forms.Label();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.KitchentLogLevelComboBox = new System.Windows.Forms.ComboBox();
-            this.GitGroupBox = new System.Windows.Forms.GroupBox();
-            this.GitSSHTextBox = new System.Windows.Forms.TextBox();
-            this.GitSSHPathLabel = new System.Windows.Forms.Label();
-            this.GitEmailAddressTextBox = new System.Windows.Forms.TextBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.GitFirstNameTextBox = new System.Windows.Forms.TextBox();
-            this.GitLastNameTextBox = new System.Windows.Forms.TextBox();
-            this.label23 = new System.Windows.Forms.Label();
-            this.fileBrowserDialog = new System.Windows.Forms.OpenFileDialog();
-            this.button2 = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.EC2HomeTextBox = new System.Windows.Forms.TextBox();
-            this.EC2HomeLabel = new System.Windows.Forms.Label();
-            this.EC2UrlLabel = new System.Windows.Forms.Label();
-            this.EC2UrlTextBox = new System.Windows.Forms.TextBox();
-            this.EC2NoteLabel = new System.Windows.Forms.Label();
-            this.GEMSourcesGroupBox = new System.Windows.Forms.GroupBox();
-            this.GEMSourcesTextBox = new System.Windows.Forms.TextBox();
-            this.GEMSourcesLabel = new System.Windows.Forms.Label();
-            this.GEMNoteLabel = new System.Windows.Forms.Label();
-            this.GEMPathLabel = new System.Windows.Forms.Label();
-            this.GEMPathTextBox = new System.Windows.Forms.TextBox();
-            this.VagrantInstallationGroupBox = new System.Windows.Forms.GroupBox();
-            this.VagrantEmbeddedTextBox = new System.Windows.Forms.TextBox();
-            this.VagrantEmbeddedLabel = new System.Windows.Forms.Label();
-            this.VagrantEmbeddedBinTextBox = new System.Windows.Forms.TextBox();
-            this.VagrantEmbeddedBinLabel = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.MainFormTabs = new System.Windows.Forms.TabControl();
+            this.FolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.FileBrowserDialog = new System.Windows.Forms.OpenFileDialog();
+            ((System.ComponentModel.ISupportInitialize)(this.ProjectNameToolTipPictureBox)).BeginInit();
             this.WorkstationInformationTab.SuspendLayout();
+            this.VagrantInstallationGroupBox.SuspendLayout();
+            this.GEMSourcesGroupBox.SuspendLayout();
+            this.EC2CLISettingsGroupBox.SuspendLayout();
+            this.GitGroupBox.SuspendLayout();
             this.ChefGroupBox.SuspendLayout();
             this.MonsoonAccountInformationTab.SuspendLayout();
             this.ProjectSettingsGroupBox.SuspendLayout();
             this.AccountSettingsGroupBox.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.GitGroupBox.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.GEMSourcesGroupBox.SuspendLayout();
-            this.VagrantInstallationGroupBox.SuspendLayout();
+            this.MainFormTabs.SuspendLayout();
             this.SuspendLayout();
             // 
             // ProjectNameToolTip
@@ -119,22 +119,24 @@
             this.ProjectNameToolTip.IsBalloon = true;
             this.ProjectNameToolTip.ToolTipTitle = "Tip:";
             // 
-            // pictureBox1
+            // ProjectNameToolTipPictureBox
             // 
-            this.pictureBox1.Image = global::CS_MonsoonProjectSelector.Properties.Resources.more_information_icon_SMALL;
-            this.pictureBox1.Location = new System.Drawing.Point(93, 21);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(15, 15);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 7;
-            this.pictureBox1.TabStop = false;
-            this.ProjectNameToolTip.SetToolTip(this.pictureBox1, "Enter the project name as it appears in Monsoon.");
+            this.ProjectNameToolTipPictureBox.ErrorImage = null;
+            this.ProjectNameToolTipPictureBox.Image = global::CS_MonsoonProjectSelector.Properties.Resources.more_information_icon_SMALL;
+            this.ProjectNameToolTipPictureBox.InitialImage = null;
+            this.ProjectNameToolTipPictureBox.Location = new System.Drawing.Point(93, 21);
+            this.ProjectNameToolTipPictureBox.Name = "ProjectNameToolTipPictureBox";
+            this.ProjectNameToolTipPictureBox.Size = new System.Drawing.Size(15, 15);
+            this.ProjectNameToolTipPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.ProjectNameToolTipPictureBox.TabIndex = 7;
+            this.ProjectNameToolTipPictureBox.TabStop = false;
+            this.ProjectNameToolTip.SetToolTip(this.ProjectNameToolTipPictureBox, "Enter the project name as it appears in Monsoon.");
             // 
             // WorkstationInformationTab
             // 
             this.WorkstationInformationTab.Controls.Add(this.VagrantInstallationGroupBox);
             this.WorkstationInformationTab.Controls.Add(this.GEMSourcesGroupBox);
-            this.WorkstationInformationTab.Controls.Add(this.groupBox1);
+            this.WorkstationInformationTab.Controls.Add(this.EC2CLISettingsGroupBox);
             this.WorkstationInformationTab.Controls.Add(this.GitGroupBox);
             this.WorkstationInformationTab.Controls.Add(this.ChefGroupBox);
             this.WorkstationInformationTab.Location = new System.Drawing.Point(4, 22);
@@ -144,6 +146,268 @@
             this.WorkstationInformationTab.TabIndex = 1;
             this.WorkstationInformationTab.Text = "Workstation Info";
             this.WorkstationInformationTab.UseVisualStyleBackColor = true;
+            // 
+            // VagrantInstallationGroupBox
+            // 
+            this.VagrantInstallationGroupBox.Controls.Add(this.VagrantEmbeddedTextBox);
+            this.VagrantInstallationGroupBox.Controls.Add(this.VagrantEmbeddedLabel);
+            this.VagrantInstallationGroupBox.Controls.Add(this.VagrantEmbeddedBinLabel);
+            this.VagrantInstallationGroupBox.Controls.Add(this.VagrantEmbeddedBinTextBox);
+            this.VagrantInstallationGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VagrantInstallationGroupBox.Location = new System.Drawing.Point(311, 6);
+            this.VagrantInstallationGroupBox.Name = "VagrantInstallationGroupBox";
+            this.VagrantInstallationGroupBox.Size = new System.Drawing.Size(299, 69);
+            this.VagrantInstallationGroupBox.TabIndex = 15;
+            this.VagrantInstallationGroupBox.TabStop = false;
+            this.VagrantInstallationGroupBox.Text = "Vagrant Installation Data";
+            // 
+            // VagrantEmbeddedTextBox
+            // 
+            this.VagrantEmbeddedTextBox.Location = new System.Drawing.Point(116, 13);
+            this.VagrantEmbeddedTextBox.Name = "VagrantEmbeddedTextBox";
+            this.VagrantEmbeddedTextBox.Size = new System.Drawing.Size(168, 20);
+            this.VagrantEmbeddedTextBox.TabIndex = 1;
+            this.VagrantEmbeddedTextBox.Enter += new System.EventHandler(this.FolderBrowser);
+            // 
+            // VagrantEmbeddedLabel
+            // 
+            this.VagrantEmbeddedLabel.AutoSize = true;
+            this.VagrantEmbeddedLabel.Location = new System.Drawing.Point(6, 16);
+            this.VagrantEmbeddedLabel.Name = "VagrantEmbeddedLabel";
+            this.VagrantEmbeddedLabel.Size = new System.Drawing.Size(98, 13);
+            this.VagrantEmbeddedLabel.TabIndex = 0;
+            this.VagrantEmbeddedLabel.Text = "Vagrant Embedded";
+            // 
+            // VagrantEmbeddedBinLabel
+            // 
+            this.VagrantEmbeddedBinLabel.AutoSize = true;
+            this.VagrantEmbeddedBinLabel.Location = new System.Drawing.Point(6, 42);
+            this.VagrantEmbeddedBinLabel.Name = "VagrantEmbeddedBinLabel";
+            this.VagrantEmbeddedBinLabel.Size = new System.Drawing.Size(89, 13);
+            this.VagrantEmbeddedBinLabel.TabIndex = 2;
+            this.VagrantEmbeddedBinLabel.Text = "Vagrant Emb. Bin";
+            // 
+            // VagrantEmbeddedBinTextBox
+            // 
+            this.VagrantEmbeddedBinTextBox.Location = new System.Drawing.Point(116, 39);
+            this.VagrantEmbeddedBinTextBox.Name = "VagrantEmbeddedBinTextBox";
+            this.VagrantEmbeddedBinTextBox.Size = new System.Drawing.Size(168, 20);
+            this.VagrantEmbeddedBinTextBox.TabIndex = 3;
+            this.VagrantEmbeddedBinTextBox.Enter += new System.EventHandler(this.FolderBrowser);
+            // 
+            // GEMSourcesGroupBox
+            // 
+            this.GEMSourcesGroupBox.Controls.Add(this.GEMPathLabel);
+            this.GEMSourcesGroupBox.Controls.Add(this.GEMPathTextBox);
+            this.GEMSourcesGroupBox.Controls.Add(this.GEMNoteLabel);
+            this.GEMSourcesGroupBox.Controls.Add(this.GEMSourcesTextBox);
+            this.GEMSourcesGroupBox.Controls.Add(this.GEMSourcesLabel);
+            this.GEMSourcesGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GEMSourcesGroupBox.Location = new System.Drawing.Point(311, 85);
+            this.GEMSourcesGroupBox.Name = "GEMSourcesGroupBox";
+            this.GEMSourcesGroupBox.Size = new System.Drawing.Size(350, 122);
+            this.GEMSourcesGroupBox.TabIndex = 14;
+            this.GEMSourcesGroupBox.TabStop = false;
+            this.GEMSourcesGroupBox.Text = "GEM Sources";
+            // 
+            // GEMPathLabel
+            // 
+            this.GEMPathLabel.AutoSize = true;
+            this.GEMPathLabel.Location = new System.Drawing.Point(6, 16);
+            this.GEMPathLabel.Name = "GEMPathLabel";
+            this.GEMPathLabel.Size = new System.Drawing.Size(66, 13);
+            this.GEMPathLabel.TabIndex = 4;
+            this.GEMPathLabel.Text = "GEM_PATH";
+            // 
+            // GEMPathTextBox
+            // 
+            this.GEMPathTextBox.Location = new System.Drawing.Point(83, 13);
+            this.GEMPathTextBox.Name = "GEMPathTextBox";
+            this.GEMPathTextBox.Size = new System.Drawing.Size(201, 20);
+            this.GEMPathTextBox.TabIndex = 5;
+            this.GEMPathTextBox.Enter += new System.EventHandler(this.FolderBrowser);
+            // 
+            // GEMNoteLabel
+            // 
+            this.GEMNoteLabel.AutoSize = true;
+            this.GEMNoteLabel.Location = new System.Drawing.Point(6, 91);
+            this.GEMNoteLabel.Name = "GEMNoteLabel";
+            this.GEMNoteLabel.Size = new System.Drawing.Size(277, 26);
+            this.GEMNoteLabel.TabIndex = 2;
+            this.GEMNoteLabel.Text = "Additional Gem settings will be generated to the ~/.gemrc\r\nbased on Monsoon\'s con" +
+    "figuration documentation.";
+            // 
+            // GEMSourcesTextBox
+            // 
+            this.GEMSourcesTextBox.AcceptsReturn = true;
+            this.GEMSourcesTextBox.Location = new System.Drawing.Point(83, 39);
+            this.GEMSourcesTextBox.Multiline = true;
+            this.GEMSourcesTextBox.Name = "GEMSourcesTextBox";
+            this.GEMSourcesTextBox.Size = new System.Drawing.Size(258, 46);
+            this.GEMSourcesTextBox.TabIndex = 1;
+            this.GEMSourcesTextBox.Text = "http://moo-repo.wdf.sap.corp:8080/geminabox/\r\nhttp://moo-repo.wdf.sap.corp:8080/r" +
+    "ubygemsorg/ ";
+            // 
+            // GEMSourcesLabel
+            // 
+            this.GEMSourcesLabel.AutoSize = true;
+            this.GEMSourcesLabel.Location = new System.Drawing.Point(6, 42);
+            this.GEMSourcesLabel.Name = "GEMSourcesLabel";
+            this.GEMSourcesLabel.Size = new System.Drawing.Size(71, 13);
+            this.GEMSourcesLabel.TabIndex = 0;
+            this.GEMSourcesLabel.Text = "Gem Sources";
+            // 
+            // EC2CLISettingsGroupBox
+            // 
+            this.EC2CLISettingsGroupBox.Controls.Add(this.EC2NoteLabel);
+            this.EC2CLISettingsGroupBox.Controls.Add(this.EC2HomeTextBox);
+            this.EC2CLISettingsGroupBox.Controls.Add(this.EC2HomeLabel);
+            this.EC2CLISettingsGroupBox.Controls.Add(this.EC2UrlLabel);
+            this.EC2CLISettingsGroupBox.Controls.Add(this.EC2UrlTextBox);
+            this.EC2CLISettingsGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EC2CLISettingsGroupBox.Location = new System.Drawing.Point(311, 217);
+            this.EC2CLISettingsGroupBox.Name = "EC2CLISettingsGroupBox";
+            this.EC2CLISettingsGroupBox.Size = new System.Drawing.Size(299, 113);
+            this.EC2CLISettingsGroupBox.TabIndex = 13;
+            this.EC2CLISettingsGroupBox.TabStop = false;
+            this.EC2CLISettingsGroupBox.Text = "EC2 Command Line Settings";
+            // 
+            // EC2NoteLabel
+            // 
+            this.EC2NoteLabel.AutoSize = true;
+            this.EC2NoteLabel.Location = new System.Drawing.Point(6, 68);
+            this.EC2NoteLabel.Name = "EC2NoteLabel";
+            this.EC2NoteLabel.Size = new System.Drawing.Size(292, 39);
+            this.EC2NoteLabel.TabIndex = 4;
+            this.EC2NoteLabel.Text = "Some other ec2 Settings like CLASSPATH, EC2_SSH_KEY,\r\netc. are going to be set au" +
+    "tomatically based on these \r\nsettings, and some of the settings from the previou" +
+    "s tab.";
+            // 
+            // EC2HomeTextBox
+            // 
+            this.EC2HomeTextBox.Location = new System.Drawing.Point(116, 13);
+            this.EC2HomeTextBox.Name = "EC2HomeTextBox";
+            this.EC2HomeTextBox.Size = new System.Drawing.Size(168, 20);
+            this.EC2HomeTextBox.TabIndex = 1;
+            this.EC2HomeTextBox.Enter += new System.EventHandler(this.FolderBrowser);
+            // 
+            // EC2HomeLabel
+            // 
+            this.EC2HomeLabel.AutoSize = true;
+            this.EC2HomeLabel.Location = new System.Drawing.Point(6, 16);
+            this.EC2HomeLabel.Name = "EC2HomeLabel";
+            this.EC2HomeLabel.Size = new System.Drawing.Size(68, 13);
+            this.EC2HomeLabel.TabIndex = 0;
+            this.EC2HomeLabel.Text = "EC2_HOME:";
+            // 
+            // EC2UrlLabel
+            // 
+            this.EC2UrlLabel.AutoSize = true;
+            this.EC2UrlLabel.Location = new System.Drawing.Point(6, 42);
+            this.EC2UrlLabel.Name = "EC2UrlLabel";
+            this.EC2UrlLabel.Size = new System.Drawing.Size(58, 13);
+            this.EC2UrlLabel.TabIndex = 2;
+            this.EC2UrlLabel.Text = "EC2_URL:";
+            // 
+            // EC2UrlTextBox
+            // 
+            this.EC2UrlTextBox.Location = new System.Drawing.Point(116, 39);
+            this.EC2UrlTextBox.Name = "EC2UrlTextBox";
+            this.EC2UrlTextBox.Size = new System.Drawing.Size(168, 20);
+            this.EC2UrlTextBox.TabIndex = 3;
+            // 
+            // GitGroupBox
+            // 
+            this.GitGroupBox.Controls.Add(this.ApplyGitSettingsButton);
+            this.GitGroupBox.Controls.Add(this.GitSSHTextBox);
+            this.GitGroupBox.Controls.Add(this.GitSSHPathLabel);
+            this.GitGroupBox.Controls.Add(this.GitEmailAddressTextBox);
+            this.GitGroupBox.Controls.Add(this.GitFirstNameLabel);
+            this.GitGroupBox.Controls.Add(this.GitEmailAddressLabel);
+            this.GitGroupBox.Controls.Add(this.GitFirstNameTextBox);
+            this.GitGroupBox.Controls.Add(this.GitLastNameTextBox);
+            this.GitGroupBox.Controls.Add(this.GitLastNameLabel);
+            this.GitGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GitGroupBox.Location = new System.Drawing.Point(6, 180);
+            this.GitGroupBox.Name = "GitGroupBox";
+            this.GitGroupBox.Size = new System.Drawing.Size(299, 151);
+            this.GitGroupBox.TabIndex = 10;
+            this.GitGroupBox.TabStop = false;
+            this.GitGroupBox.Text = "Git Installation Data";
+            // 
+            // ApplyGitSettingsButton
+            // 
+            this.ApplyGitSettingsButton.Location = new System.Drawing.Point(209, 117);
+            this.ApplyGitSettingsButton.Name = "ApplyGitSettingsButton";
+            this.ApplyGitSettingsButton.Size = new System.Drawing.Size(75, 23);
+            this.ApplyGitSettingsButton.TabIndex = 12;
+            this.ApplyGitSettingsButton.Text = "Apply";
+            this.ApplyGitSettingsButton.UseVisualStyleBackColor = true;
+            // 
+            // GitSSHTextBox
+            // 
+            this.GitSSHTextBox.Location = new System.Drawing.Point(116, 13);
+            this.GitSSHTextBox.Name = "GitSSHTextBox";
+            this.GitSSHTextBox.Size = new System.Drawing.Size(168, 20);
+            this.GitSSHTextBox.TabIndex = 1;
+            this.GitSSHTextBox.Enter += new System.EventHandler(this.FileBrowser);
+            // 
+            // GitSSHPathLabel
+            // 
+            this.GitSSHPathLabel.AutoSize = true;
+            this.GitSSHPathLabel.Location = new System.Drawing.Point(6, 16);
+            this.GitSSHPathLabel.Name = "GitSSHPathLabel";
+            this.GitSSHPathLabel.Size = new System.Drawing.Size(89, 13);
+            this.GitSSHPathLabel.TabIndex = 0;
+            this.GitSSHPathLabel.Text = "...\\Git\\...\\ssh.exe";
+            // 
+            // GitEmailAddressTextBox
+            // 
+            this.GitEmailAddressTextBox.Location = new System.Drawing.Point(116, 91);
+            this.GitEmailAddressTextBox.Name = "GitEmailAddressTextBox";
+            this.GitEmailAddressTextBox.Size = new System.Drawing.Size(168, 20);
+            this.GitEmailAddressTextBox.TabIndex = 7;
+            // 
+            // GitFirstNameLabel
+            // 
+            this.GitFirstNameLabel.AutoSize = true;
+            this.GitFirstNameLabel.Location = new System.Drawing.Point(6, 42);
+            this.GitFirstNameLabel.Name = "GitFirstNameLabel";
+            this.GitFirstNameLabel.Size = new System.Drawing.Size(80, 13);
+            this.GitFirstNameLabel.TabIndex = 2;
+            this.GitFirstNameLabel.Text = "Fisrt Name (git):";
+            // 
+            // GitEmailAddressLabel
+            // 
+            this.GitEmailAddressLabel.AutoSize = true;
+            this.GitEmailAddressLabel.Location = new System.Drawing.Point(6, 94);
+            this.GitEmailAddressLabel.Name = "GitEmailAddressLabel";
+            this.GitEmailAddressLabel.Size = new System.Drawing.Size(100, 13);
+            this.GitEmailAddressLabel.TabIndex = 6;
+            this.GitEmailAddressLabel.Text = "SAP eMail Address:";
+            // 
+            // GitFirstNameTextBox
+            // 
+            this.GitFirstNameTextBox.Location = new System.Drawing.Point(116, 39);
+            this.GitFirstNameTextBox.Name = "GitFirstNameTextBox";
+            this.GitFirstNameTextBox.Size = new System.Drawing.Size(168, 20);
+            this.GitFirstNameTextBox.TabIndex = 3;
+            // 
+            // GitLastNameTextBox
+            // 
+            this.GitLastNameTextBox.Location = new System.Drawing.Point(116, 65);
+            this.GitLastNameTextBox.Name = "GitLastNameTextBox";
+            this.GitLastNameTextBox.Size = new System.Drawing.Size(168, 20);
+            this.GitLastNameTextBox.TabIndex = 5;
+            // 
+            // GitLastNameLabel
+            // 
+            this.GitLastNameLabel.AutoSize = true;
+            this.GitLastNameLabel.Location = new System.Drawing.Point(6, 68);
+            this.GitLastNameLabel.Name = "GitLastNameLabel";
+            this.GitLastNameLabel.Size = new System.Drawing.Size(81, 13);
+            this.GitLastNameLabel.TabIndex = 4;
+            this.GitLastNameLabel.Text = "Last Name (git):";
             // 
             // ChefGroupBox
             // 
@@ -164,6 +428,19 @@
             this.ChefGroupBox.TabIndex = 1;
             this.ChefGroupBox.TabStop = false;
             this.ChefGroupBox.Text = "Chef Installation Data";
+            // 
+            // KitchentLogLevelComboBox
+            // 
+            this.KitchentLogLevelComboBox.FormattingEnabled = true;
+            this.KitchentLogLevelComboBox.Items.AddRange(new object[] {
+            "Default",
+            "Debug",
+            "Verbose"});
+            this.KitchentLogLevelComboBox.Location = new System.Drawing.Point(116, 117);
+            this.KitchentLogLevelComboBox.Name = "KitchentLogLevelComboBox";
+            this.KitchentLogLevelComboBox.Size = new System.Drawing.Size(168, 21);
+            this.KitchentLogLevelComboBox.TabIndex = 9;
+            this.KitchentLogLevelComboBox.Text = "Default";
             // 
             // ChefRootTextBox
             // 
@@ -244,7 +521,7 @@
             // 
             // MonsoonAccountInformationTab
             // 
-            this.MonsoonAccountInformationTab.Controls.Add(this.label25);
+            this.MonsoonAccountInformationTab.Controls.Add(this.noteToSelf);
             this.MonsoonAccountInformationTab.Controls.Add(this.DashboardLink);
             this.MonsoonAccountInformationTab.Controls.Add(this.ProjectSettingsGroupBox);
             this.MonsoonAccountInformationTab.Controls.Add(this.AccountSettingsGroupBox);
@@ -256,14 +533,14 @@
             this.MonsoonAccountInformationTab.Text = "Monsoon Info";
             this.MonsoonAccountInformationTab.UseVisualStyleBackColor = true;
             // 
-            // label25
+            // noteToSelf
             // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(336, 217);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(220, 39);
-            this.label25.TabIndex = 2;
-            this.label25.Text = "Note to Self:\r\nMight be able to get all this data from\r\nthe Toolbox, using the ac" +
+            this.noteToSelf.AutoSize = true;
+            this.noteToSelf.Location = new System.Drawing.Point(336, 217);
+            this.noteToSelf.Name = "noteToSelf";
+            this.noteToSelf.Size = new System.Drawing.Size(220, 39);
+            this.noteToSelf.TabIndex = 2;
+            this.noteToSelf.Text = "Note to Self:\r\nMight be able to get all this data from\r\nthe Toolbox, using the ac" +
     "count data above...";
             // 
             // DashboardLink
@@ -283,18 +560,18 @@
             // ProjectSettingsGroupBox
             // 
             this.ProjectSettingsGroupBox.Controls.Add(this.ProjectSettingsLink);
-            this.ProjectSettingsGroupBox.Controls.Add(this.ApplyButton);
+            this.ProjectSettingsGroupBox.Controls.Add(this.ApplyProjectSettingsButton);
             this.ProjectSettingsGroupBox.Controls.Add(this.KeyIDTextBox);
             this.ProjectSettingsGroupBox.Controls.Add(this.AccessKeyTextBox);
             this.ProjectSettingsGroupBox.Controls.Add(this.KeyIDLabel);
             this.ProjectSettingsGroupBox.Controls.Add(this.ProjectNameLabel);
             this.ProjectSettingsGroupBox.Controls.Add(this.OrgTextBox);
             this.ProjectSettingsGroupBox.Controls.Add(this.AccessKeyLabel);
-            this.ProjectSettingsGroupBox.Controls.Add(this.orgLabel);
+            this.ProjectSettingsGroupBox.Controls.Add(this.OrgLabel);
             this.ProjectSettingsGroupBox.Controls.Add(this.SecretKeyLabel);
             this.ProjectSettingsGroupBox.Controls.Add(this.ProjectNameComboBox);
             this.ProjectSettingsGroupBox.Controls.Add(this.SecretKeyTextBox);
-            this.ProjectSettingsGroupBox.Controls.Add(this.pictureBox1);
+            this.ProjectSettingsGroupBox.Controls.Add(this.ProjectNameToolTipPictureBox);
             this.ProjectSettingsGroupBox.Location = new System.Drawing.Point(306, 27);
             this.ProjectSettingsGroupBox.Name = "ProjectSettingsGroupBox";
             this.ProjectSettingsGroupBox.Size = new System.Drawing.Size(294, 183);
@@ -315,14 +592,14 @@
             this.ProjectSettingsLink.Visible = false;
             this.ProjectSettingsLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.ProjectSettingsLink_LinkClicked);
             // 
-            // ApplyButton
+            // ApplyProjectSettingsButton
             // 
-            this.ApplyButton.Location = new System.Drawing.Point(210, 150);
-            this.ApplyButton.Name = "ApplyButton";
-            this.ApplyButton.Size = new System.Drawing.Size(75, 23);
-            this.ApplyButton.TabIndex = 11;
-            this.ApplyButton.Text = "Apply";
-            this.ApplyButton.UseVisualStyleBackColor = true;
+            this.ApplyProjectSettingsButton.Location = new System.Drawing.Point(210, 150);
+            this.ApplyProjectSettingsButton.Name = "ApplyProjectSettingsButton";
+            this.ApplyProjectSettingsButton.Size = new System.Drawing.Size(75, 23);
+            this.ApplyProjectSettingsButton.TabIndex = 11;
+            this.ApplyProjectSettingsButton.Text = "Apply";
+            this.ApplyProjectSettingsButton.UseVisualStyleBackColor = true;
             // 
             // KeyIDTextBox
             // 
@@ -372,14 +649,14 @@
             this.AccessKeyLabel.TabIndex = 0;
             this.AccessKeyLabel.Text = "AWS_ACCESS_KEY";
             // 
-            // orgLabel
+            // OrgLabel
             // 
-            this.orgLabel.AutoSize = true;
-            this.orgLabel.Location = new System.Drawing.Point(5, 49);
-            this.orgLabel.Name = "orgLabel";
-            this.orgLabel.Size = new System.Drawing.Size(120, 13);
-            this.orgLabel.TabIndex = 0;
-            this.orgLabel.Text = "AWS_ORGANIZATION";
+            this.OrgLabel.AutoSize = true;
+            this.OrgLabel.Location = new System.Drawing.Point(5, 49);
+            this.OrgLabel.Name = "OrgLabel";
+            this.OrgLabel.Size = new System.Drawing.Size(120, 13);
+            this.OrgLabel.TabIndex = 0;
+            this.OrgLabel.Text = "AWS_ORGANIZATION";
             // 
             // SecretKeyLabel
             // 
@@ -411,10 +688,10 @@
             this.AccountSettingsGroupBox.Controls.Add(this.MonsoonKeysLink);
             this.AccountSettingsGroupBox.Controls.Add(this.UserIDLink);
             this.AccountSettingsGroupBox.Controls.Add(this.PublicKeyTextBox);
-            this.AccountSettingsGroupBox.Controls.Add(this.button1);
+            this.AccountSettingsGroupBox.Controls.Add(this.RevertAccountSettingsButton);
             this.AccountSettingsGroupBox.Controls.Add(this.PublicKeyLabel);
             this.AccountSettingsGroupBox.Controls.Add(this.PrivateKeyTextBox);
-            this.AccountSettingsGroupBox.Controls.Add(this.button3);
+            this.AccountSettingsGroupBox.Controls.Add(this.ApplyAccoutnSettingsButton);
             this.AccountSettingsGroupBox.Controls.Add(this.UserIDComboBox);
             this.AccountSettingsGroupBox.Controls.Add(this.PrivateKeyLabel);
             this.AccountSettingsGroupBox.Controls.Add(this.UserIDLabel);
@@ -461,14 +738,14 @@
             this.PublicKeyTextBox.Size = new System.Drawing.Size(155, 46);
             this.PublicKeyTextBox.TabIndex = 2;
             // 
-            // button1
+            // RevertAccountSettingsButton
             // 
-            this.button1.Location = new System.Drawing.Point(130, 150);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Revert";
-            this.button1.UseVisualStyleBackColor = true;
+            this.RevertAccountSettingsButton.Location = new System.Drawing.Point(130, 150);
+            this.RevertAccountSettingsButton.Name = "RevertAccountSettingsButton";
+            this.RevertAccountSettingsButton.Size = new System.Drawing.Size(75, 23);
+            this.RevertAccountSettingsButton.TabIndex = 5;
+            this.RevertAccountSettingsButton.Text = "Revert";
+            this.RevertAccountSettingsButton.UseVisualStyleBackColor = true;
             // 
             // PublicKeyLabel
             // 
@@ -489,14 +766,14 @@
             this.PrivateKeyTextBox.Size = new System.Drawing.Size(155, 46);
             this.PrivateKeyTextBox.TabIndex = 3;
             // 
-            // button3
+            // ApplyAccoutnSettingsButton
             // 
-            this.button3.Location = new System.Drawing.Point(211, 150);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 4;
-            this.button3.Text = "Apply";
-            this.button3.UseVisualStyleBackColor = true;
+            this.ApplyAccoutnSettingsButton.Location = new System.Drawing.Point(211, 150);
+            this.ApplyAccoutnSettingsButton.Name = "ApplyAccoutnSettingsButton";
+            this.ApplyAccoutnSettingsButton.Size = new System.Drawing.Size(75, 23);
+            this.ApplyAccoutnSettingsButton.TabIndex = 4;
+            this.ApplyAccoutnSettingsButton.Text = "Apply";
+            this.ApplyAccoutnSettingsButton.UseVisualStyleBackColor = true;
             // 
             // UserIDComboBox
             // 
@@ -526,311 +803,44 @@
             this.UserIDLabel.TabIndex = 0;
             this.UserIDLabel.Text = "User ID";
             // 
-            // tabControl1
+            // MainFormTabs
             // 
-            this.tabControl1.Controls.Add(this.MonsoonAccountInformationTab);
-            this.tabControl1.Controls.Add(this.WorkstationInformationTab);
-            this.tabControl1.Location = new System.Drawing.Point(13, 13);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(679, 382);
-            this.tabControl1.TabIndex = 0;
+            this.MainFormTabs.Controls.Add(this.MonsoonAccountInformationTab);
+            this.MainFormTabs.Controls.Add(this.WorkstationInformationTab);
+            this.MainFormTabs.Location = new System.Drawing.Point(13, 13);
+            this.MainFormTabs.Name = "MainFormTabs";
+            this.MainFormTabs.SelectedIndex = 0;
+            this.MainFormTabs.Size = new System.Drawing.Size(679, 382);
+            this.MainFormTabs.TabIndex = 0;
             // 
-            // folderBrowserDialog
+            // FolderBrowserDialog
             // 
-            this.folderBrowserDialog.RootFolder = System.Environment.SpecialFolder.MyComputer;
-            this.folderBrowserDialog.ShowNewFolderButton = false;
+            this.FolderBrowserDialog.RootFolder = System.Environment.SpecialFolder.MyComputer;
+            this.FolderBrowserDialog.ShowNewFolderButton = false;
             // 
-            // KitchentLogLevelComboBox
+            // FileBrowserDialog
             // 
-            this.KitchentLogLevelComboBox.FormattingEnabled = true;
-            this.KitchentLogLevelComboBox.Items.AddRange(new object[] {
-            "Default",
-            "Debug",
-            "Verbose"});
-            this.KitchentLogLevelComboBox.Location = new System.Drawing.Point(116, 117);
-            this.KitchentLogLevelComboBox.Name = "KitchentLogLevelComboBox";
-            this.KitchentLogLevelComboBox.Size = new System.Drawing.Size(168, 21);
-            this.KitchentLogLevelComboBox.TabIndex = 9;
-            this.KitchentLogLevelComboBox.Text = "Default";
+            this.FileBrowserDialog.InitialDirectory = "c:\\";
             // 
-            // GitGroupBox
-            // 
-            this.GitGroupBox.Controls.Add(this.button2);
-            this.GitGroupBox.Controls.Add(this.GitSSHTextBox);
-            this.GitGroupBox.Controls.Add(this.GitSSHPathLabel);
-            this.GitGroupBox.Controls.Add(this.GitEmailAddressTextBox);
-            this.GitGroupBox.Controls.Add(this.label21);
-            this.GitGroupBox.Controls.Add(this.label22);
-            this.GitGroupBox.Controls.Add(this.GitFirstNameTextBox);
-            this.GitGroupBox.Controls.Add(this.GitLastNameTextBox);
-            this.GitGroupBox.Controls.Add(this.label23);
-            this.GitGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.GitGroupBox.Location = new System.Drawing.Point(6, 180);
-            this.GitGroupBox.Name = "GitGroupBox";
-            this.GitGroupBox.Size = new System.Drawing.Size(299, 151);
-            this.GitGroupBox.TabIndex = 10;
-            this.GitGroupBox.TabStop = false;
-            this.GitGroupBox.Text = "Git Installation Data";
-            // 
-            // GitSSHTextBox
-            // 
-            this.GitSSHTextBox.Location = new System.Drawing.Point(116, 13);
-            this.GitSSHTextBox.Name = "GitSSHTextBox";
-            this.GitSSHTextBox.Size = new System.Drawing.Size(168, 20);
-            this.GitSSHTextBox.TabIndex = 1;
-            this.GitSSHTextBox.Enter += new System.EventHandler(this.FileBrowser);
-            // 
-            // GitSSHPathLabel
-            // 
-            this.GitSSHPathLabel.AutoSize = true;
-            this.GitSSHPathLabel.Location = new System.Drawing.Point(6, 16);
-            this.GitSSHPathLabel.Name = "GitSSHPathLabel";
-            this.GitSSHPathLabel.Size = new System.Drawing.Size(89, 13);
-            this.GitSSHPathLabel.TabIndex = 0;
-            this.GitSSHPathLabel.Text = "...\\Git\\...\\ssh.exe";
-            // 
-            // GitEmailAddressTextBox
-            // 
-            this.GitEmailAddressTextBox.Location = new System.Drawing.Point(116, 91);
-            this.GitEmailAddressTextBox.Name = "GitEmailAddressTextBox";
-            this.GitEmailAddressTextBox.Size = new System.Drawing.Size(168, 20);
-            this.GitEmailAddressTextBox.TabIndex = 7;
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(6, 42);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(80, 13);
-            this.label21.TabIndex = 2;
-            this.label21.Text = "Fisrt Name (git):";
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(6, 94);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(100, 13);
-            this.label22.TabIndex = 6;
-            this.label22.Text = "SAP eMail Address:";
-            // 
-            // GitFirstNameTextBox
-            // 
-            this.GitFirstNameTextBox.Location = new System.Drawing.Point(116, 39);
-            this.GitFirstNameTextBox.Name = "GitFirstNameTextBox";
-            this.GitFirstNameTextBox.Size = new System.Drawing.Size(168, 20);
-            this.GitFirstNameTextBox.TabIndex = 3;
-            // 
-            // GitLastNameTextBox
-            // 
-            this.GitLastNameTextBox.Location = new System.Drawing.Point(116, 65);
-            this.GitLastNameTextBox.Name = "GitLastNameTextBox";
-            this.GitLastNameTextBox.Size = new System.Drawing.Size(168, 20);
-            this.GitLastNameTextBox.TabIndex = 5;
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(6, 68);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(81, 13);
-            this.label23.TabIndex = 4;
-            this.label23.Text = "Last Name (git):";
-            // 
-            // fileBrowserDialog
-            // 
-            this.fileBrowserDialog.InitialDirectory = "c:\\";
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(209, 117);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 12;
-            this.button2.Text = "Apply";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.EC2NoteLabel);
-            this.groupBox1.Controls.Add(this.EC2HomeTextBox);
-            this.groupBox1.Controls.Add(this.EC2HomeLabel);
-            this.groupBox1.Controls.Add(this.EC2UrlLabel);
-            this.groupBox1.Controls.Add(this.EC2UrlTextBox);
-            this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.groupBox1.Location = new System.Drawing.Point(311, 217);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(299, 113);
-            this.groupBox1.TabIndex = 13;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "EC2 Command Line Settings";
-            // 
-            // EC2HomeTextBox
-            // 
-            this.EC2HomeTextBox.Location = new System.Drawing.Point(116, 13);
-            this.EC2HomeTextBox.Name = "EC2HomeTextBox";
-            this.EC2HomeTextBox.Size = new System.Drawing.Size(168, 20);
-            this.EC2HomeTextBox.TabIndex = 1;
-            this.EC2HomeTextBox.Enter += new System.EventHandler(this.FolderBrowser);
-            // 
-            // EC2HomeLabel
-            // 
-            this.EC2HomeLabel.AutoSize = true;
-            this.EC2HomeLabel.Location = new System.Drawing.Point(6, 16);
-            this.EC2HomeLabel.Name = "EC2HomeLabel";
-            this.EC2HomeLabel.Size = new System.Drawing.Size(68, 13);
-            this.EC2HomeLabel.TabIndex = 0;
-            this.EC2HomeLabel.Text = "EC2_HOME:";
-            // 
-            // EC2UrlLabel
-            // 
-            this.EC2UrlLabel.AutoSize = true;
-            this.EC2UrlLabel.Location = new System.Drawing.Point(6, 42);
-            this.EC2UrlLabel.Name = "EC2UrlLabel";
-            this.EC2UrlLabel.Size = new System.Drawing.Size(58, 13);
-            this.EC2UrlLabel.TabIndex = 2;
-            this.EC2UrlLabel.Text = "EC2_URL:";
-            // 
-            // EC2UrlTextBox
-            // 
-            this.EC2UrlTextBox.Location = new System.Drawing.Point(116, 39);
-            this.EC2UrlTextBox.Name = "EC2UrlTextBox";
-            this.EC2UrlTextBox.Size = new System.Drawing.Size(168, 20);
-            this.EC2UrlTextBox.TabIndex = 3;
-            // 
-            // EC2NoteLabel
-            // 
-            this.EC2NoteLabel.AutoSize = true;
-            this.EC2NoteLabel.Location = new System.Drawing.Point(6, 68);
-            this.EC2NoteLabel.Name = "EC2NoteLabel";
-            this.EC2NoteLabel.Size = new System.Drawing.Size(292, 39);
-            this.EC2NoteLabel.TabIndex = 4;
-            this.EC2NoteLabel.Text = "Some other ec2 Settings like CLASSPATH, EC2_SSH_KEY,\r\netc. are going to be set au" +
-    "tomatically based on these \r\nsettings, and some of the settings from the previou" +
-    "s tab.";
-            // 
-            // GEMSourcesGroupBox
-            // 
-            this.GEMSourcesGroupBox.Controls.Add(this.GEMPathLabel);
-            this.GEMSourcesGroupBox.Controls.Add(this.GEMPathTextBox);
-            this.GEMSourcesGroupBox.Controls.Add(this.GEMNoteLabel);
-            this.GEMSourcesGroupBox.Controls.Add(this.GEMSourcesTextBox);
-            this.GEMSourcesGroupBox.Controls.Add(this.GEMSourcesLabel);
-            this.GEMSourcesGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.GEMSourcesGroupBox.Location = new System.Drawing.Point(311, 85);
-            this.GEMSourcesGroupBox.Name = "GEMSourcesGroupBox";
-            this.GEMSourcesGroupBox.Size = new System.Drawing.Size(350, 122);
-            this.GEMSourcesGroupBox.TabIndex = 14;
-            this.GEMSourcesGroupBox.TabStop = false;
-            this.GEMSourcesGroupBox.Text = "GEM Sources";
-            // 
-            // GEMSourcesTextBox
-            // 
-            this.GEMSourcesTextBox.AcceptsReturn = true;
-            this.GEMSourcesTextBox.Location = new System.Drawing.Point(83, 39);
-            this.GEMSourcesTextBox.Multiline = true;
-            this.GEMSourcesTextBox.Name = "GEMSourcesTextBox";
-            this.GEMSourcesTextBox.Size = new System.Drawing.Size(258, 46);
-            this.GEMSourcesTextBox.TabIndex = 1;
-            this.GEMSourcesTextBox.Text = "http://moo-repo.wdf.sap.corp:8080/geminabox/\r\nhttp://moo-repo.wdf.sap.corp:8080/r" +
-    "ubygemsorg/ ";
-            // 
-            // GEMSourcesLabel
-            // 
-            this.GEMSourcesLabel.AutoSize = true;
-            this.GEMSourcesLabel.Location = new System.Drawing.Point(6, 42);
-            this.GEMSourcesLabel.Name = "GEMSourcesLabel";
-            this.GEMSourcesLabel.Size = new System.Drawing.Size(71, 13);
-            this.GEMSourcesLabel.TabIndex = 0;
-            this.GEMSourcesLabel.Text = "Gem Sources";
-            // 
-            // GEMNoteLabel
-            // 
-            this.GEMNoteLabel.AutoSize = true;
-            this.GEMNoteLabel.Location = new System.Drawing.Point(6, 91);
-            this.GEMNoteLabel.Name = "GEMNoteLabel";
-            this.GEMNoteLabel.Size = new System.Drawing.Size(277, 26);
-            this.GEMNoteLabel.TabIndex = 2;
-            this.GEMNoteLabel.Text = "Additional Gem settings will be generated to the ~/.gemrc\r\nbased on Monsoon\'s con" +
-    "figuration documentation.";
-            // 
-            // GEMPathLabel
-            // 
-            this.GEMPathLabel.AutoSize = true;
-            this.GEMPathLabel.Location = new System.Drawing.Point(6, 16);
-            this.GEMPathLabel.Name = "GEMPathLabel";
-            this.GEMPathLabel.Size = new System.Drawing.Size(66, 13);
-            this.GEMPathLabel.TabIndex = 4;
-            this.GEMPathLabel.Text = "GEM_PATH";
-            // 
-            // GEMPathTextBox
-            // 
-            this.GEMPathTextBox.Location = new System.Drawing.Point(83, 13);
-            this.GEMPathTextBox.Name = "GEMPathTextBox";
-            this.GEMPathTextBox.Size = new System.Drawing.Size(201, 20);
-            this.GEMPathTextBox.TabIndex = 5;
-            this.GEMPathTextBox.Enter += new System.EventHandler(this.FolderBrowser);
-            // 
-            // VagrantInstallationGroupBox
-            // 
-            this.VagrantInstallationGroupBox.Controls.Add(this.VagrantEmbeddedTextBox);
-            this.VagrantInstallationGroupBox.Controls.Add(this.VagrantEmbeddedLabel);
-            this.VagrantInstallationGroupBox.Controls.Add(this.VagrantEmbeddedBinLabel);
-            this.VagrantInstallationGroupBox.Controls.Add(this.VagrantEmbeddedBinTextBox);
-            this.VagrantInstallationGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VagrantInstallationGroupBox.Location = new System.Drawing.Point(311, 6);
-            this.VagrantInstallationGroupBox.Name = "VagrantInstallationGroupBox";
-            this.VagrantInstallationGroupBox.Size = new System.Drawing.Size(299, 69);
-            this.VagrantInstallationGroupBox.TabIndex = 15;
-            this.VagrantInstallationGroupBox.TabStop = false;
-            this.VagrantInstallationGroupBox.Text = "Vagrant Installation Data";
-            // 
-            // VagrantEmbeddedTextBox
-            // 
-            this.VagrantEmbeddedTextBox.Location = new System.Drawing.Point(116, 13);
-            this.VagrantEmbeddedTextBox.Name = "VagrantEmbeddedTextBox";
-            this.VagrantEmbeddedTextBox.Size = new System.Drawing.Size(168, 20);
-            this.VagrantEmbeddedTextBox.TabIndex = 1;
-            this.VagrantEmbeddedTextBox.Enter += new System.EventHandler(this.FolderBrowser);
-            // 
-            // VagrantEmbeddedLabel
-            // 
-            this.VagrantEmbeddedLabel.AutoSize = true;
-            this.VagrantEmbeddedLabel.Location = new System.Drawing.Point(6, 16);
-            this.VagrantEmbeddedLabel.Name = "VagrantEmbeddedLabel";
-            this.VagrantEmbeddedLabel.Size = new System.Drawing.Size(98, 13);
-            this.VagrantEmbeddedLabel.TabIndex = 0;
-            this.VagrantEmbeddedLabel.Text = "Vagrant Embedded";
-            // 
-            // VagrantEmbeddedBinTextBox
-            // 
-            this.VagrantEmbeddedBinTextBox.Location = new System.Drawing.Point(116, 39);
-            this.VagrantEmbeddedBinTextBox.Name = "VagrantEmbeddedBinTextBox";
-            this.VagrantEmbeddedBinTextBox.Size = new System.Drawing.Size(168, 20);
-            this.VagrantEmbeddedBinTextBox.TabIndex = 3;
-            this.VagrantEmbeddedBinTextBox.Enter += new System.EventHandler(this.FolderBrowser);
-            // 
-            // VagrantEmbeddedBinLabel
-            // 
-            this.VagrantEmbeddedBinLabel.AutoSize = true;
-            this.VagrantEmbeddedBinLabel.Location = new System.Drawing.Point(6, 42);
-            this.VagrantEmbeddedBinLabel.Name = "VagrantEmbeddedBinLabel";
-            this.VagrantEmbeddedBinLabel.Size = new System.Drawing.Size(89, 13);
-            this.VagrantEmbeddedBinLabel.TabIndex = 2;
-            this.VagrantEmbeddedBinLabel.Text = "Vagrant Emb. Bin";
-            // 
-            // mainForm
+            // MonsoonSettingsMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(704, 410);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.MainFormTabs);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "mainForm";
+            this.Name = "MonsoonSettingsMainForm";
             this.Text = "Monsoon Workstation Settings Tool";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ProjectNameToolTipPictureBox)).EndInit();
             this.WorkstationInformationTab.ResumeLayout(false);
+            this.VagrantInstallationGroupBox.ResumeLayout(false);
+            this.VagrantInstallationGroupBox.PerformLayout();
+            this.GEMSourcesGroupBox.ResumeLayout(false);
+            this.GEMSourcesGroupBox.PerformLayout();
+            this.EC2CLISettingsGroupBox.ResumeLayout(false);
+            this.EC2CLISettingsGroupBox.PerformLayout();
+            this.GitGroupBox.ResumeLayout(false);
+            this.GitGroupBox.PerformLayout();
             this.ChefGroupBox.ResumeLayout(false);
             this.ChefGroupBox.PerformLayout();
             this.MonsoonAccountInformationTab.ResumeLayout(false);
@@ -839,15 +849,7 @@
             this.ProjectSettingsGroupBox.PerformLayout();
             this.AccountSettingsGroupBox.ResumeLayout(false);
             this.AccountSettingsGroupBox.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
-            this.GitGroupBox.ResumeLayout(false);
-            this.GitGroupBox.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.GEMSourcesGroupBox.ResumeLayout(false);
-            this.GEMSourcesGroupBox.PerformLayout();
-            this.VagrantInstallationGroupBox.ResumeLayout(false);
-            this.VagrantInstallationGroupBox.PerformLayout();
+            this.MainFormTabs.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -857,34 +859,34 @@
         private System.Windows.Forms.ToolTip ProjectNameToolTip;
         private System.Windows.Forms.TabPage WorkstationInformationTab;
         private System.Windows.Forms.TabPage MonsoonAccountInformationTab;
-        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label noteToSelf;
         private System.Windows.Forms.LinkLabel DashboardLink;
         private System.Windows.Forms.GroupBox ProjectSettingsGroupBox;
         private System.Windows.Forms.LinkLabel ProjectSettingsLink;
-        private System.Windows.Forms.Button ApplyButton;
+        private System.Windows.Forms.Button ApplyProjectSettingsButton;
         private System.Windows.Forms.TextBox KeyIDTextBox;
         private System.Windows.Forms.TextBox AccessKeyTextBox;
         private System.Windows.Forms.Label KeyIDLabel;
         private System.Windows.Forms.Label ProjectNameLabel;
         private System.Windows.Forms.TextBox OrgTextBox;
         private System.Windows.Forms.Label AccessKeyLabel;
-        private System.Windows.Forms.Label orgLabel;
+        private System.Windows.Forms.Label OrgLabel;
         private System.Windows.Forms.Label SecretKeyLabel;
         private System.Windows.Forms.ComboBox ProjectNameComboBox;
         private System.Windows.Forms.TextBox SecretKeyTextBox;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox ProjectNameToolTipPictureBox;
         private System.Windows.Forms.GroupBox AccountSettingsGroupBox;
         private System.Windows.Forms.LinkLabel MonsoonKeysLink;
         private System.Windows.Forms.LinkLabel UserIDLink;
         private System.Windows.Forms.TextBox PublicKeyTextBox;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button RevertAccountSettingsButton;
         private System.Windows.Forms.Label PublicKeyLabel;
         private System.Windows.Forms.TextBox PrivateKeyTextBox;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button ApplyAccoutnSettingsButton;
         private System.Windows.Forms.ComboBox UserIDComboBox;
         private System.Windows.Forms.Label PrivateKeyLabel;
         private System.Windows.Forms.Label UserIDLabel;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl MainFormTabs;
         private System.Windows.Forms.Label KitchenLogLevelLabel;
         private System.Windows.Forms.TextBox DevkitBinTextBox;
         private System.Windows.Forms.Label DevkitBinLabel;
@@ -895,26 +897,26 @@
         private System.Windows.Forms.TextBox ChefRootTextBox;
         private System.Windows.Forms.Label ChefRootLabel;
         private System.Windows.Forms.GroupBox ChefGroupBox;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
+        private System.Windows.Forms.FolderBrowserDialog FolderBrowserDialog;
         private System.Windows.Forms.ComboBox KitchentLogLevelComboBox;
         private System.Windows.Forms.GroupBox GitGroupBox;
         private System.Windows.Forms.TextBox GitSSHTextBox;
         private System.Windows.Forms.Label GitSSHPathLabel;
         private System.Windows.Forms.TextBox GitEmailAddressTextBox;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label GitFirstNameLabel;
+        private System.Windows.Forms.Label GitEmailAddressLabel;
         private System.Windows.Forms.TextBox GitFirstNameTextBox;
         private System.Windows.Forms.TextBox GitLastNameTextBox;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.OpenFileDialog fileBrowserDialog;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label GitLastNameLabel;
+        private System.Windows.Forms.OpenFileDialog FileBrowserDialog;
+        private System.Windows.Forms.Button ApplyGitSettingsButton;
         private System.Windows.Forms.GroupBox GEMSourcesGroupBox;
         private System.Windows.Forms.Label GEMPathLabel;
         private System.Windows.Forms.TextBox GEMPathTextBox;
         private System.Windows.Forms.Label GEMNoteLabel;
         private System.Windows.Forms.TextBox GEMSourcesTextBox;
         private System.Windows.Forms.Label GEMSourcesLabel;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox EC2CLISettingsGroupBox;
         private System.Windows.Forms.Label EC2NoteLabel;
         private System.Windows.Forms.TextBox EC2HomeTextBox;
         private System.Windows.Forms.Label EC2HomeLabel;

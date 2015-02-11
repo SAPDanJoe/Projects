@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace CS_MonsoonProjectSelector
 {
-    public partial class mainForm : Form
+    public partial class MonsoonSettingsMainForm : Form
     {
-        public mainForm()
+        public MonsoonSettingsMainForm()
         {
             InitializeComponent();
         }
@@ -81,11 +81,11 @@ namespace CS_MonsoonProjectSelector
             if (SenderBox.Text != "")//if the text box is not empty
             {
                 //set the selected path to the text box's current contents (incase of accidental entry)
-                folderBrowserDialog.SelectedPath = SenderBox.Text;
+                FolderBrowserDialog.SelectedPath = SenderBox.Text;
             }
-            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            if (FolderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                SenderBox.Text = folderBrowserDialog.SelectedPath;
+                SenderBox.Text = FolderBrowserDialog.SelectedPath;
             }
            
         }
@@ -95,11 +95,11 @@ namespace CS_MonsoonProjectSelector
             if (SenderBox.Text != "")//if the text box is not empty
             {
                 //set the selected path to the text box's current contents (incase of accidental entry)
-                fileBrowserDialog.FileName = SenderBox.Text;
+                FileBrowserDialog.FileName = SenderBox.Text;
             }
-            if (fileBrowserDialog.ShowDialog() == DialogResult.OK)
+            if (FileBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                SenderBox.Text = fileBrowserDialog.FileName;
+                SenderBox.Text = FileBrowserDialog.FileName;
             }
         }
     }
