@@ -16,11 +16,14 @@ REM ***********************************************
 	SET installparameters=INSTALLLOCATION^^^="%installroot%"
 	SET VERBOSE=TRUE
 	SET BREAK=FALSE
-	SEO CHEF_VER=
+	SET CHEF_VER=
 	
 :ENTRY
+	REM Check if run as callback
+	if %1.==CALLBACK. GOTO %1
+	
 	REM Check if script is running with elevation
-	echo > %testfile%
+	echo .> %testfile%
 	IF NOT EXIST %testfile% GOTO ELEVATION
 	del %testfile%
 	if %VERBOSE%==TRUE echo Verified that the batch is running with elevated priveleges.
@@ -68,7 +71,10 @@ REM ***********************************************
 	if %VERBOSE%==TRUE echo Installation Complete.
 	pause
 	if %VERBOSE%==TRUE echo Initializing chef settings...
-	%destinationdir%\settings.bat CHEF
+	if %VERBOSE%==TRUE echo settings.bat INSTALLATION
+	settings.bat INSTALLATION
+
+:CALLBACK
 	pause
 	if %VERBOSE%==TRUE echo Checking for successful installation.
 	@Chef-Client --version

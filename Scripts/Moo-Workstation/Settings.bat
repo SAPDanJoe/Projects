@@ -1,4 +1,4 @@
-@ECHO OFF
+REM @ECHO OFF
 REM cls
 IF "%1."=="." GOTO NOPARAM
 GOTO PARAMS
@@ -9,7 +9,7 @@ GOTO PARAMS
 	GOTO EOF
 
 :PARAMS
-	echo > c:\this
+	echo .> c:\this
 	IF NOT EXIST c:\this GOTO ELEVATION
 	del c:\this
 	GOTO %1
@@ -20,6 +20,7 @@ GOTO PARAMS
 	echo This needs to be run as administrator.
 	GOTO EOF
 	
+:INSTALLATION
 :CHEF
 	REM Seems that we need the chef-client version from
 	REM 11.6.0 version, and the GEM version < 2.4.0
@@ -173,7 +174,7 @@ GOTO PARAMS
 	SET PATH=%PATH%;C:\monsoon\chef\bin
 	SET PATH=%PATH%;C:\monsoon\chef\embedded\bin
 	SET PATH=C:\monsoon\chef\embedded\mingw\bin;%PATH%
-	SET RI_DEVKIT=C:\monsoon\chef\embedded\s
+	SET RI_DEVKIT=C:\monsoon\chef\embedded
 	SET KITCHEN_LOG=DEBUG
 
 	REM From :GIT
@@ -208,5 +209,9 @@ GOTO PARAMS
 	SET EMBEDDED_DIR=C:\monsoon\Vagrant\bin\\..\embedded
 
 :EOF
-cd %userprofile%\Documents\GitHub
-set errorlevel=0
+	cd %userprofile%\Documents
+	if %1.==INSTALLATION. (
+		cd %destinationdir%
+		%destinationdir%\Install.bat CALLBACK
+	)
+	set errorlevel=0

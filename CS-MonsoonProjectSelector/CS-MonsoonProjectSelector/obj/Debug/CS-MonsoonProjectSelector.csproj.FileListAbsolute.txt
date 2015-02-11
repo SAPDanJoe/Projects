@@ -1,0 +1,9 @@
+C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\bin\Debug\CS-MonsoonProjectSelector.exe.config
+C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\bin\Debug\CS-MonsoonProjectSelector.exe
+C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\bin\Debug\CS-MonsoonProjectSelector.pdb
+C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\obj\Debug\CS-MonsoonProjectSelector.csprojResolveAssemblyReference.cache
+C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\obj\Debug\CS_MonsoonProjectSelector.Properties.Resources.resources
+C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\obj\Debug\CS-MonsoonProjectSelector.csproj.GenerateResource.Cache
+C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\obj\Debug\CS-MonsoonProjectSelector.exe
+C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\obj\Debug\CS-MonsoonProjectSelector.pdb
+C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\obj\Debug\CS_MonsoonProjectSelector.mainForm.resources
