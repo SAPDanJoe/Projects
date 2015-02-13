@@ -6,4 +6,4 @@ C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonP
 C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\obj\Debug\CS-MonsoonProjectSelector.csproj.GenerateResource.Cache
 C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\obj\Debug\CS-MonsoonProjectSelector.exe
 C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\obj\Debug\CS-MonsoonProjectSelector.pdb
-C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\obj\Debug\CS_MonsoonProjectSelector.mainForm.resources
+C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\obj\Debug\CS_MonsoonProjectSelector.MonsoonSettingsMainForm.resources

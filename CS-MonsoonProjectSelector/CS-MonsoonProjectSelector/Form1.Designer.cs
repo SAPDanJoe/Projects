@@ -855,7 +855,6 @@
         }
 
         #endregion
-
         private System.Windows.Forms.ToolTip ProjectNameToolTip;
         private System.Windows.Forms.TabPage WorkstationInformationTab;
         private System.Windows.Forms.TabPage MonsoonAccountInformationTab;
