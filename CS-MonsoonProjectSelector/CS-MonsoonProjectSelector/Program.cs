@@ -18,6 +18,8 @@ namespace CS_MonsoonProjectSelector
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MonsoonSettingsMainForm());
         }
+
+        public static System.IO.FileInfo settings = initializeConfig();
        
         public static System.IO.FileInfo initializeConfig ()
         {   
@@ -45,6 +47,7 @@ namespace CS_MonsoonProjectSelector
             }
             return config;
         }
+
         public static void generateNewConfig(System.IO.FileInfo configFile)
         {
             //This generates a new empty XML settings file, and 
@@ -64,6 +67,5 @@ namespace CS_MonsoonProjectSelector
 
             xconfig.Save(configFile.ToString());
         }
-        public static System.IO.FileInfo settings = initializeConfig();
     }
 }

@@ -101,6 +101,7 @@
             this.MainFormTabs = new System.Windows.Forms.TabControl();
             this.FolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.FileBrowserDialog = new System.Windows.Forms.OpenFileDialog();
+            this.SaveAllButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ProjectNameToolTipPictureBox)).BeginInit();
             this.WorkstationInformationTab.SuspendLayout();
             this.VagrantInstallationGroupBox.SuspendLayout();
@@ -166,7 +167,7 @@
             this.VagrantEmbeddedTextBox.Location = new System.Drawing.Point(116, 13);
             this.VagrantEmbeddedTextBox.Name = "VagrantEmbeddedTextBox";
             this.VagrantEmbeddedTextBox.Size = new System.Drawing.Size(168, 20);
-            this.VagrantEmbeddedTextBox.TabIndex = 1;
+            this.VagrantEmbeddedTextBox.TabIndex = 8;
             this.VagrantEmbeddedTextBox.Enter += new System.EventHandler(this.FolderBrowser);
             // 
             // VagrantEmbeddedLabel
@@ -192,7 +193,7 @@
             this.VagrantEmbeddedBinTextBox.Location = new System.Drawing.Point(116, 39);
             this.VagrantEmbeddedBinTextBox.Name = "VagrantEmbeddedBinTextBox";
             this.VagrantEmbeddedBinTextBox.Size = new System.Drawing.Size(168, 20);
-            this.VagrantEmbeddedBinTextBox.TabIndex = 3;
+            this.VagrantEmbeddedBinTextBox.TabIndex = 9;
             this.VagrantEmbeddedBinTextBox.Enter += new System.EventHandler(this.FolderBrowser);
             // 
             // GEMSourcesGroupBox
@@ -224,7 +225,7 @@
             this.GEMPathTextBox.Location = new System.Drawing.Point(83, 13);
             this.GEMPathTextBox.Name = "GEMPathTextBox";
             this.GEMPathTextBox.Size = new System.Drawing.Size(201, 20);
-            this.GEMPathTextBox.TabIndex = 5;
+            this.GEMPathTextBox.TabIndex = 10;
             this.GEMPathTextBox.Enter += new System.EventHandler(this.FolderBrowser);
             // 
             // GEMNoteLabel
@@ -244,7 +245,7 @@
             this.GEMSourcesTextBox.Multiline = true;
             this.GEMSourcesTextBox.Name = "GEMSourcesTextBox";
             this.GEMSourcesTextBox.Size = new System.Drawing.Size(258, 46);
-            this.GEMSourcesTextBox.TabIndex = 1;
+            this.GEMSourcesTextBox.TabIndex = 11;
             this.GEMSourcesTextBox.Text = "http://moo-repo.wdf.sap.corp:8080/geminabox/\r\nhttp://moo-repo.wdf.sap.corp:8080/r" +
     "ubygemsorg/ ";
             // 
@@ -288,7 +289,7 @@
             this.EC2HomeTextBox.Location = new System.Drawing.Point(116, 13);
             this.EC2HomeTextBox.Name = "EC2HomeTextBox";
             this.EC2HomeTextBox.Size = new System.Drawing.Size(168, 20);
-            this.EC2HomeTextBox.TabIndex = 1;
+            this.EC2HomeTextBox.TabIndex = 12;
             this.EC2HomeTextBox.Enter += new System.EventHandler(this.FolderBrowser);
             // 
             // EC2HomeLabel
@@ -314,7 +315,7 @@
             this.EC2UrlTextBox.Location = new System.Drawing.Point(116, 39);
             this.EC2UrlTextBox.Name = "EC2UrlTextBox";
             this.EC2UrlTextBox.Size = new System.Drawing.Size(168, 20);
-            this.EC2UrlTextBox.TabIndex = 3;
+            this.EC2UrlTextBox.TabIndex = 13;
             // 
             // GitGroupBox
             // 
@@ -399,6 +400,7 @@
             this.GitLastNameTextBox.Name = "GitLastNameTextBox";
             this.GitLastNameTextBox.Size = new System.Drawing.Size(168, 20);
             this.GitLastNameTextBox.TabIndex = 5;
+            this.GitLastNameTextBox.Leave += new System.EventHandler(this.GitLastNameTextBox_Leave);
             // 
             // GitLastNameLabel
             // 
@@ -822,11 +824,22 @@
             // 
             this.FileBrowserDialog.InitialDirectory = "c:\\";
             // 
+            // SaveAllButton
+            // 
+            this.SaveAllButton.Location = new System.Drawing.Point(613, 9);
+            this.SaveAllButton.Name = "SaveAllButton";
+            this.SaveAllButton.Size = new System.Drawing.Size(75, 20);
+            this.SaveAllButton.TabIndex = 1;
+            this.SaveAllButton.Text = "Save All";
+            this.SaveAllButton.UseVisualStyleBackColor = true;
+            this.SaveAllButton.Click += new System.EventHandler(this.SaveAllButton_Click);
+            // 
             // MonsoonSettingsMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(704, 410);
+            this.Controls.Add(this.SaveAllButton);
             this.Controls.Add(this.MainFormTabs);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MonsoonSettingsMainForm";
@@ -926,6 +939,7 @@
         private System.Windows.Forms.Label VagrantEmbeddedLabel;
         private System.Windows.Forms.Label VagrantEmbeddedBinLabel;
         private System.Windows.Forms.TextBox VagrantEmbeddedBinTextBox;
+        private System.Windows.Forms.Button SaveAllButton;
 
     }
 }

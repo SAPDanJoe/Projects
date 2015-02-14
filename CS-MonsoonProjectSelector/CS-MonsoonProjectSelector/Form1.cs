@@ -54,11 +54,16 @@ namespace CS_MonsoonProjectSelector
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
             //load item values from the XML into collections
-            var ProjectNameComboBoxitems = from xmlData in current.Descendants("ProjectNameComboBox")
-                        select new 
-                        {
-                            value = (string)xmlData
-                        };
+            IEnumerable<XElement> ProjectNameComboBoxitems =
+                from xmlData in current.Descendants("ProjectNameComboBox")
+                select xmlData;
+            foreach (XElement xmlData in ProjectNameComboBoxitems)
+                ProjectNameComboBox.Items.Add(xmlData.Name);
+            //var ProjectNameComboBoxitems = from xmlData in current.Descendants("ProjectNameComboBox")
+            //            select new 
+            //            {
+            //                value = (string)xmlData
+            //            };
             var KitchentLogLevelComboBoxitems = from xmlData in current.Descendants("KitchentLogLevelComboBox")
                         select new 
                         {
@@ -74,21 +79,21 @@ namespace CS_MonsoonProjectSelector
             int i = 0;
             foreach (var item in ProjectNameComboBoxitems)
             {
-                ProjectNameComboBox.Items[i] = item;
+                ;
                 i++;
             }
 
             i = 0;
             foreach (var item in KitchentLogLevelComboBoxitems)
             {
-                KitchentLogLevelComboBox.Items[i] = item;
+                KitchentLogLevelComboBox.Items.Add(item);
                 i++;
             }
 
             i = 0;
             foreach (var item in UserIDComboBoxitems)
             {
-                UserIDComboBox.Items[i] = item;
+                UserIDComboBox.Items.Add(item);
                 i++;
             }
 
@@ -113,22 +118,22 @@ namespace CS_MonsoonProjectSelector
             current.Add(new XAttribute("replaced", DateTime.Now));
 
             //create a new 'current' node
-            xconfig.Add(
+            xconfig.Element("configFile").Add(
                 new XElement("settings",
                     new XAttribute("id", "current"),
-                    new XAttribute("created",DateTime.Now)
+                    new XAttribute("created",DateTime.Now.ToString())
                     )
-                );
+                );     
             
             //write UI values to the document
-            xconfig = valueWriter(KeyIDTextBox, xconfig);
-            xconfig = valueWriter(AccessKeyTextBox, xconfig);
-            xconfig = valueWriter(OrgTextBox, xconfig);
-            xconfig = valueWriter(ProjectNameComboBox, xconfig);
-            xconfig = valueWriter(SecretKeyTextBox, xconfig);
-            xconfig = valueWriter(PublicKeyTextBox, xconfig);
-            xconfig = valueWriter(PrivateKeyTextBox, xconfig);
             xconfig = valueWriter(UserIDComboBox, xconfig);
+                xconfig = valueWriter(PublicKeyTextBox, xconfig);
+                xconfig = valueWriter(PrivateKeyTextBox, xconfig);
+                xconfig = valueWriter(OrgTextBox, xconfig);
+            xconfig = valueWriter(ProjectNameComboBox, xconfig);
+                xconfig = valueWriter(KeyIDTextBox, xconfig);
+                xconfig = valueWriter(AccessKeyTextBox, xconfig);
+                xconfig = valueWriter(SecretKeyTextBox, xconfig);
             xconfig = valueWriter(DevkitBinTextBox, xconfig);
             xconfig = valueWriter(MinGWBinTextBox, xconfig);
             xconfig = valueWriter(ChefEmbeddedBinTextBox, xconfig);
@@ -147,21 +152,22 @@ namespace CS_MonsoonProjectSelector
 
             //save the xDoc back to the file
             xconfig.Save(Program.settings.ToString());
-            
-           
         }
 
         private XDocument valueWriter(System.Windows.Forms.TextBox tBox, XDocument doc)
         {
-            //select the current node
-            XElement current = doc.XPathSelectElement("configFile/settings[@id = 'current']");
-            
-            //add the box's name and value as an element to the doc
-            current.Add(
-                new XElement(tBox.Name.ToString(),tBox.Text.ToString()
-                    )
-                );
-                return doc;
+            if (tBox.Text != string.Empty)
+            {
+                XElement parent = doc.XPathSelectElement("configFile/settings[@id = 'current']");
+                //add the box's name and value as an element to the doc                    
+                parent.Add(
+                    new XElement(
+                        tBox.Name.ToString(),
+                        tBox.Text.ToString()
+                        )
+                    );
+            }
+            return doc;
         }
 
         private XDocument valueWriter(System.Windows.Forms.ComboBox cBox, XDocument doc)
@@ -174,10 +180,10 @@ namespace CS_MonsoonProjectSelector
             
             //select the newly added element
             XElement cBoxElement = current.Element(cBox.Name.ToString());
-            cBoxElement.Value = "test";
+           
             foreach (var item in cBox.Items)
 	        {
-                cBoxElement.Value = item.ToString();
+                cBoxElement.Add(new XElement("item",item.ToString()));
 
                 if (cBox.SelectedText.ToString() == item.ToString())
                 { //this is the currently selected item in the form
@@ -220,31 +226,54 @@ namespace CS_MonsoonProjectSelector
 
         private void ProjectNameComboBox_Leave(object sender, EventArgs e)
         {
-            if ((UserIDComboBox.Text != "") && (ProjectNameComboBox.Text != ""))
-            {
-                this.ProjectSettingsLink.Visible = true;
+            if (ProjectNameComboBox.Text.ToString() != string.Empty)
+            {   //There is text in this combo box
+
+                if (!this.ProjectNameComboBox.Items.Contains(this.ProjectNameComboBox.Text))
+                {   //The text is not in the item list, so add it
+		            this.ProjectNameComboBox.Items.Add(ProjectNameComboBox.Text);
+                    //and select it
+                    this.ProjectNameComboBox.SelectedItem = ProjectNameComboBox.Items.Count - 1;
+	            }
+
+                if ((UserIDComboBox.Text.ToString() != string.Empty))
+                {   //The user ID combo box is populated
+                    //show the settings link
+                    this.ProjectSettingsLink.Visible = true;
+                }
+
+                else
+                {   //The user ID combo box is not populated
+                    //ensure the settings link is hidden
+                    this.ProjectSettingsLink.Visible = false;
+                } 
             }
-            else
-            {
-                this.ProjectSettingsLink.Visible = false;
-            }
+            
         }
 
         private void UserIDComboBox_Leave(object sender, EventArgs e)
         {
-            if (UserIDComboBox.Text != "")
-            {
+            if (UserIDComboBox.Text != string.Empty)
+            {   //There is text in this combo box
+                if (!UserIDComboBox.Items.Contains(UserIDComboBox.Text))
+                {   //The text is not in the item list, so add it
+                    UserIDComboBox.Items.Add(UserIDComboBox.Text);
+                }
+
                 this.MonsoonKeysLink.Visible = true;
                 if (ProjectNameComboBox.Text != "")
-                {
+                {   //The project settings combo box is populated
+                    //show the settings and monsoon links
                     this.ProjectSettingsLink.Visible = true;
                 }
+                else
+                {   //The project settings combo box is not populated
+                    //ensure the settings and monsoon links are hidden
+                    this.ProjectSettingsLink.Visible = false;
+                    this.MonsoonKeysLink.Visible = false;
+                }
             }
-            else
-            {
-                this.ProjectSettingsLink.Visible = false;
-                this.MonsoonKeysLink.Visible = false;
-            }
+        
         }
 
         private void FolderBrowser(object sender, EventArgs e)
@@ -261,6 +290,7 @@ namespace CS_MonsoonProjectSelector
             }
            
         }
+
         private void FileBrowser(object sender, EventArgs e)
         {   //basically the same as the folder browser above, but for selecting specific files
             TextBox SenderBox = sender as TextBox;
@@ -272,6 +302,23 @@ namespace CS_MonsoonProjectSelector
             if (FileBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 SenderBox.Text = FileBrowserDialog.FileName;
+            }
+        }
+
+        private void SaveAllButton_Click(object sender, EventArgs e)
+        {
+            SaveData();
+        }
+
+        private void GitLastNameTextBox_Leave(object sender, EventArgs e)
+        {
+            if (GitFirstNameTextBox.Text != string.Empty && GitLastNameTextBox.Text != string.Empty)
+            {
+                GitEmailAddressTextBox.Text =
+                    GitFirstNameTextBox.Text +
+                    "." +
+                    GitLastNameTextBox.Text +
+                    "@sap.com";
             }
         }
     }
