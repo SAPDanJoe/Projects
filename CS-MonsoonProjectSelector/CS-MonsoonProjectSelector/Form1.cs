@@ -25,83 +25,35 @@ namespace CS_MonsoonProjectSelector
             XDocument xconfig = XDocument.Load(Program.settings.ToString());
             XElement current = xconfig.XPathSelectElement("configFile/settings[@id = 'current']");
 
-            //load values into text boxes            
-            KeyIDTextBox.Text = (string)current.Element("KeyIDTextBox");
-            AccessKeyTextBox.Text = (string)current.Element("AccessKeyTextBox");
-            OrgTextBox.Text = (string)current.Element("OrgTextBox");
-            SecretKeyTextBox.Text = (string)current.Element("SecretKeyTextBox");
-            PublicKeyTextBox.Text = (string)current.Element("PublicKeyTextBox");
-            PrivateKeyTextBox.Text = (string)current.Element("PrivateKeyTextBox");
-            DevkitBinTextBox.Text = (string)current.Element("DevkitBinTextBox");
-            MinGWBinTextBox.Text = (string)current.Element("MinGWBinTextBox");
-            ChefEmbeddedBinTextBox.Text = (string)current.Element("ChefEmbeddedBinTextBox");
-            ChefRootTextBox.Text = (string)current.Element("ChefRootTextBox");
-            GitSSHTextBox.Text = (string)current.Element("GitSSHTextBox");
-            GitEmailAddressTextBox.Text = (string)current.Element("GvalueailAddressTextBox");
-            GitFirstNameTextBox.Text = (string)current.Element("GitFirstNameTextBox");
-            GitLastNameTextBox.Text = (string)current.Element("GitLastNameTextBox");
-            GEMPathTextBox.Text = (string)current.Element("GEMPathTextBox");
-            GEMSourcesTextBox.Text = (string)current.Element("GEMSourcesTextBox");
-            EC2HomeTextBox.Text = (string)current.Element("EC2HomeTextBox");
-            EC2UrlTextBox.Text = (string)current.Element("EC2UrlTextBox");
-            VagrantEmbeddedTextBox.Text = (string)current.Element("VagrantEmbeddedTextBox");
-            VagrantEmbeddedBinTextBox.Text = (string)current.Element("VagrantEmbeddedBinTextBox");
-            
-            //loading values into combo boxes must be done differently
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            //Also need to ADD CODE for getting and setting the selected item inthe combo Box
-            //This can be refactored~
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-            //load item values from the XML into collections
-            IEnumerable<XElement> ProjectNameComboBoxitems =
-                from xmlData in current.Descendants("ProjectNameComboBox")
-                select xmlData;
-            foreach (XElement xmlData in ProjectNameComboBoxitems)
-                ProjectNameComboBox.Items.Add(xmlData.Name);
-            //var ProjectNameComboBoxitems = from xmlData in current.Descendants("ProjectNameComboBox")
-            //            select new 
-            //            {
-            //                value = (string)xmlData
-            //            };
-            var KitchentLogLevelComboBoxitems = from xmlData in current.Descendants("KitchentLogLevelComboBox")
-                        select new 
-                        {
-                            value = (string)xmlData
-                        };
-            var UserIDComboBoxitems = from xmlData in current.Descendants("UserIDComboBox")
-                        select new
-                        {
-                            value = (string)xmlData
-                        };
-            
-            //itterate the collections and add items
-            int i = 0;
-            foreach (var item in ProjectNameComboBoxitems)
-            {
-                ;
-                i++;
-            }
-
-            i = 0;
-            foreach (var item in KitchentLogLevelComboBoxitems)
-            {
-                KitchentLogLevelComboBox.Items.Add(item);
-                i++;
-            }
-
-            i = 0;
-            foreach (var item in UserIDComboBoxitems)
-            {
-                UserIDComboBox.Items.Add(item);
-                i++;
-            }
-
-            //set selected items
-            ProjectNameComboBox.SelectedText = (string)current.XPathSelectElement("ProjectNameComboBox[@selected = '1']");
-            KitchentLogLevelComboBox.SelectedText = (string)current.XPathSelectElement("KitchentLogLevelComboBox[@selected = '1']");
-            UserIDComboBox.SelectedText = (string)current.XPathSelectElement("UserIDComboBox[@selected = '1']");
-            
+            //load values into text boxes 
+            valueReader(KeyIDTextBox, current);
+            valueReader(AccessKeyTextBox, current);
+            valueReader(OrgTextBox, current);
+            valueReader(SecretKeyTextBox, current);
+            valueReader(PublicKeyTextBox, current);
+            valueReader(PrivateKeyTextBox, current);
+            valueReader(DevkitBinTextBox, current);
+            valueReader(MinGWBinTextBox, current);
+            valueReader(ChefEmbeddedBinTextBox, current);
+            valueReader(ChefRootTextBox, current);
+            valueReader(GitSSHTextBox, current);
+            valueReader(GitEmailAddressTextBox, current);
+            valueReader(GitFirstNameTextBox, current);
+            valueReader(GitLastNameTextBox, current);
+            valueReader(GEMPathTextBox, current);
+            valueReader(GEMSourcesTextBox, current);
+            valueReader(EC2HomeTextBox, current);
+            valueReader(EC2UrlTextBox, current);
+            valueReader(VagrantEmbeddedTextBox, current);
+            valueReader(VagrantEmbeddedBinTextBox, current);         
+            valueReader(ProjectNameComboBox, current);
+            //valueReader(KitchentLogLevelComboBox, current);  <-- This is not necessary, because add values is not allowed.
+            valueReader(UserIDComboBox, current);
+        
+            //set selected items in combo boxes
+            setSelections(ProjectNameComboBox, current);
+            setSelections(KitchentLogLevelComboBox, current);
+            setSelections(UserIDComboBox, current);
         }
 
         private void SaveData() 
@@ -180,19 +132,48 @@ namespace CS_MonsoonProjectSelector
             
             //select the newly added element
             XElement cBoxElement = current.Element(cBox.Name.ToString());
-           
+
             foreach (var item in cBox.Items)
 	        {
-                cBoxElement.Add(new XElement("item",item.ToString()));
-
-                if (cBox.SelectedText.ToString() == item.ToString())
+                if (cBox.SelectedItem.ToString() == item.ToString())
                 { //this is the currently selected item in the form
-                    cBoxElement.Add(new XAttribute("selected", "1"));
+
+                    cBoxElement.Add(
+                        new XElement("item", item.ToString(),
+                        new XAttribute("selected", "1")));
+                }
+                else
+                {
+                    cBoxElement.Add(new XElement("item", item.ToString()));
                 }
 	        }
             return doc;
         }
-                
+
+        private void valueReader(System.Windows.Forms.ComboBox cBox, XElement root)
+        {            
+            XElement branch = root.XPathSelectElement(cBox.Name.ToString());
+            
+            IEnumerable<XElement> ComboBoxitems =
+                from branchItems in branch.Descendants()
+                select branchItems;
+            
+            foreach (XElement xmlData in ComboBoxitems)
+            {
+                cBox.Items.Add(xmlData.Value);
+            }
+        }
+
+        private void valueReader(System.Windows.Forms.TextBox cBox, XElement root)
+        {
+            cBox.Text = (string)root.Element(cBox.Name.ToString());
+        }                
+
+        private void setSelections(System.Windows.Forms.ComboBox cBox, XElement root) 
+        {
+            string value = (string)root.XPathSelectElement(cBox.Name.ToString() + "/item[@selected = '1']");
+            cBox.SelectedItem = value;
+        }
         
         //The code below handles the UI behaviors like link creation and changing, labels, Folder browsing, etc. 
         private void DashboardLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

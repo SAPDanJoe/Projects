@@ -74,7 +74,8 @@ $DateTimeDIR = Get-Date $runTime -Format 'dd-MM-yyy hhmm'
 $workingDir = "$env:temp\ostBackup" + $DateTimeDIR
 $outlookDir = "$env:LOCALAPPDATA\Microsoft\Outlook"
 $backupDir = $outlookDir + "\ostBackup" + $DateTimeDIR
-$suspectprocesses = "OUTLOOK", "communicator", "UcMapi", "eaclient"
+$suspectprocesses = "OUTLOOK", "communicator", "UcMapi", "eaclient", "lync"
+$restarts = @()
 
 #Supporting functions
 
@@ -184,7 +185,7 @@ function Backup()
         $Response=([System.Windows.Forms.MessageBox]::Show(
             "There was a problem backing up the outlook files.`n" +
             "$outlookDir contained " + $before.Count + " files when I started. `n" +
-            "$outlookDir\ostBackup $scriptTime contains " + $backedUp.Count +" files.`n `n" +
+            "$outlookDir\ostBackup $DateTimeDIR contains " + $backedUp.Count +" files.`n `n" +
             "Original Files:`n" +
             "$before `n `n" +
             "Backed-up Files: `n `n" +
@@ -195,28 +196,29 @@ function Backup()
             "Warning"))
         if($Response -eq 'Abort'){exit}
         elseif ($Response -eq 'Retry'){ostBackup}
-        elseif ($Response -eq 'Ignore'){Break}
-        else{
+       <# elseif ($Response -eq 'Ignore'){Break}
+      #>  else{
             ([System.Windows.Forms.MessageBox]::Show('Script error: the error response: $Response was unhandled.'))
             exit
             }
      }
 }
 
-function restartProc ()
+function restartProc()
 {
     param(
        [parameter(mandatory=$true)]
-       [string]
+       [string[]]
        $restarts
     )
     foreach ($restart in $restarts){
+        Write-Host "Starting " $restart
         Start-Process -FilePath $restart
         }
-    exit
+    <#exit#>
 }
 
-function restorePersistantData ()
+function restorePersistantData()
 {
     Copy-Item $backupDir\RoamCache $outlookDir -Recurse
     Copy-Item "$backupDir\Offline Address Books" $outlookDir -Recurse
@@ -302,8 +304,10 @@ function Unlock-Item
 
 function Set-Timer
 {
-    $taskDate = Get-Date $scriptTime.AddDays(14) -Format mm/dd/yyyy
-    schtasks /Create /SC ONCE /ST /SD $taskDate /TN "SAP-IT OST Recovery Cleanup" /TR "Powershell -command {Remove-Item $backupDir}"   
+    $completeDate = Get-Date
+    $taskDate = Get-Date $completeDate.AddDays(14) -Format MM/dd/yyyy
+    $taskTime = Get-Date $completeDate.AddDays(14) -Format hh:mm
+    schtasks /Create /SC ONCE /ST $taskTime /SD $taskDate /TN "SAP-IT OST Recovery Cleanup" /TR "Powershell -command {Remove-Item $backupDir}"   
 }
 
 #Validate parameters, display help if invalid parameters are defined
@@ -319,11 +323,13 @@ switch ($Mode)
 #>
 
 
+Use-RunAs
+
 #stop processes that may be using outlook files
-foreach ($process in $processes){
-    $testproc = Get-Process -name $process -ErrorAction Continue
+foreach ($process in $suspectprocesses){
+    $testproc = Get-Process -name $process -ErrorAction SilentlyContinue
     if (!($testproc.Count -eq 0)){        
-        $restarts += $testproc.Path
+        $restarts = $restarts + $testproc.Path
     }
     do {
         
@@ -332,10 +338,12 @@ foreach ($process in $processes){
     while(Get-Process $process -ErrorAction SilentlyContinue)
 }
 
-$filesToBackup = Get-DirFiles -Dir $outlookDir 
-
 makeWorkingDir
+$filesToBackup = Get-DirFiles -Dir $outlookDir
 Backup
-if ($Mode -eq 'SaveCache'){restoreRoamCache}
-restartProc
+
+if ($Mode -eq 'SaveCache'){restorePersistantData}
+
+restartProc $restarts
+
 if (!($persistData)){Set-Timer}
