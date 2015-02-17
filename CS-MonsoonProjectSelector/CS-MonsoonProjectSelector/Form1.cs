@@ -16,8 +16,32 @@ namespace CS_MonsoonProjectSelector
     {
         public MonsoonSettingsMainForm()
         {
-            InitializeComponent();
+            InitializeComponent();  //designer code, don't modify
+            LoadDefaults();
             LoadData();
+        }
+
+
+        // This code handles loading data to the form
+        // fields, and saving data from them
+        private void LoadDefaults() 
+        {
+            KeyIDTextBox.Text = "Default";
+            OrgTextBox.Text = Environment.GetEnvironmentVariable("USERNAME").ToLower();
+            DevkitBinTextBox.Text = "\\chef\\embedded";
+            MinGWBinTextBox.Text = "\\chef\\embedded\\migwin\\bin";
+            ChefEmbeddedBinTextBox.Text = "\\chef\\embedded\\bin";
+            ChefRootTextBox.Text = "\\chef";
+            GitSSHTextBox.Text = "C:\\Program Files (x86)\\Git\\bin\\ssh.exe";
+            GEMPathTextBox.Text = "\\Vagrant\\embedded\\gems";
+            GEMSourcesTextBox.Text = "http://moo-repo.wdf.sap.corp:8080/geminabox/" + Environment.NewLine + "http://moo-repo.wdf.sap.corp:8080/rubygemsorg/";
+            EC2HomeTextBox.Text = "\\ec2-api-tools-1.6.9.0";
+            EC2UrlTextBox.Text = "https://ec2-us-west.api.monsoon.mo.sap.corp:443";
+            VagrantEmbeddedTextBox.Text = "\\Vagrant\\embedded";
+            VagrantEmbeddedBinTextBox.Text = "\\Vagrant\\embedded\\bin";
+            ProjectNameComboBox.Text = "";
+            KitchentLogLevelComboBox.Text = "Default";
+            UserIDComboBox.Text = Environment.GetEnvironmentVariable("USERNAME").ToLower();
         }
 
         private void LoadData() 
@@ -47,7 +71,7 @@ namespace CS_MonsoonProjectSelector
             valueReader(VagrantEmbeddedTextBox, current);
             valueReader(VagrantEmbeddedBinTextBox, current);         
             valueReader(ProjectNameComboBox, current);
-            //valueReader(KitchentLogLevelComboBox, current);  <-- This is not necessary, because add values is not allowed.
+            //valueReader(KitchentLogLevelComboBox, current);  <-- This is not necessary, because adding values is not allowed.
             valueReader(UserIDComboBox, current);
         
             //set selected items in combo boxes
@@ -153,15 +177,18 @@ namespace CS_MonsoonProjectSelector
         private void valueReader(System.Windows.Forms.ComboBox cBox, XElement root)
         {            
             XElement branch = root.XPathSelectElement(cBox.Name.ToString());
-            
-            IEnumerable<XElement> ComboBoxitems =
+            if (branch != null)
+            {
+                IEnumerable<XElement> ComboBoxitems =
                 from branchItems in branch.Descendants()
                 select branchItems;
             
-            foreach (XElement xmlData in ComboBoxitems)
-            {
-                cBox.Items.Add(xmlData.Value);
+                foreach (XElement xmlData in ComboBoxitems)
+                {
+                    cBox.Items.Add(xmlData.Value);
+                }  
             }
+            
         }
 
         private void valueReader(System.Windows.Forms.TextBox cBox, XElement root)
@@ -175,7 +202,10 @@ namespace CS_MonsoonProjectSelector
             cBox.SelectedItem = value;
         }
         
-        //The code below handles the UI behaviors like link creation and changing, labels, Folder browsing, etc. 
+
+        //The code below handles the UI behaviors
+        //and actions like link creation and 
+        //changing, labels, Folder browsing, etc. 
         private void DashboardLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://monsoon.mo.sap.corp/organizations/sandbox");
@@ -186,7 +216,7 @@ namespace CS_MonsoonProjectSelector
             System.Diagnostics.Process.Start("https://monsoon.mo.sap.corp/users/my_profile");
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void MonsoonKeysLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(
                 "https://monsoon.mo.sap.corp/users/"+
@@ -301,6 +331,14 @@ namespace CS_MonsoonProjectSelector
                     GitLastNameTextBox.Text +
                     "@sap.com";
             }
+        }
+
+        private void LoadSessionButton_Click(object sender, EventArgs e)
+        {
+            SaveData();
+            XDocument document= XDocument.Load(Program.settings.ToString());
+            XElement currentConfig = document.XPathSelectElement("configFile/settings[@id = 'current']");
+            Program.loadSettings(currentConfig, EnvironmentVariableTarget.Process);
         }
     }
 }
