@@ -104,6 +104,7 @@
             this.SaveAllButton = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.LoadSessionButton = new System.Windows.Forms.Button();
+            this.LoadtoProfileButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ProjectNameToolTipPictureBox)).BeginInit();
             this.WorkstationInformationTab.SuspendLayout();
             this.VagrantInstallationGroupBox.SuspendLayout();
@@ -546,6 +547,7 @@
             this.noteToSelf.TabIndex = 2;
             this.noteToSelf.Text = "Note to Self:\r\nMight be able to get all this data from\r\nthe Toolbox, using the ac" +
     "count data above...";
+            this.noteToSelf.Visible = false;
             // 
             // DashboardLink
             // 
@@ -848,13 +850,24 @@
             this.LoadSessionButton.TabIndex = 2;
             this.LoadSessionButton.Text = "Load Session";
             this.LoadSessionButton.UseVisualStyleBackColor = true;
-            this.LoadSessionButton.Click += new System.EventHandler(this.LoadSessionButton_Click);
+            this.LoadSessionButton.Click += new System.EventHandler(this.LoadButton_Click);
+            // 
+            // LoadtoProfileButton
+            // 
+            this.LoadtoProfileButton.Location = new System.Drawing.Point(434, 9);
+            this.LoadtoProfileButton.Name = "LoadtoProfileButton";
+            this.LoadtoProfileButton.Size = new System.Drawing.Size(88, 20);
+            this.LoadtoProfileButton.TabIndex = 3;
+            this.LoadtoProfileButton.Text = "Load to Profile";
+            this.LoadtoProfileButton.UseVisualStyleBackColor = true;
+            this.LoadtoProfileButton.Click += new System.EventHandler(this.LoadButton_Click);
             // 
             // MonsoonSettingsMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(704, 410);
+            this.Controls.Add(this.LoadtoProfileButton);
             this.Controls.Add(this.LoadSessionButton);
             this.Controls.Add(this.SaveAllButton);
             this.Controls.Add(this.MainFormTabs);
@@ -959,6 +972,7 @@
         private System.Windows.Forms.Button SaveAllButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button LoadSessionButton;
+        private System.Windows.Forms.Button LoadtoProfileButton;
 
     }
 }

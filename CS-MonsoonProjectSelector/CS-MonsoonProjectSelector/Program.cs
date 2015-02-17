@@ -172,6 +172,9 @@ namespace CS_MonsoonProjectSelector
             addEnv(                 (string)config.Element("PublicKeyTextBox"), mode);
             addEnv(                 (string)config.Element("PrivateKeyTextBox"), mode);
 
+
+            //!!!!!Informational
+            addEnv("Mo_Configured", DateTime.Now.ToString(), mode);
         }
 
         public static void addEnv(string value, EnvironmentVariableTarget scope = EnvironmentVariableTarget.Process, string order = "end")

@@ -159,7 +159,7 @@ namespace CS_MonsoonProjectSelector
 
             foreach (var item in cBox.Items)
 	        {
-                if (cBox.SelectedItem.ToString() == item.ToString())
+                if (cBox.SelectedText.ToString() == item.ToString())
                 { //this is the currently selected item in the form
 
                     cBoxElement.Add(
@@ -193,7 +193,11 @@ namespace CS_MonsoonProjectSelector
 
         private void valueReader(System.Windows.Forms.TextBox cBox, XElement root)
         {
-            cBox.Text = (string)root.Element(cBox.Name.ToString());
+            string xmlValue = (string)root.Element(cBox.Name.ToString());
+            if ((xmlValue != string.Empty) && (xmlValue != null))
+            {
+                cBox.Text = xmlValue;                
+            }
         }                
 
         private void setSelections(System.Windows.Forms.ComboBox cBox, XElement root) 
@@ -333,12 +337,43 @@ namespace CS_MonsoonProjectSelector
             }
         }
 
-        private void LoadSessionButton_Click(object sender, EventArgs e)
+        private void LoadButton_Click(object sender, EventArgs e)
         {
+            //save the current settings
             SaveData();
-            XDocument document= XDocument.Load(Program.settings.ToString());
+
+            //reload the file into a new document
+            XDocument document = XDocument.Load(Program.settings.ToString());
+
+            //load the current settings that we just saved as the working node
             XElement currentConfig = document.XPathSelectElement("configFile/settings[@id = 'current']");
-            Program.loadSettings(currentConfig, EnvironmentVariableTarget.Process);
+
+            //setup a new variable to store the scope of the configuration
+            EnvironmentVariableTarget mode = new EnvironmentVariableTarget();
+
+            //setup a var to determin if the command window should be opened
+            bool commandWindow = new bool();
+
+            //check to see which button called the fucntion, and set the scope accordingly
+            if (sender.ToString().Contains("User"))
+            {
+                mode  = EnvironmentVariableTarget.User;
+                commandWindow = false;
+            }
+            else if (sender.ToString().Contains("Session"))
+            {                
+                mode  = EnvironmentVariableTarget.Process;
+                commandWindow = true;
+            }
+
+            //run the setting loader
+            Program.loadSettings(currentConfig, mode);
+
+            //open the command prompt
+            if (commandWindow)
+            {
+                System.Diagnostics.Process.Start("cmd");
+            }
         }
     }
 }
