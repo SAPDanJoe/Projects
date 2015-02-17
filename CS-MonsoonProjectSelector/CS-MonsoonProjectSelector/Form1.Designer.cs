@@ -171,7 +171,7 @@
             this.VagrantEmbeddedTextBox.Name = "VagrantEmbeddedTextBox";
             this.VagrantEmbeddedTextBox.Size = new System.Drawing.Size(168, 20);
             this.VagrantEmbeddedTextBox.TabIndex = 8;
-            this.VagrantEmbeddedTextBox.Enter += new System.EventHandler(this.FolderBrowser);
+            this.VagrantEmbeddedTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // VagrantEmbeddedLabel
             // 
@@ -197,7 +197,7 @@
             this.VagrantEmbeddedBinTextBox.Name = "VagrantEmbeddedBinTextBox";
             this.VagrantEmbeddedBinTextBox.Size = new System.Drawing.Size(168, 20);
             this.VagrantEmbeddedBinTextBox.TabIndex = 9;
-            this.VagrantEmbeddedBinTextBox.Enter += new System.EventHandler(this.FolderBrowser);
+            this.VagrantEmbeddedBinTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // GEMSourcesGroupBox
             // 
@@ -229,7 +229,7 @@
             this.GEMPathTextBox.Name = "GEMPathTextBox";
             this.GEMPathTextBox.Size = new System.Drawing.Size(201, 20);
             this.GEMPathTextBox.TabIndex = 10;
-            this.GEMPathTextBox.Enter += new System.EventHandler(this.FolderBrowser);
+            this.GEMPathTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // GEMNoteLabel
             // 
@@ -251,6 +251,7 @@
             this.GEMSourcesTextBox.TabIndex = 11;
             this.GEMSourcesTextBox.Text = "http://moo-repo.wdf.sap.corp:8080/geminabox/\r\nhttp://moo-repo.wdf.sap.corp:8080/r" +
     "ubygemsorg/ ";
+            this.GEMSourcesTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // GEMSourcesLabel
             // 
@@ -293,7 +294,7 @@
             this.EC2HomeTextBox.Name = "EC2HomeTextBox";
             this.EC2HomeTextBox.Size = new System.Drawing.Size(168, 20);
             this.EC2HomeTextBox.TabIndex = 12;
-            this.EC2HomeTextBox.Enter += new System.EventHandler(this.FolderBrowser);
+            this.EC2HomeTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // EC2HomeLabel
             // 
@@ -319,6 +320,7 @@
             this.EC2UrlTextBox.Name = "EC2UrlTextBox";
             this.EC2UrlTextBox.Size = new System.Drawing.Size(168, 20);
             this.EC2UrlTextBox.TabIndex = 13;
+            this.EC2UrlTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // GitGroupBox
             // 
@@ -354,7 +356,7 @@
             this.GitSSHTextBox.Name = "GitSSHTextBox";
             this.GitSSHTextBox.Size = new System.Drawing.Size(168, 20);
             this.GitSSHTextBox.TabIndex = 1;
-            this.GitSSHTextBox.Enter += new System.EventHandler(this.FileBrowser);
+            this.GitSSHTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // GitSSHPathLabel
             // 
@@ -371,6 +373,7 @@
             this.GitEmailAddressTextBox.Name = "GitEmailAddressTextBox";
             this.GitEmailAddressTextBox.Size = new System.Drawing.Size(168, 20);
             this.GitEmailAddressTextBox.TabIndex = 7;
+            this.GitEmailAddressTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // GitFirstNameLabel
             // 
@@ -396,6 +399,7 @@
             this.GitFirstNameTextBox.Name = "GitFirstNameTextBox";
             this.GitFirstNameTextBox.Size = new System.Drawing.Size(168, 20);
             this.GitFirstNameTextBox.TabIndex = 3;
+            this.GitFirstNameTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // GitLastNameTextBox
             // 
@@ -403,6 +407,7 @@
             this.GitLastNameTextBox.Name = "GitLastNameTextBox";
             this.GitLastNameTextBox.Size = new System.Drawing.Size(168, 20);
             this.GitLastNameTextBox.TabIndex = 5;
+            this.GitLastNameTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.GitLastNameTextBox.Leave += new System.EventHandler(this.GitLastNameTextBox_Leave);
             // 
             // GitLastNameLabel
@@ -446,6 +451,7 @@
             this.KitchentLogLevelComboBox.Size = new System.Drawing.Size(168, 21);
             this.KitchentLogLevelComboBox.TabIndex = 9;
             this.KitchentLogLevelComboBox.Text = "Default";
+            this.KitchentLogLevelComboBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // ChefRootTextBox
             // 
@@ -453,7 +459,7 @@
             this.ChefRootTextBox.Name = "ChefRootTextBox";
             this.ChefRootTextBox.Size = new System.Drawing.Size(168, 20);
             this.ChefRootTextBox.TabIndex = 1;
-            this.ChefRootTextBox.Enter += new System.EventHandler(this.FolderBrowser);
+            this.ChefRootTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // KitchenLogLevelLabel
             // 
@@ -479,7 +485,7 @@
             this.DevkitBinTextBox.Name = "DevkitBinTextBox";
             this.DevkitBinTextBox.Size = new System.Drawing.Size(168, 20);
             this.DevkitBinTextBox.TabIndex = 7;
-            this.DevkitBinTextBox.Enter += new System.EventHandler(this.FolderBrowser);
+            this.DevkitBinTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // ChefEmebbedBinLabel
             // 
@@ -505,7 +511,7 @@
             this.ChefEmbeddedBinTextBox.Name = "ChefEmbeddedBinTextBox";
             this.ChefEmbeddedBinTextBox.Size = new System.Drawing.Size(168, 20);
             this.ChefEmbeddedBinTextBox.TabIndex = 3;
-            this.ChefEmbeddedBinTextBox.Enter += new System.EventHandler(this.FolderBrowser);
+            this.ChefEmbeddedBinTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // MinGWBinTextBox
             // 
@@ -513,7 +519,7 @@
             this.MinGWBinTextBox.Name = "MinGWBinTextBox";
             this.MinGWBinTextBox.Size = new System.Drawing.Size(168, 20);
             this.MinGWBinTextBox.TabIndex = 5;
-            this.MinGWBinTextBox.Enter += new System.EventHandler(this.FolderBrowser);
+            this.MinGWBinTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // MinGWBinLabel
             // 
@@ -613,6 +619,7 @@
             this.KeyIDTextBox.Name = "KeyIDTextBox";
             this.KeyIDTextBox.Size = new System.Drawing.Size(155, 20);
             this.KeyIDTextBox.TabIndex = 10;
+            this.KeyIDTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // AccessKeyTextBox
             // 
@@ -620,6 +627,7 @@
             this.AccessKeyTextBox.Name = "AccessKeyTextBox";
             this.AccessKeyTextBox.Size = new System.Drawing.Size(155, 20);
             this.AccessKeyTextBox.TabIndex = 8;
+            this.AccessKeyTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // KeyIDLabel
             // 
@@ -645,6 +653,7 @@
             this.OrgTextBox.Name = "OrgTextBox";
             this.OrgTextBox.Size = new System.Drawing.Size(155, 20);
             this.OrgTextBox.TabIndex = 7;
+            this.OrgTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // AccessKeyLabel
             // 
@@ -680,6 +689,7 @@
             this.ProjectNameComboBox.Name = "ProjectNameComboBox";
             this.ProjectNameComboBox.Size = new System.Drawing.Size(155, 21);
             this.ProjectNameComboBox.TabIndex = 6;
+            this.ProjectNameComboBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.ProjectNameComboBox.Leave += new System.EventHandler(this.ProjectNameComboBox_Leave);
             // 
             // SecretKeyTextBox
@@ -688,6 +698,7 @@
             this.SecretKeyTextBox.Name = "SecretKeyTextBox";
             this.SecretKeyTextBox.Size = new System.Drawing.Size(155, 20);
             this.SecretKeyTextBox.TabIndex = 9;
+            this.SecretKeyTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // AccountSettingsGroupBox
             // 
@@ -743,6 +754,7 @@
             this.PublicKeyTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.PublicKeyTextBox.Size = new System.Drawing.Size(155, 46);
             this.PublicKeyTextBox.TabIndex = 2;
+            this.PublicKeyTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // RevertAccountSettingsButton
             // 
@@ -771,6 +783,7 @@
             this.PrivateKeyTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.PrivateKeyTextBox.Size = new System.Drawing.Size(155, 46);
             this.PrivateKeyTextBox.TabIndex = 3;
+            this.PrivateKeyTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // ApplyAccoutnSettingsButton
             // 
@@ -789,6 +802,7 @@
             this.UserIDComboBox.Size = new System.Drawing.Size(155, 21);
             this.UserIDComboBox.TabIndex = 1;
             this.UserIDComboBox.TabStop = false;
+            this.UserIDComboBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.UserIDComboBox.Leave += new System.EventHandler(this.UserIDComboBox_Leave);
             // 
             // PrivateKeyLabel

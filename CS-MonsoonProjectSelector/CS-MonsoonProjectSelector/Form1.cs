@@ -42,6 +42,31 @@ namespace CS_MonsoonProjectSelector
             ProjectNameComboBox.Text = "";
             KitchentLogLevelComboBox.Text = "Default";
             UserIDComboBox.Text = Environment.GetEnvironmentVariable("USERNAME").ToLower();
+            
+            //set all of these controls to gray to indicate default values
+            KeyIDTextBox.ForeColor = System.Drawing.Color.Gray;
+            AccessKeyTextBox.ForeColor = System.Drawing.Color.Gray;
+            OrgTextBox.ForeColor = System.Drawing.Color.Gray;
+            SecretKeyTextBox.ForeColor = System.Drawing.Color.Gray;
+            PublicKeyTextBox.ForeColor = System.Drawing.Color.Gray;
+            PrivateKeyTextBox.ForeColor = System.Drawing.Color.Gray;
+            DevkitBinTextBox.ForeColor = System.Drawing.Color.Gray;
+            MinGWBinTextBox.ForeColor = System.Drawing.Color.Gray;
+            ChefEmbeddedBinTextBox.ForeColor = System.Drawing.Color.Gray;
+            ChefRootTextBox.ForeColor = System.Drawing.Color.Gray;
+            GitSSHTextBox.ForeColor = System.Drawing.Color.Gray;
+            GitEmailAddressTextBox.ForeColor = System.Drawing.Color.Gray;
+            GitFirstNameTextBox.ForeColor = System.Drawing.Color.Gray;
+            GitLastNameTextBox.ForeColor = System.Drawing.Color.Gray;
+            GEMPathTextBox.ForeColor = System.Drawing.Color.Gray;
+            GEMSourcesTextBox.ForeColor = System.Drawing.Color.Gray;
+            EC2HomeTextBox.ForeColor = System.Drawing.Color.Gray;
+            EC2UrlTextBox.ForeColor = System.Drawing.Color.Gray;
+            VagrantEmbeddedTextBox.ForeColor = System.Drawing.Color.Gray;
+            VagrantEmbeddedBinTextBox.ForeColor = System.Drawing.Color.Gray;
+            ProjectNameComboBox.ForeColor = System.Drawing.Color.Gray;
+            KitchentLogLevelComboBox.ForeColor = System.Drawing.Color.Gray;
+            UserIDComboBox.ForeColor = System.Drawing.Color.Gray;
         }
 
         private void LoadData() 
@@ -375,5 +400,20 @@ namespace CS_MonsoonProjectSelector
                 System.Diagnostics.Process.Start("cmd");
             }
         }
+
+        private void RestoreDefaultColor_Enter(object sender, EventArgs e)
+        {
+            if (sender is TextBox)
+            {
+                TextBox box = (TextBox)sender;
+                box.ForeColor = System.Drawing.Color.Black;
+            }
+            else if (sender is ComboBox)
+            {
+                ComboBox box = (ComboBox)sender;
+                box.ForeColor = System.Drawing.Color.Black;
+            }
+        }
+
     }
 }
