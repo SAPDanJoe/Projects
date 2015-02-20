@@ -141,7 +141,10 @@ namespace CS_MonsoonProjectSelector
 
             for (int i = 0; i < linesArray.Length; i++)
             {
-                newLines = newLines + "- " + linesArray[i] + Environment.NewLine;
+                if (linesArray[i] != string.Empty)
+                {
+                    newLines = newLines + "- " + linesArray[i] + Environment.NewLine;                                       
+                }
             }
 
             string line1 = (string)config.Element("GEMSourcesTextBox").ToString().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None)[0].Substring(19);

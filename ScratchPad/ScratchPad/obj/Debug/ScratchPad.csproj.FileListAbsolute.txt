@@ -1,0 +1,6 @@
+C:\Users\i837633\Documents\GitHub\projects\ScratchPad\ScratchPad\bin\Debug\ScratchPad.exe.config
+C:\Users\i837633\Documents\GitHub\projects\ScratchPad\ScratchPad\bin\Debug\ScratchPad.exe
+C:\Users\i837633\Documents\GitHub\projects\ScratchPad\ScratchPad\bin\Debug\ScratchPad.pdb
+C:\Users\i837633\Documents\GitHub\projects\ScratchPad\ScratchPad\obj\Debug\ScratchPad.exe
+C:\Users\i837633\Documents\GitHub\projects\ScratchPad\ScratchPad\obj\Debug\ScratchPad.pdb
+C:\Users\i837633\Documents\GitHub\Projects\ScratchPad\ScratchPad\obj\Debug\ScratchPad.csprojResolveAssemblyReference.cache

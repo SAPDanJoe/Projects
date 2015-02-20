@@ -72,11 +72,11 @@
             this.MinGWBinTextBox = new System.Windows.Forms.TextBox();
             this.MinGWBinLabel = new System.Windows.Forms.Label();
             this.MonsoonAccountInformationTab = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
             this.noteToSelf = new System.Windows.Forms.Label();
             this.DashboardLink = new System.Windows.Forms.LinkLabel();
             this.ProjectSettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.ProjectSettingsLink = new System.Windows.Forms.LinkLabel();
-            this.ApplyProjectSettingsButton = new System.Windows.Forms.Button();
             this.KeyIDTextBox = new System.Windows.Forms.TextBox();
             this.AccessKeyTextBox = new System.Windows.Forms.TextBox();
             this.KeyIDLabel = new System.Windows.Forms.Label();
@@ -91,10 +91,8 @@
             this.MonsoonKeysLink = new System.Windows.Forms.LinkLabel();
             this.UserIDLink = new System.Windows.Forms.LinkLabel();
             this.PublicKeyTextBox = new System.Windows.Forms.TextBox();
-            this.RevertAccountSettingsButton = new System.Windows.Forms.Button();
             this.PublicKeyLabel = new System.Windows.Forms.Label();
             this.PrivateKeyTextBox = new System.Windows.Forms.TextBox();
-            this.ApplyAccoutnSettingsButton = new System.Windows.Forms.Button();
             this.UserIDComboBox = new System.Windows.Forms.ComboBox();
             this.PrivateKeyLabel = new System.Windows.Forms.Label();
             this.UserIDLabel = new System.Windows.Forms.Label();
@@ -171,6 +169,8 @@
             this.VagrantEmbeddedTextBox.Name = "VagrantEmbeddedTextBox";
             this.VagrantEmbeddedTextBox.Size = new System.Drawing.Size(168, 20);
             this.VagrantEmbeddedTextBox.TabIndex = 8;
+            this.VagrantEmbeddedTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
+            this.VagrantEmbeddedTextBox.DoubleClick += new System.EventHandler(this.FolderBrowser);
             this.VagrantEmbeddedTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // VagrantEmbeddedLabel
@@ -197,6 +197,8 @@
             this.VagrantEmbeddedBinTextBox.Name = "VagrantEmbeddedBinTextBox";
             this.VagrantEmbeddedBinTextBox.Size = new System.Drawing.Size(168, 20);
             this.VagrantEmbeddedBinTextBox.TabIndex = 9;
+            this.VagrantEmbeddedBinTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
+            this.VagrantEmbeddedBinTextBox.DoubleClick += new System.EventHandler(this.FolderBrowser);
             this.VagrantEmbeddedBinTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // GEMSourcesGroupBox
@@ -229,6 +231,8 @@
             this.GEMPathTextBox.Name = "GEMPathTextBox";
             this.GEMPathTextBox.Size = new System.Drawing.Size(201, 20);
             this.GEMPathTextBox.TabIndex = 10;
+            this.GEMPathTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
+            this.GEMPathTextBox.DoubleClick += new System.EventHandler(this.FolderBrowser);
             this.GEMPathTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // GEMNoteLabel
@@ -251,6 +255,7 @@
             this.GEMSourcesTextBox.TabIndex = 11;
             this.GEMSourcesTextBox.Text = "http://moo-repo.wdf.sap.corp:8080/geminabox/\r\nhttp://moo-repo.wdf.sap.corp:8080/r" +
     "ubygemsorg/ ";
+            this.GEMSourcesTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
             this.GEMSourcesTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // GEMSourcesLabel
@@ -294,6 +299,8 @@
             this.EC2HomeTextBox.Name = "EC2HomeTextBox";
             this.EC2HomeTextBox.Size = new System.Drawing.Size(168, 20);
             this.EC2HomeTextBox.TabIndex = 12;
+            this.EC2HomeTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
+            this.EC2HomeTextBox.DoubleClick += new System.EventHandler(this.FolderBrowser);
             this.EC2HomeTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // EC2HomeLabel
@@ -320,6 +327,7 @@
             this.EC2UrlTextBox.Name = "EC2UrlTextBox";
             this.EC2UrlTextBox.Size = new System.Drawing.Size(168, 20);
             this.EC2UrlTextBox.TabIndex = 13;
+            this.EC2UrlTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
             this.EC2UrlTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // GitGroupBox
@@ -356,6 +364,8 @@
             this.GitSSHTextBox.Name = "GitSSHTextBox";
             this.GitSSHTextBox.Size = new System.Drawing.Size(168, 20);
             this.GitSSHTextBox.TabIndex = 1;
+            this.GitSSHTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
+            this.GitSSHTextBox.DoubleClick += new System.EventHandler(this.FileBrowser);
             this.GitSSHTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // GitSSHPathLabel
@@ -373,6 +383,7 @@
             this.GitEmailAddressTextBox.Name = "GitEmailAddressTextBox";
             this.GitEmailAddressTextBox.Size = new System.Drawing.Size(168, 20);
             this.GitEmailAddressTextBox.TabIndex = 7;
+            this.GitEmailAddressTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
             this.GitEmailAddressTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // GitFirstNameLabel
@@ -399,6 +410,7 @@
             this.GitFirstNameTextBox.Name = "GitFirstNameTextBox";
             this.GitFirstNameTextBox.Size = new System.Drawing.Size(168, 20);
             this.GitFirstNameTextBox.TabIndex = 3;
+            this.GitFirstNameTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
             this.GitFirstNameTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // GitLastNameTextBox
@@ -407,6 +419,7 @@
             this.GitLastNameTextBox.Name = "GitLastNameTextBox";
             this.GitLastNameTextBox.Size = new System.Drawing.Size(168, 20);
             this.GitLastNameTextBox.TabIndex = 5;
+            this.GitLastNameTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
             this.GitLastNameTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.GitLastNameTextBox.Leave += new System.EventHandler(this.GitLastNameTextBox_Leave);
             // 
@@ -451,6 +464,7 @@
             this.KitchentLogLevelComboBox.Size = new System.Drawing.Size(168, 21);
             this.KitchentLogLevelComboBox.TabIndex = 9;
             this.KitchentLogLevelComboBox.Text = "Default";
+            this.KitchentLogLevelComboBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
             this.KitchentLogLevelComboBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // ChefRootTextBox
@@ -459,6 +473,8 @@
             this.ChefRootTextBox.Name = "ChefRootTextBox";
             this.ChefRootTextBox.Size = new System.Drawing.Size(168, 20);
             this.ChefRootTextBox.TabIndex = 1;
+            this.ChefRootTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
+            this.ChefRootTextBox.DoubleClick += new System.EventHandler(this.FolderBrowser);
             this.ChefRootTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // KitchenLogLevelLabel
@@ -485,6 +501,8 @@
             this.DevkitBinTextBox.Name = "DevkitBinTextBox";
             this.DevkitBinTextBox.Size = new System.Drawing.Size(168, 20);
             this.DevkitBinTextBox.TabIndex = 7;
+            this.DevkitBinTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
+            this.DevkitBinTextBox.DoubleClick += new System.EventHandler(this.FolderBrowser);
             this.DevkitBinTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // ChefEmebbedBinLabel
@@ -511,6 +529,8 @@
             this.ChefEmbeddedBinTextBox.Name = "ChefEmbeddedBinTextBox";
             this.ChefEmbeddedBinTextBox.Size = new System.Drawing.Size(168, 20);
             this.ChefEmbeddedBinTextBox.TabIndex = 3;
+            this.ChefEmbeddedBinTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
+            this.ChefEmbeddedBinTextBox.DoubleClick += new System.EventHandler(this.FolderBrowser);
             this.ChefEmbeddedBinTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // MinGWBinTextBox
@@ -519,6 +539,8 @@
             this.MinGWBinTextBox.Name = "MinGWBinTextBox";
             this.MinGWBinTextBox.Size = new System.Drawing.Size(168, 20);
             this.MinGWBinTextBox.TabIndex = 5;
+            this.MinGWBinTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
+            this.MinGWBinTextBox.DoubleClick += new System.EventHandler(this.FolderBrowser);
             this.MinGWBinTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // MinGWBinLabel
@@ -532,6 +554,7 @@
             // 
             // MonsoonAccountInformationTab
             // 
+            this.MonsoonAccountInformationTab.Controls.Add(this.label1);
             this.MonsoonAccountInformationTab.Controls.Add(this.noteToSelf);
             this.MonsoonAccountInformationTab.Controls.Add(this.DashboardLink);
             this.MonsoonAccountInformationTab.Controls.Add(this.ProjectSettingsGroupBox);
@@ -543,6 +566,15 @@
             this.MonsoonAccountInformationTab.TabIndex = 0;
             this.MonsoonAccountInformationTab.Text = "Monsoon Info";
             this.MonsoonAccountInformationTab.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(38, 217);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "label1";
             // 
             // noteToSelf
             // 
@@ -572,7 +604,6 @@
             // ProjectSettingsGroupBox
             // 
             this.ProjectSettingsGroupBox.Controls.Add(this.ProjectSettingsLink);
-            this.ProjectSettingsGroupBox.Controls.Add(this.ApplyProjectSettingsButton);
             this.ProjectSettingsGroupBox.Controls.Add(this.KeyIDTextBox);
             this.ProjectSettingsGroupBox.Controls.Add(this.AccessKeyTextBox);
             this.ProjectSettingsGroupBox.Controls.Add(this.KeyIDLabel);
@@ -586,7 +617,7 @@
             this.ProjectSettingsGroupBox.Controls.Add(this.ProjectNameToolTipPictureBox);
             this.ProjectSettingsGroupBox.Location = new System.Drawing.Point(306, 27);
             this.ProjectSettingsGroupBox.Name = "ProjectSettingsGroupBox";
-            this.ProjectSettingsGroupBox.Size = new System.Drawing.Size(294, 183);
+            this.ProjectSettingsGroupBox.Size = new System.Drawing.Size(294, 163);
             this.ProjectSettingsGroupBox.TabIndex = 0;
             this.ProjectSettingsGroupBox.TabStop = false;
             this.ProjectSettingsGroupBox.Text = "Project Level Data";
@@ -604,21 +635,13 @@
             this.ProjectSettingsLink.Visible = false;
             this.ProjectSettingsLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.ProjectSettingsLink_LinkClicked);
             // 
-            // ApplyProjectSettingsButton
-            // 
-            this.ApplyProjectSettingsButton.Location = new System.Drawing.Point(210, 150);
-            this.ApplyProjectSettingsButton.Name = "ApplyProjectSettingsButton";
-            this.ApplyProjectSettingsButton.Size = new System.Drawing.Size(75, 23);
-            this.ApplyProjectSettingsButton.TabIndex = 11;
-            this.ApplyProjectSettingsButton.Text = "Apply";
-            this.ApplyProjectSettingsButton.UseVisualStyleBackColor = true;
-            // 
             // KeyIDTextBox
             // 
             this.KeyIDTextBox.Location = new System.Drawing.Point(130, 124);
             this.KeyIDTextBox.Name = "KeyIDTextBox";
             this.KeyIDTextBox.Size = new System.Drawing.Size(155, 20);
             this.KeyIDTextBox.TabIndex = 10;
+            this.KeyIDTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
             this.KeyIDTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // AccessKeyTextBox
@@ -627,6 +650,7 @@
             this.AccessKeyTextBox.Name = "AccessKeyTextBox";
             this.AccessKeyTextBox.Size = new System.Drawing.Size(155, 20);
             this.AccessKeyTextBox.TabIndex = 8;
+            this.AccessKeyTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
             this.AccessKeyTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // KeyIDLabel
@@ -653,6 +677,7 @@
             this.OrgTextBox.Name = "OrgTextBox";
             this.OrgTextBox.Size = new System.Drawing.Size(155, 20);
             this.OrgTextBox.TabIndex = 7;
+            this.OrgTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
             this.OrgTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // AccessKeyLabel
@@ -689,6 +714,8 @@
             this.ProjectNameComboBox.Name = "ProjectNameComboBox";
             this.ProjectNameComboBox.Size = new System.Drawing.Size(155, 21);
             this.ProjectNameComboBox.TabIndex = 6;
+            this.ProjectNameComboBox.SelectedIndexChanged += new System.EventHandler(this.FormFeild_TextChanged);
+            this.ProjectNameComboBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
             this.ProjectNameComboBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.ProjectNameComboBox.Leave += new System.EventHandler(this.ProjectNameComboBox_Leave);
             // 
@@ -698,6 +725,7 @@
             this.SecretKeyTextBox.Name = "SecretKeyTextBox";
             this.SecretKeyTextBox.Size = new System.Drawing.Size(155, 20);
             this.SecretKeyTextBox.TabIndex = 9;
+            this.SecretKeyTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
             this.SecretKeyTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             // 
             // AccountSettingsGroupBox
@@ -705,17 +733,15 @@
             this.AccountSettingsGroupBox.Controls.Add(this.MonsoonKeysLink);
             this.AccountSettingsGroupBox.Controls.Add(this.UserIDLink);
             this.AccountSettingsGroupBox.Controls.Add(this.PublicKeyTextBox);
-            this.AccountSettingsGroupBox.Controls.Add(this.RevertAccountSettingsButton);
             this.AccountSettingsGroupBox.Controls.Add(this.PublicKeyLabel);
             this.AccountSettingsGroupBox.Controls.Add(this.PrivateKeyTextBox);
-            this.AccountSettingsGroupBox.Controls.Add(this.ApplyAccoutnSettingsButton);
             this.AccountSettingsGroupBox.Controls.Add(this.UserIDComboBox);
             this.AccountSettingsGroupBox.Controls.Add(this.PrivateKeyLabel);
             this.AccountSettingsGroupBox.Controls.Add(this.UserIDLabel);
             this.AccountSettingsGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AccountSettingsGroupBox.Location = new System.Drawing.Point(6, 27);
             this.AccountSettingsGroupBox.Name = "AccountSettingsGroupBox";
-            this.AccountSettingsGroupBox.Size = new System.Drawing.Size(294, 180);
+            this.AccountSettingsGroupBox.Size = new System.Drawing.Size(294, 163);
             this.AccountSettingsGroupBox.TabIndex = 0;
             this.AccountSettingsGroupBox.TabStop = false;
             this.AccountSettingsGroupBox.Text = "Account Level Data";
@@ -754,16 +780,8 @@
             this.PublicKeyTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.PublicKeyTextBox.Size = new System.Drawing.Size(155, 46);
             this.PublicKeyTextBox.TabIndex = 2;
+            this.PublicKeyTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
             this.PublicKeyTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
-            // 
-            // RevertAccountSettingsButton
-            // 
-            this.RevertAccountSettingsButton.Location = new System.Drawing.Point(130, 150);
-            this.RevertAccountSettingsButton.Name = "RevertAccountSettingsButton";
-            this.RevertAccountSettingsButton.Size = new System.Drawing.Size(75, 23);
-            this.RevertAccountSettingsButton.TabIndex = 5;
-            this.RevertAccountSettingsButton.Text = "Revert";
-            this.RevertAccountSettingsButton.UseVisualStyleBackColor = true;
             // 
             // PublicKeyLabel
             // 
@@ -783,16 +801,8 @@
             this.PrivateKeyTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.PrivateKeyTextBox.Size = new System.Drawing.Size(155, 46);
             this.PrivateKeyTextBox.TabIndex = 3;
+            this.PrivateKeyTextBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
             this.PrivateKeyTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
-            // 
-            // ApplyAccoutnSettingsButton
-            // 
-            this.ApplyAccoutnSettingsButton.Location = new System.Drawing.Point(211, 150);
-            this.ApplyAccoutnSettingsButton.Name = "ApplyAccoutnSettingsButton";
-            this.ApplyAccoutnSettingsButton.Size = new System.Drawing.Size(75, 23);
-            this.ApplyAccoutnSettingsButton.TabIndex = 4;
-            this.ApplyAccoutnSettingsButton.Text = "Apply";
-            this.ApplyAccoutnSettingsButton.UseVisualStyleBackColor = true;
             // 
             // UserIDComboBox
             // 
@@ -802,6 +812,9 @@
             this.UserIDComboBox.Size = new System.Drawing.Size(155, 21);
             this.UserIDComboBox.TabIndex = 1;
             this.UserIDComboBox.TabStop = false;
+            this.UserIDComboBox.SelectedIndexChanged += new System.EventHandler(this.FormFeild_TextChanged);
+            this.UserIDComboBox.SelectionChangeCommitted += new System.EventHandler(this.UserIDComboBox_SelectionChangeCommitted);
+            this.UserIDComboBox.TextChanged += new System.EventHandler(this.FormFeild_TextChanged);
             this.UserIDComboBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.UserIDComboBox.Leave += new System.EventHandler(this.UserIDComboBox_Leave);
             // 
@@ -919,7 +932,6 @@
         private System.Windows.Forms.LinkLabel DashboardLink;
         private System.Windows.Forms.GroupBox ProjectSettingsGroupBox;
         private System.Windows.Forms.LinkLabel ProjectSettingsLink;
-        private System.Windows.Forms.Button ApplyProjectSettingsButton;
         private System.Windows.Forms.TextBox KeyIDTextBox;
         private System.Windows.Forms.TextBox AccessKeyTextBox;
         private System.Windows.Forms.Label KeyIDLabel;
@@ -935,10 +947,8 @@
         private System.Windows.Forms.LinkLabel MonsoonKeysLink;
         private System.Windows.Forms.LinkLabel UserIDLink;
         private System.Windows.Forms.TextBox PublicKeyTextBox;
-        private System.Windows.Forms.Button RevertAccountSettingsButton;
         private System.Windows.Forms.Label PublicKeyLabel;
         private System.Windows.Forms.TextBox PrivateKeyTextBox;
-        private System.Windows.Forms.Button ApplyAccoutnSettingsButton;
         private System.Windows.Forms.ComboBox UserIDComboBox;
         private System.Windows.Forms.Label PrivateKeyLabel;
         private System.Windows.Forms.Label UserIDLabel;
@@ -987,6 +997,7 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button LoadSessionButton;
         private System.Windows.Forms.Button LoadtoProfileButton;
+        private System.Windows.Forms.Label label1;
 
     }
 }

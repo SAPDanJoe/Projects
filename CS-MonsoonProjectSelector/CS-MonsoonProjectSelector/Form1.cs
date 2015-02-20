@@ -20,10 +20,12 @@ namespace CS_MonsoonProjectSelector
             LoadDefaults();
             LoadData();
         }
+        public bool formChanged = false;
 
-
+        #region UI data interactions
         // This code handles loading data to the form
         // fields, and saving data from them
+
         private void LoadDefaults() 
         {
             KeyIDTextBox.Text = "Default";
@@ -41,23 +43,17 @@ namespace CS_MonsoonProjectSelector
             VagrantEmbeddedBinTextBox.Text = "\\Vagrant\\embedded\\bin";
             ProjectNameComboBox.Text = "";
             KitchentLogLevelComboBox.Text = "Default";
-            UserIDComboBox.Text = Environment.GetEnvironmentVariable("USERNAME").ToLower();
+            UserIDComboBox.Items.Add(Environment.GetEnvironmentVariable("USERNAME").ToLower());
+            UserIDComboBox.SelectedItem = (string)Environment.GetEnvironmentVariable("USERNAME").ToLower();
             
             //set all of these controls to gray to indicate default values
             KeyIDTextBox.ForeColor = System.Drawing.Color.Gray;
-            AccessKeyTextBox.ForeColor = System.Drawing.Color.Gray;
             OrgTextBox.ForeColor = System.Drawing.Color.Gray;
-            SecretKeyTextBox.ForeColor = System.Drawing.Color.Gray;
-            PublicKeyTextBox.ForeColor = System.Drawing.Color.Gray;
-            PrivateKeyTextBox.ForeColor = System.Drawing.Color.Gray;
             DevkitBinTextBox.ForeColor = System.Drawing.Color.Gray;
             MinGWBinTextBox.ForeColor = System.Drawing.Color.Gray;
             ChefEmbeddedBinTextBox.ForeColor = System.Drawing.Color.Gray;
             ChefRootTextBox.ForeColor = System.Drawing.Color.Gray;
             GitSSHTextBox.ForeColor = System.Drawing.Color.Gray;
-            GitEmailAddressTextBox.ForeColor = System.Drawing.Color.Gray;
-            GitFirstNameTextBox.ForeColor = System.Drawing.Color.Gray;
-            GitLastNameTextBox.ForeColor = System.Drawing.Color.Gray;
             GEMPathTextBox.ForeColor = System.Drawing.Color.Gray;
             GEMSourcesTextBox.ForeColor = System.Drawing.Color.Gray;
             EC2HomeTextBox.ForeColor = System.Drawing.Color.Gray;
@@ -108,51 +104,54 @@ namespace CS_MonsoonProjectSelector
         private void SaveData() 
         {
             //check if anything has changed
+            if (formChanged)
+            {
+                //load the XML settings file into an xDoc object
+                XDocument xconfig = XDocument.Load(Program.settings.ToString());
 
-            //load the XML settings file into an xDoc object
-            XDocument xconfig = XDocument.Load(Program.settings.ToString());
+                //make the currect node no lunger current
+                XElement current = xconfig.XPathSelectElement("configFile/settings[@id = 'current']");
+                int settings = xconfig.Root.Elements().Count();
+                current.SetAttributeValue("id", settings + 2);
+                current.Add(new XAttribute("replaced", DateTime.Now));
 
-            //make the currect node no lunger current
-            XElement current = xconfig.XPathSelectElement("configFile/settings[@id = 'current']");
-            int settings = xconfig.Root.Elements().Count();
-            current.SetAttributeValue("id", settings + 2);
-            current.Add(new XAttribute("replaced", DateTime.Now));
-
-            //create a new 'current' node
-            xconfig.Element("configFile").Add(
-                new XElement("settings",
-                    new XAttribute("id", "current"),
-                    new XAttribute("created",DateTime.Now.ToString())
-                    )
-                );     
+                //create a new 'current' node
+                xconfig.Element("configFile").Add(
+                    new XElement("settings",
+                        new XAttribute("id", "current"),
+                        new XAttribute("created",DateTime.Now.ToString())
+                        )
+                    );     
             
-            //write UI values to the document
-            xconfig = valueWriter(UserIDComboBox, xconfig);
-                xconfig = valueWriter(PublicKeyTextBox, xconfig);
-                xconfig = valueWriter(PrivateKeyTextBox, xconfig);
-                xconfig = valueWriter(OrgTextBox, xconfig);
-            xconfig = valueWriter(ProjectNameComboBox, xconfig);
-                xconfig = valueWriter(KeyIDTextBox, xconfig);
-                xconfig = valueWriter(AccessKeyTextBox, xconfig);
-                xconfig = valueWriter(SecretKeyTextBox, xconfig);
-            xconfig = valueWriter(DevkitBinTextBox, xconfig);
-            xconfig = valueWriter(MinGWBinTextBox, xconfig);
-            xconfig = valueWriter(ChefEmbeddedBinTextBox, xconfig);
-            xconfig = valueWriter(ChefRootTextBox, xconfig);
-            xconfig = valueWriter(KitchentLogLevelComboBox, xconfig);
-            xconfig = valueWriter(GitSSHTextBox, xconfig);
-            xconfig = valueWriter(GitEmailAddressTextBox, xconfig);
-            xconfig = valueWriter(GitFirstNameTextBox, xconfig);
-            xconfig = valueWriter(GitLastNameTextBox, xconfig);
-            xconfig = valueWriter(GEMPathTextBox, xconfig);
-            xconfig = valueWriter(GEMSourcesTextBox, xconfig);
-            xconfig = valueWriter(EC2HomeTextBox, xconfig);
-            xconfig = valueWriter(EC2UrlTextBox, xconfig);
-            xconfig = valueWriter(VagrantEmbeddedTextBox, xconfig);
-            xconfig = valueWriter(VagrantEmbeddedBinTextBox, xconfig);
+                //write UI values to the document
+                xconfig = valueWriter(UserIDComboBox, xconfig);
+                    xconfig = valueWriter(PublicKeyTextBox, xconfig);
+                    xconfig = valueWriter(PrivateKeyTextBox, xconfig);
+                    xconfig = valueWriter(OrgTextBox, xconfig);
+                xconfig = valueWriter(ProjectNameComboBox, xconfig);
+                    xconfig = valueWriter(KeyIDTextBox, xconfig);
+                    xconfig = valueWriter(AccessKeyTextBox, xconfig);
+                    xconfig = valueWriter(SecretKeyTextBox, xconfig);
+                xconfig = valueWriter(DevkitBinTextBox, xconfig);
+                xconfig = valueWriter(MinGWBinTextBox, xconfig);
+                xconfig = valueWriter(ChefEmbeddedBinTextBox, xconfig);
+                xconfig = valueWriter(ChefRootTextBox, xconfig);
+                xconfig = valueWriter(KitchentLogLevelComboBox, xconfig);
+                xconfig = valueWriter(GitSSHTextBox, xconfig);
+                xconfig = valueWriter(GitEmailAddressTextBox, xconfig);
+                xconfig = valueWriter(GitFirstNameTextBox, xconfig);
+                xconfig = valueWriter(GitLastNameTextBox, xconfig);
+                xconfig = valueWriter(GEMPathTextBox, xconfig);
+                xconfig = valueWriter(GEMSourcesTextBox, xconfig);
+                xconfig = valueWriter(EC2HomeTextBox, xconfig);
+                xconfig = valueWriter(EC2UrlTextBox, xconfig);
+                xconfig = valueWriter(VagrantEmbeddedTextBox, xconfig);
+                xconfig = valueWriter(VagrantEmbeddedBinTextBox, xconfig);
 
-            //save the xDoc back to the file
-            xconfig.Save(Program.settings.ToString());
+                //save the xDoc back to the file
+                xconfig.Save(Program.settings.ToString());               
+            }
+            formChanged = false;
         }
 
         private XDocument valueWriter(System.Windows.Forms.TextBox tBox, XDocument doc)
@@ -184,7 +183,7 @@ namespace CS_MonsoonProjectSelector
 
             foreach (var item in cBox.Items)
 	        {
-                if (cBox.SelectedText.ToString() == item.ToString())
+                if ((string)cBox.SelectedItem == item.ToString())
                 { //this is the currently selected item in the form
 
                     cBoxElement.Add(
@@ -198,6 +197,16 @@ namespace CS_MonsoonProjectSelector
 	        }
             return doc;
         }
+
+        private void valueReader(System.Windows.Forms.TextBox cBox, XElement root)
+        {
+            string xmlValue = (string)root.Element(cBox.Name.ToString());
+            if ((xmlValue != string.Empty) && (xmlValue != null))
+            {
+                cBox.Text = xmlValue;
+                cBox.ForeColor = System.Drawing.Color.Black;
+            }
+        }                
 
         private void valueReader(System.Windows.Forms.ComboBox cBox, XElement root)
         {            
@@ -216,22 +225,18 @@ namespace CS_MonsoonProjectSelector
             
         }
 
-        private void valueReader(System.Windows.Forms.TextBox cBox, XElement root)
-        {
-            string xmlValue = (string)root.Element(cBox.Name.ToString());
-            if ((xmlValue != string.Empty) && (xmlValue != null))
-            {
-                cBox.Text = xmlValue;                
-            }
-        }                
-
         private void setSelections(System.Windows.Forms.ComboBox cBox, XElement root) 
-        {
+        {            
             string value = (string)root.XPathSelectElement(cBox.Name.ToString() + "/item[@selected = '1']");
-            cBox.SelectedItem = value;
+            if ((value != string.Empty) && (value != null))
+            {
+                cBox.SelectedItem = value;                
+            }
         }
-        
 
+        #endregion
+
+        #region UI Validation and Automation
         //The code below handles the UI behaviors
         //and actions like link creation and 
         //changing, labels, Folder browsing, etc. 
@@ -318,17 +323,7 @@ namespace CS_MonsoonProjectSelector
 
         private void FolderBrowser(object sender, EventArgs e)
         {
-            TextBox SenderBox = sender as TextBox;
-            if (SenderBox.Text != "")//if the text box is not empty
-            {
-                //set the selected path to the text box's current contents (incase of accidental entry)
-                FolderBrowserDialog.SelectedPath = SenderBox.Text;
-            }
-            if (FolderBrowserDialog.ShowDialog() == DialogResult.OK)
-            {
-                SenderBox.Text = FolderBrowserDialog.SelectedPath;
-            }
-           
+
         }
 
         private void FileBrowser(object sender, EventArgs e)
@@ -415,5 +410,71 @@ namespace CS_MonsoonProjectSelector
             }
         }
 
+        private void FormFeild_TextChanged(object sender, EventArgs e)
+        {
+            XElement current = XDocument.Load(Program.settings.ToString()).XPathSelectElement("configFile/settings[@id = 'current']");
+            string boxName = string.Empty;
+            string astring = string.Empty;
+            if (sender is TextBox)
+            {
+                TextBox formBox = (TextBox)sender;
+                boxName = formBox.Name;
+                XElement xBox = current.XPathSelectElement(formBox.Name.ToString());
+                astring = "formText | " + formBox.Text.ToString() +
+                    " vs. xText | " + (string)xBox;
+                if (formBox.Text.ToString() != (string)xBox)
+                {
+                    formChanged = true;
+                    formBox.ForeColor = System.Drawing.Color.Black;
+                }
+                else
+                {
+                    formChanged = false;                  
+                }
+            }
+            else if (sender is ComboBox)
+            {
+                ComboBox formBox = (ComboBox)sender;
+                boxName = formBox.Name;
+                System.Timers.Timer wait = new System.Timers.Timer(5000);
+                wait.Start();
+                MessageBox.Show("done waiting");
+                if (!formBox.Items.Contains(formBox.Text))
+                {
+                    formBox.Items.Add(formBox.Text);
+                }
+
+                string storedvalue = (string)current.XPathSelectElement(formBox.Name.ToString() + "/item[@selected = '1']");
+                
+               if ( ((string)formBox.SelectedItem != storedvalue) | ((string)formBox.Text != storedvalue) )   //trouble getting the logic right on this... how to definitively tell if the text change
+                {
+                    formChanged = true;
+                    formBox.ForeColor = System.Drawing.Color.Black;
+                }
+                else
+                {
+                    formChanged = false;
+                }
+            }
+
+            label1.Text = "Form changed status: " + formChanged +
+                Environment.NewLine + "Last changed item: " + boxName +
+                Environment.NewLine + "Data: " + astring + "\r\n" +
+                "UserIDComboBox.SelectedItem: " + UserIDComboBox.SelectedItem + "\r\n" +
+                "UserIDComboBox.SelectedText: " + UserIDComboBox.SelectedText + "\r\n" +
+                "UserIDComboBox.SelectedValue: " + UserIDComboBox.SelectedValue + "\r\n" +
+                "UserIDComboBox.Text: " + UserIDComboBox.Text + "\r\n";
+        }
+        
+        #endregion
+
+        private void UserIDComboBox_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            MessageBox.Show("Selection chenge commited! \r\n" +
+                "UserIDComboBox.SelectedItem: " + UserIDComboBox.SelectedItem + "\r\n" +
+                "UserIDComboBox.SelectedText: " + UserIDComboBox.SelectedText + "\r\n" +
+                "UserIDComboBox.SelectedValue: " + UserIDComboBox.SelectedValue + "\r\n" +
+                "UserIDComboBox.Text: " + UserIDComboBox.Text + "\r\n");
+        }
     }
 }

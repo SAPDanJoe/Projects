@@ -1,0 +1,8 @@
+C:\Users\i837633\Documents\GitHub\projects\ITdirect Processor Toolkit\ITdirect Processor Toolkit\bin\Release\ITdirect Processor Toolkit.exe.config
+C:\Users\i837633\Documents\GitHub\projects\ITdirect Processor Toolkit\ITdirect Processor Toolkit\bin\Release\ITdirect Processor Toolkit.exe
+C:\Users\i837633\Documents\GitHub\projects\ITdirect Processor Toolkit\ITdirect Processor Toolkit\bin\Release\ITdirect Processor Toolkit.pdb
+C:\Users\i837633\Documents\GitHub\projects\ITdirect Processor Toolkit\ITdirect Processor Toolkit\obj\Release\ITdirect_Processor_Toolkit.mainForm.resources
+C:\Users\i837633\Documents\GitHub\projects\ITdirect Processor Toolkit\ITdirect Processor Toolkit\obj\Release\ITdirect_Processor_Toolkit.Properties.Resources.resources
+C:\Users\i837633\Documents\GitHub\projects\ITdirect Processor Toolkit\ITdirect Processor Toolkit\obj\Release\ITdirect Processor Toolkit.csproj.GenerateResource.Cache
+C:\Users\i837633\Documents\GitHub\projects\ITdirect Processor Toolkit\ITdirect Processor Toolkit\obj\Release\ITdirect Processor Toolkit.exe
+C:\Users\i837633\Documents\GitHub\projects\ITdirect Processor Toolkit\ITdirect Processor Toolkit\obj\Release\ITdirect Processor Toolkit.pdb
