@@ -132,10 +132,10 @@
             this.AcademyButton.AutoSize = true;
             this.AcademyButton.Location = new System.Drawing.Point(13, 33);
             this.AcademyButton.Name = "AcademyButton";
-            this.AcademyButton.Size = new System.Drawing.Size(101, 17);
+            this.AcademyButton.Size = new System.Drawing.Size(109, 17);
             this.AcademyButton.TabIndex = 9;
             this.AcademyButton.TabStop = true;
-            this.AcademyButton.Text = "Acadey Support";
+            this.AcademyButton.Text = "Academy Support";
             this.AcademyButton.UseVisualStyleBackColor = true;
             // 
             // mainForm
