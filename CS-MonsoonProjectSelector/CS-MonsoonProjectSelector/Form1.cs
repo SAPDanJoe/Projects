@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace CS_MonsoonProjectSelector
             LoadDefaults();
             LoadData();
         }
-        public bool formChanged = false;
+        public List<string> aSyncFields;
 
         #region UI data interactions
         // This code handles loading data to the form
@@ -104,7 +105,8 @@ namespace CS_MonsoonProjectSelector
         private void SaveData() 
         {
             //check if anything has changed
-            if (formChanged)
+            Debug.Write("Save called with {" + aSyncFields.Count + "} asynchronous fields");
+            if (aSyncFields.Count > 0)
             {
                 //load the XML settings file into an xDoc object
                 XDocument xconfig = XDocument.Load(Program.settings.ToString());
@@ -112,7 +114,7 @@ namespace CS_MonsoonProjectSelector
                 //make the currect node no lunger current
                 XElement current = xconfig.XPathSelectElement("configFile/settings[@id = 'current']");
                 int settings = xconfig.Root.Elements().Count();
-                current.SetAttributeValue("id", settings + 2);
+                current.SetAttributeValue("id", settings - 1);
                 current.Add(new XAttribute("replaced", DateTime.Now));
 
                 //create a new 'current' node
@@ -151,7 +153,7 @@ namespace CS_MonsoonProjectSelector
                 //save the xDoc back to the file
                 xconfig.Save(Program.settings.ToString());               
             }
-            formChanged = false;
+            aSyncFields.Clear();
         }
 
         private XDocument valueWriter(System.Windows.Forms.TextBox tBox, XDocument doc)
@@ -234,6 +236,20 @@ namespace CS_MonsoonProjectSelector
             }
         }
 
+        private XElement loadSettings(string id)
+        {
+            string selectString = "configFile/settings[@id = '";
+            selectString += id + "']";
+            
+            //get the XML file
+            XDocument doc = XDocument.Load(Program.settings.ToString());
+
+            //bind to the 
+            XElement settings = doc.XPathSelectElement(selectString);
+            return settings;
+        }
+
+
         #endregion
 
         #region UI Validation and Automation
@@ -298,27 +314,98 @@ namespace CS_MonsoonProjectSelector
 
         private void UserIDComboBox_Leave(object sender, EventArgs e)
         {
-            if (UserIDComboBox.Text != string.Empty)
-            {   //There is text in this combo box
-                if (!UserIDComboBox.Items.Contains(UserIDComboBox.Text))
-                {   //The text is not in the item list, so add it
-                    UserIDComboBox.Items.Add(UserIDComboBox.Text);
-                }
+            //Check if box is empty
+            if (UserIDComboBox.Text == string.Empty)
+            {//Box is empty, ensure that the selected index is null 
+                Debug.Write("UserIDComboBox.Text = string.Empty in UserIDComboBox_Leave");
+                //set the combobox selected value to null
+                UserIDComboBox.SelectedIndex = -1;
 
-                this.MonsoonKeysLink.Visible = true;
-                if (ProjectNameComboBox.Text != "")
-                {   //The project settings combo box is populated
-                    //show the settings and monsoon links
-                    this.ProjectSettingsLink.Visible = true;
-                }
-                else
-                {   //The project settings combo box is not populated
-                    //ensure the settings and monsoon links are hidden
-                    this.ProjectSettingsLink.Visible = false;
-                    this.MonsoonKeysLink.Visible = false;
-                }
+                MonsoonKeysLink.Visible = false;
             }
+            else
+            {//box is not empty, select the entered text
+                Debug.Write("UserIDComboBox.Text != string.Empty in UserIDComboBox_Leave");
+                
+                //adds the entry to the Combo items if it is missing and ten selectes the entry
+                entryToItems(UserIDComboBox,UserIDComboBox.Text);
+
+                MonsoonKeysLink.Visible = true;
+            }
+
+            storeSelectedItem(UserIDComboBox, UserIDComboBox.Text);
+        }
+
         
+        private void storeSelectedItem(ComboBox cBox, string entry)
+        {
+            //Get the current settings from the XML
+            XElement currentSettings = loadSettings("current");
+
+            //get the current selected value from the XML
+            XElement currentSelected = currentSettings.XPathSelectElement(cBox.Name + "[@selected = '1']");
+            string xmlValue = currentSelected.Value;
+            Debug.Write("The selected XML value for {" + cBox.Name + "} is {" + xmlValue + "}");
+            
+            //get the box's selected value
+            string boxValue = (string)cBox.SelectedValue;
+            Debug.Write("The selected form value for {" + cBox.Name + "} is {" + boxValue + "}");
+
+            //compare the two values: if they are not equal, then the item has changed
+            if (xmlValue != boxValue)
+            {
+                aSyncFields.Add(cBox.Name);
+            }
+            else
+            {
+                aSyncFields.Remove(cBox.Name);
+            }
+
+        }
+
+        private void entryToItems(ComboBox cBox, string entry)
+        {
+            if (cBox.Items.Contains(entry))
+            {
+                Debug.Write(cBox.Name + " contains {" + entry + "}");
+                cBox.SelectedValue = entry;
+                Debug.Write(cBox.Name + " now has a selected index of {" + cBox.SelectedIndex + "} with a value of {" + cBox.SelectedValue +"}.");
+            }
+            else
+            {
+                Debug.Write(cBox.Name + " is missing {" + entry + "}");
+                cBox.Items.Add(entry);
+                aSyncFields.Add(cBox.Name)
+                entryToItems( cBox, entry);
+            }
+        }
+
+        private void enableMooKeysLink(object sender, EventArgs e)
+        {
+            if (sender is ComboBox)
+            {
+                ComboBox box = (ComboBox)sender;
+                if (box.Text != string.Empty)
+                {   //There is text in this combo box
+                    if (box.Items.Contains(box.Text))
+                    {   //The text is not in the item list, so add it
+                        box.Items.Add(UserIDComboBox.Text);
+                    }
+
+                    this.MonsoonKeysLink.Visible = true;
+                    if (ProjectNameComboBox.Text != "")
+                    {   //The project settings combo box is populated
+                        //show the settings and monsoon links
+                        this.ProjectSettingsLink.Visible = true;
+                    }
+                    else
+                    {   //The project settings combo box is not populated
+                        //ensure the settings and monsoon links are hidden
+                        this.ProjectSettingsLink.Visible = false;
+                        this.MonsoonKeysLink.Visible = false;
+                    }
+                }       
+            }
         }
 
         private void FolderBrowser(object sender, EventArgs e)
@@ -410,53 +497,25 @@ namespace CS_MonsoonProjectSelector
             }
         }
 
-        private void FormFeild_TextChanged(object sender, EventArgs e)
+        private void FormTextFeild_TextChanged(object sender, EventArgs e)
         {
             XElement current = XDocument.Load(Program.settings.ToString()).XPathSelectElement("configFile/settings[@id = 'current']");
             string boxName = string.Empty;
             string astring = string.Empty;
-            if (sender is TextBox)
+            TextBox formBox = (TextBox)sender;
+            boxName = formBox.Name;
+            XElement xBox = current.XPathSelectElement(formBox.Name.ToString());
+            astring = "formText | " + formBox.Text.ToString() +
+                " vs. xText | " + (string)xBox;
+            if (formBox.Text.ToString() != (string)xBox)
             {
-                TextBox formBox = (TextBox)sender;
-                boxName = formBox.Name;
-                XElement xBox = current.XPathSelectElement(formBox.Name.ToString());
-                astring = "formText | " + formBox.Text.ToString() +
-                    " vs. xText | " + (string)xBox;
-                if (formBox.Text.ToString() != (string)xBox)
-                {
-                    formChanged = true;
-                    formBox.ForeColor = System.Drawing.Color.Black;
-                }
-                else
-                {
-                    formChanged = false;                  
-                }
+                formChanged = true;
+                formBox.ForeColor = System.Drawing.Color.Black;
             }
-            else if (sender is ComboBox)
+            else
             {
-                ComboBox formBox = (ComboBox)sender;
-                boxName = formBox.Name;
-                System.Timers.Timer wait = new System.Timers.Timer(5000);
-                wait.Start();
-                MessageBox.Show("done waiting");
-                if (!formBox.Items.Contains(formBox.Text))
-                {
-                    formBox.Items.Add(formBox.Text);
-                }
-
-                string storedvalue = (string)current.XPathSelectElement(formBox.Name.ToString() + "/item[@selected = '1']");
-                
-               if ( ((string)formBox.SelectedItem != storedvalue) | ((string)formBox.Text != storedvalue) )   //trouble getting the logic right on this... how to definitively tell if the text change
-                {
-                    formChanged = true;
-                    formBox.ForeColor = System.Drawing.Color.Black;
-                }
-                else
-                {
-                    formChanged = false;
-                }
+                formChanged = false;                  
             }
-
             label1.Text = "Form changed status: " + formChanged +
                 Environment.NewLine + "Last changed item: " + boxName +
                 Environment.NewLine + "Data: " + astring + "\r\n" +
@@ -466,15 +525,6 @@ namespace CS_MonsoonProjectSelector
                 "UserIDComboBox.Text: " + UserIDComboBox.Text + "\r\n";
         }
         
-        #endregion
-
-        private void UserIDComboBox_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            MessageBox.Show("Selection chenge commited! \r\n" +
-                "UserIDComboBox.SelectedItem: " + UserIDComboBox.SelectedItem + "\r\n" +
-                "UserIDComboBox.SelectedText: " + UserIDComboBox.SelectedText + "\r\n" +
-                "UserIDComboBox.SelectedValue: " + UserIDComboBox.SelectedValue + "\r\n" +
-                "UserIDComboBox.Text: " + UserIDComboBox.Text + "\r\n");
-        }
+        #endregion     
     }
 }
