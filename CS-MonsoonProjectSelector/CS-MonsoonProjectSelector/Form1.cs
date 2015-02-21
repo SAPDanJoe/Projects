@@ -375,7 +375,7 @@ namespace CS_MonsoonProjectSelector
             {
                 Debug.Write(cBox.Name + " is missing {" + entry + "}");
                 cBox.Items.Add(entry);
-                aSyncFields.Add(cBox.Name)
+                aSyncFields.Add(cBox.Name);
                 entryToItems( cBox, entry);
             }
         }
@@ -509,14 +509,14 @@ namespace CS_MonsoonProjectSelector
                 " vs. xText | " + (string)xBox;
             if (formBox.Text.ToString() != (string)xBox)
             {
-                formChanged = true;
+                aSyncFields.Add(formBox.Name);
                 formBox.ForeColor = System.Drawing.Color.Black;
             }
             else
             {
-                formChanged = false;                  
+                aSyncFields.Remove(formBox.Name);                  
             }
-            label1.Text = "Form changed status: " + formChanged +
+            label1.Text = "aSyncFields contains {" + aSyncFields.Count() + "} items\r\n " +
                 Environment.NewLine + "Last changed item: " + boxName +
                 Environment.NewLine + "Data: " + astring + "\r\n" +
                 "UserIDComboBox.SelectedItem: " + UserIDComboBox.SelectedItem + "\r\n" +
