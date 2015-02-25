@@ -94,8 +94,24 @@ namespace CS_MonsoonProjectSelector
                     (string)config.Element("GitFirstNameTextBox") + "\"");
             System.Diagnostics.Process.Start("git","config --global user.email \"" +
                     (string)config.Element("GitEmailAddressTextBox") + "\"");
-            System.Diagnostics.Process.Start("git","config --global color.ui true ");
+            System.Diagnostics.Process.Start("git","config --global color.ui true");
             System.Diagnostics.Process.Start("git","config --global http.sslVerify false");
+
+            //!!!!!Monsoon SSH Keys
+            //!!!!!!!!ID_RSA files
+            string sshPath = Environment.GetEnvironmentVariable("") + @"\.ssh\id_rsa";
+            if (System.IO.File.Exists(sshPath))
+            {   //there is already a private key, back it up
+                System.IO.File.Move(sshPath, sshPath + @"_BAK_" + DateTime.Now.ToString());
+            }
+            if (System.IO.File.Exists(sshPath +@".pub"))
+            {   //there is already a public key, back it up
+                System.IO.File.Move(sshPath, sshPath + @".pub_BAK_" + DateTime.Now.ToString());
+            }
+            string ID_RSA = (string)config.Element("PrivateKeyTextBox");
+            System.IO.File.WriteAllText(Environment.GetEnvironmentVariable("") + @"\.ssh\id_rsa",ID_RSA);
+            string ID_RSA_PUB = (string)config.Element("PublicKeyTextBox");
+            System.IO.File.WriteAllText(Environment.GetEnvironmentVariable("") + @"\.ssh\id_rsa.pub", ID_RSA_PUB);
 
             //!!!!!AWS
             //!!!!!!!!Variables
@@ -132,20 +148,36 @@ namespace CS_MonsoonProjectSelector
             //!!!!!GEM
             //!!!!!!!!GEMRC file: ~/.gemrc
             
-            //Prep the multiline XML value
+            //The data from the XML file is from a multiline TextBox
+            //We'll need this in seperate strings to add the lines to the file
+            //fist load the whole element into a string
             string lines = (string)config.Element("GEMSourcesTextBox").ToString();
+
+            //now take off the leading and training XML tags
             lines = lines.Substring(19);
             lines = lines.Substring(0,lines.Length - 20);
+
+            //now split the lines into an aray seperated by the line breaks
+            //Also create a new string where the 
             string[] linesArray = lines.Split(new string[] {"\r\n","\n"},StringSplitOptions.None);
             string newLines = string.Empty;
 
-            for (int i = 0; i < linesArray.Length; i++)
+            //itterate through the array and add each non-blank line to the file
+            foreach (string line in linesArray)
             {
-                if (linesArray[i] != string.Empty)
+                if (line != string.Empty)
                 {
-                    newLines = newLines + "- " + linesArray[i] + Environment.NewLine;                                       
+                    newLines = newLines + "- " + lines + Environment.NewLine;
                 }
             }
+
+            //for (int i = 0; i < linesArray.Length; i++)
+            //{
+            //    if (linesArray[i] != string.Empty)
+            //    {
+            //        newLines = newLines + "- " + linesArray[i] + Environment.NewLine;                                       
+            //    }
+            //}
 
             string line1 = (string)config.Element("GEMSourcesTextBox").ToString().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None)[0].Substring(19);
             string[] gemRCFile = {
