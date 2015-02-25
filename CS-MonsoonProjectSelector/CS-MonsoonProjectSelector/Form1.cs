@@ -20,14 +20,19 @@ namespace CS_MonsoonProjectSelector
             InitializeComponent();  //designer code, don't modify
             LoadDefaults();
             LoadData();
+            Debug.Write("");
         }
-        public List<string> aSyncFields;
+
+        #region Private form variable definitions
+        private XElement fileSettings = XDocument.Load(Program.settings.ToString()).XPathSelectElement("configFile/settings[@id = 'current']");
+        #endregion
+
 
         #region UI data interactions
         // This code handles loading data to the form
         // fields, and saving data from them
 
-        private void LoadDefaults() 
+        private void LoadDefaults()
         {
             KeyIDTextBox.Text = "Default";
             OrgTextBox.Text = Environment.GetEnvironmentVariable("USERNAME").ToLower();
@@ -42,11 +47,10 @@ namespace CS_MonsoonProjectSelector
             EC2UrlTextBox.Text = "https://ec2-us-west.api.monsoon.mo.sap.corp:443";
             VagrantEmbeddedTextBox.Text = "\\Vagrant\\embedded";
             VagrantEmbeddedBinTextBox.Text = "\\Vagrant\\embedded\\bin";
-            ProjectNameComboBox.Text = "";
             KitchentLogLevelComboBox.Text = "Default";
             UserIDComboBox.Items.Add(Environment.GetEnvironmentVariable("USERNAME").ToLower());
             UserIDComboBox.SelectedItem = (string)Environment.GetEnvironmentVariable("USERNAME").ToLower();
-            
+
             //set all of these controls to gray to indicate default values
             KeyIDTextBox.ForeColor = System.Drawing.Color.Gray;
             OrgTextBox.ForeColor = System.Drawing.Color.Gray;
@@ -61,130 +65,254 @@ namespace CS_MonsoonProjectSelector
             EC2UrlTextBox.ForeColor = System.Drawing.Color.Gray;
             VagrantEmbeddedTextBox.ForeColor = System.Drawing.Color.Gray;
             VagrantEmbeddedBinTextBox.ForeColor = System.Drawing.Color.Gray;
-            ProjectNameComboBox.ForeColor = System.Drawing.Color.Gray;
             KitchentLogLevelComboBox.ForeColor = System.Drawing.Color.Gray;
             UserIDComboBox.ForeColor = System.Drawing.Color.Gray;
         }
 
-        private void LoadData() 
+        private void LoadData()
         {
-            XDocument xconfig = XDocument.Load(Program.settings.ToString());
-            XElement current = xconfig.XPathSelectElement("configFile/settings[@id = 'current']");
+            //load values from file into text boxes 
+            readXMLtoForm(KeyIDTextBox, fileSettings);
+            readXMLtoForm(AccessKeyTextBox, fileSettings);
+            readXMLtoForm(OrgTextBox, fileSettings);
+            readXMLtoForm(SecretKeyTextBox, fileSettings);
+            readXMLtoForm(PublicKeyTextBox, fileSettings);
+            readXMLtoForm(PrivateKeyTextBox, fileSettings);
+            readXMLtoForm(DevkitBinTextBox, fileSettings);
+            readXMLtoForm(MinGWBinTextBox, fileSettings);
+            readXMLtoForm(ChefEmbeddedBinTextBox, fileSettings);
+            readXMLtoForm(ChefRootTextBox, fileSettings);
+            readXMLtoForm(GitSSHTextBox, fileSettings);
+            readXMLtoForm(GitEmailAddressTextBox, fileSettings);
+            readXMLtoForm(GitFirstNameTextBox, fileSettings);
+            readXMLtoForm(GitLastNameTextBox, fileSettings);
+            readXMLtoForm(GEMPathTextBox, fileSettings);
+            readXMLtoForm(GEMSourcesTextBox, fileSettings);
+            readXMLtoForm(EC2HomeTextBox, fileSettings);
+            readXMLtoForm(EC2UrlTextBox, fileSettings);
+            readXMLtoForm(VagrantEmbeddedTextBox, fileSettings);
+            readXMLtoForm(VagrantEmbeddedBinTextBox, fileSettings);
+            readXMLtoForm(ProjectNameComboBox, fileSettings);
+            //valueReader(KitchentLogLevelComboBox, fileSettings);  <-- This is not necessary, because adding values is not allowed.
+            readXMLtoForm(UserIDComboBox, fileSettings);
 
-            //load values into text boxes 
-            valueReader(KeyIDTextBox, current);
-            valueReader(AccessKeyTextBox, current);
-            valueReader(OrgTextBox, current);
-            valueReader(SecretKeyTextBox, current);
-            valueReader(PublicKeyTextBox, current);
-            valueReader(PrivateKeyTextBox, current);
-            valueReader(DevkitBinTextBox, current);
-            valueReader(MinGWBinTextBox, current);
-            valueReader(ChefEmbeddedBinTextBox, current);
-            valueReader(ChefRootTextBox, current);
-            valueReader(GitSSHTextBox, current);
-            valueReader(GitEmailAddressTextBox, current);
-            valueReader(GitFirstNameTextBox, current);
-            valueReader(GitLastNameTextBox, current);
-            valueReader(GEMPathTextBox, current);
-            valueReader(GEMSourcesTextBox, current);
-            valueReader(EC2HomeTextBox, current);
-            valueReader(EC2UrlTextBox, current);
-            valueReader(VagrantEmbeddedTextBox, current);
-            valueReader(VagrantEmbeddedBinTextBox, current);         
-            valueReader(ProjectNameComboBox, current);
-            //valueReader(KitchentLogLevelComboBox, current);  <-- This is not necessary, because adding values is not allowed.
-            valueReader(UserIDComboBox, current);
-        
             //set selected items in combo boxes
-            setSelections(ProjectNameComboBox, current);
-            setSelections(KitchentLogLevelComboBox, current);
-            setSelections(UserIDComboBox, current);
+            setSelections(ProjectNameComboBox, fileSettings);
+            setSelections(KitchentLogLevelComboBox, fileSettings);
+            setSelections(UserIDComboBox, fileSettings);
         }
 
-        private void SaveData() 
+        private void SaveData(XDocument form = null)
         {
-            //check if anything has changed
-            Debug.Write("Save called with {" + aSyncFields.Count + "} asynchronous fields");
-            if (aSyncFields.Count > 0)
+            XDocument formData = xmlFormData();
+
+            if (formChanged(formData, fileSettings))
             {
-                //load the XML settings file into an xDoc object
-                XDocument xconfig = XDocument.Load(Program.settings.ToString());
+                //connect to the file
+                XDocument xFile = XDocument.Load(Program.settings.ToString());
 
-                //make the currect node no lunger current
-                XElement current = xconfig.XPathSelectElement("configFile/settings[@id = 'current']");
-                int settings = xconfig.Root.Elements().Count();
-                current.SetAttributeValue("id", settings - 1);
-                current.Add(new XAttribute("replaced", DateTime.Now));
+                //connect to the the 'current' settings node in the file
+                XElement currentFileSettings = xFile.XPathSelectElement("configFile/settings[@id = 'current']");
 
-                //create a new 'current' node
-                xconfig.Element("configFile").Add(
-                    new XElement("settings",
-                        new XAttribute("id", "current"),
-                        new XAttribute("created",DateTime.Now.ToString())
-                        )
-                    );     
-            
-                //write UI values to the document
-                xconfig = valueWriter(UserIDComboBox, xconfig);
-                    xconfig = valueWriter(PublicKeyTextBox, xconfig);
-                    xconfig = valueWriter(PrivateKeyTextBox, xconfig);
-                    xconfig = valueWriter(OrgTextBox, xconfig);
-                xconfig = valueWriter(ProjectNameComboBox, xconfig);
-                    xconfig = valueWriter(KeyIDTextBox, xconfig);
-                    xconfig = valueWriter(AccessKeyTextBox, xconfig);
-                    xconfig = valueWriter(SecretKeyTextBox, xconfig);
-                xconfig = valueWriter(DevkitBinTextBox, xconfig);
-                xconfig = valueWriter(MinGWBinTextBox, xconfig);
-                xconfig = valueWriter(ChefEmbeddedBinTextBox, xconfig);
-                xconfig = valueWriter(ChefRootTextBox, xconfig);
-                xconfig = valueWriter(KitchentLogLevelComboBox, xconfig);
-                xconfig = valueWriter(GitSSHTextBox, xconfig);
-                xconfig = valueWriter(GitEmailAddressTextBox, xconfig);
-                xconfig = valueWriter(GitFirstNameTextBox, xconfig);
-                xconfig = valueWriter(GitLastNameTextBox, xconfig);
-                xconfig = valueWriter(GEMPathTextBox, xconfig);
-                xconfig = valueWriter(GEMSourcesTextBox, xconfig);
-                xconfig = valueWriter(EC2HomeTextBox, xconfig);
-                xconfig = valueWriter(EC2UrlTextBox, xconfig);
-                xconfig = valueWriter(VagrantEmbeddedTextBox, xconfig);
-                xconfig = valueWriter(VagrantEmbeddedBinTextBox, xconfig);
+                //start by taking the file's 'current' settings and giving them an ID number instead
+                //connect to the document and count the number of settings already there
+                int settings = xFile.Root.Elements().Count();
 
-                //save the xDoc back to the file
-                xconfig.Save(Program.settings.ToString());               
+                //modify attributes: 'current' --> last
+                currentFileSettings.SetAttributeValue("id", settings);
+                currentFileSettings.Add(new XAttribute("replaced", DateTime.Now));
+
+                //add the date attribute to the form's settings
+                formData.XPathSelectElement("settings[@id = 'current']").Add(
+                    new XAttribute("created", DateTime.Now.ToString())
+                    );
+
+                //add a the new 'current' element to the file                    
+                xFile.Element("configFile").Add(formData.XPathSelectElement("settings[@id = 'current']"));
+
+                //save the changes back to the document
+                xFile.Save(Program.settings.ToString());
             }
-            aSyncFields.Clear();
+            
+            //if (form == null)
+            //{   //formData is null on the 1st pass.
+            //    //save data from the form into an XElement
+
+            //    //create a new document whose structure matches that
+            //    //of a single setting element
+            //    XDocument newForm = new XDocument(
+            //        new XElement("settings",
+            //            new XAttribute("id", "current")
+            //            )
+            //        );
+
+            //    //select that single settings current element
+            //    XElement formContents = newForm.XPathSelectElement("settings[@id = 'current']");
+
+            //    //load the form data into the new element
+            //    formContents = writeFormToXML(UserIDComboBox, formContents);
+            //    formContents = writeFormToXML(PublicKeyTextBox, formContents);
+            //    formContents = writeFormToXML(PrivateKeyTextBox, formContents);
+            //    formContents = writeFormToXML(OrgTextBox, formContents);
+            //    formContents = writeFormToXML(ProjectNameComboBox, formContents);
+            //    formContents = writeFormToXML(KeyIDTextBox, formContents);
+            //    formContents = writeFormToXML(AccessKeyTextBox, formContents);
+            //    formContents = writeFormToXML(SecretKeyTextBox, formContents);
+            //    formContents = writeFormToXML(DevkitBinTextBox, formContents);
+            //    formContents = writeFormToXML(MinGWBinTextBox, formContents);
+            //    formContents = writeFormToXML(ChefEmbeddedBinTextBox, formContents);
+            //    formContents = writeFormToXML(ChefRootTextBox, formContents);
+            //    formContents = writeFormToXML(KitchentLogLevelComboBox, formContents);
+            //    formContents = writeFormToXML(GitSSHTextBox, formContents);
+            //    formContents = writeFormToXML(GitEmailAddressTextBox, formContents);
+            //    formContents = writeFormToXML(GitFirstNameTextBox, formContents);
+            //    formContents = writeFormToXML(GitLastNameTextBox, formContents);
+            //    formContents = writeFormToXML(GEMPathTextBox, formContents);
+            //    formContents = writeFormToXML(GEMSourcesTextBox, formContents);
+            //    formContents = writeFormToXML(EC2HomeTextBox, formContents);
+            //    formContents = writeFormToXML(EC2UrlTextBox, formContents);
+            //    formContents = writeFormToXML(VagrantEmbeddedTextBox, formContents);
+            //    formContents = writeFormToXML(VagrantEmbeddedBinTextBox, formContents);
+
+            //    //pass back the contents to the 2nd part of the function
+            //    SaveData(newForm);
+
+            //}
+            //else
+            //{   //formData is not null on the 2nd pass.
+            //    //check if the form data varies from stored data
+
+            //    //load up the XML file
+            //    XDocument xFile = XDocument.Load(Program.settings.ToString());
+
+            //    //connect to the 'current' Settings node in the file
+            //    XElement currentFileSettings = xFile.XPathSelectElement("configFile/settings[@id = 'current']");
+
+            //    //sanitize both for comparision by removing attribute from 'settings'
+            //    //must store sanitization in a new element to avooid damage to the original structures
+
+            //    XElement cleanedFileSettings = new XElement(currentFileSettings);
+            //    cleanedFileSettings.RemoveAttributes();
+            //    XElement cleanedFormData = new XElement(form.XPathSelectElement("settings[@id = 'current']"));
+            //    cleanedFormData.RemoveAttributes();
+
+            //    if (XNode.DeepEquals(cleanedFormData, cleanedFileSettings))
+            //    {   //no variance detected, no action required
+            //        //reserving this space in the condition to present debugging data if needed
+            //        Debug.Write("No changes were found when comparing the form data to the stored data.  Save request ignored.");
+            //    }
+            //    else
+            //    {   //variance detected, add current formData to file and save 
+
+            //        Debug.Write("Changes were found when comparing the form data to the stored data.  Saving new settings to form.");
+
+            //        //start by taking the file's 'current' settings and giving them an ID number
+            //        //connect to the document and count the number of settings already there
+            //        int settings = xFile.Root.Elements().Count();
+
+            //        //modify attributes: 'current' --> last + 1
+            //        currentFileSettings.SetAttributeValue("id", settings);
+            //        currentFileSettings.Add(new XAttribute("replaced", DateTime.Now));
+
+            //        //add the date attribute to the form's settings
+            //        form.XPathSelectElement("settings[@id = 'current']").Add(
+            //            new XAttribute("created", DateTime.Now.ToString())
+            //            );
+
+            //        //add a the new 'current' element to the file                    
+            //        xFile.Element("configFile").Add(form.XPathSelectElement("settings[@id = 'current']"));
+
+            //        //save the changes back to the document
+            //        xFile.Save(Program.settings.ToString());
+            //    }
+//            }
         }
 
-        private XDocument valueWriter(System.Windows.Forms.TextBox tBox, XDocument doc)
+        private XDocument xmlFormData()
+        {   
+            XDocument newForm = new XDocument(
+                new XElement("settings",
+                    new XAttribute("id", "current")
+                    )
+                );
+
+            //select that single settings current element
+            XElement formContents = newForm.XPathSelectElement("settings[@id = 'current']");
+
+            //load the form data into the new element
+            formContents = writeFormToXML(UserIDComboBox, formContents);
+            formContents = writeFormToXML(PublicKeyTextBox, formContents);
+            formContents = writeFormToXML(PrivateKeyTextBox, formContents);
+            formContents = writeFormToXML(OrgTextBox, formContents);
+            formContents = writeFormToXML(ProjectNameComboBox, formContents);
+            formContents = writeFormToXML(KeyIDTextBox, formContents);
+            formContents = writeFormToXML(AccessKeyTextBox, formContents);
+            formContents = writeFormToXML(SecretKeyTextBox, formContents);
+            formContents = writeFormToXML(DevkitBinTextBox, formContents);
+            formContents = writeFormToXML(MinGWBinTextBox, formContents);
+            formContents = writeFormToXML(ChefEmbeddedBinTextBox, formContents);
+            formContents = writeFormToXML(ChefRootTextBox, formContents);
+            formContents = writeFormToXML(KitchentLogLevelComboBox, formContents);
+            formContents = writeFormToXML(GitSSHTextBox, formContents);
+            formContents = writeFormToXML(GitEmailAddressTextBox, formContents);
+            formContents = writeFormToXML(GitFirstNameTextBox, formContents);
+            formContents = writeFormToXML(GitLastNameTextBox, formContents);
+            formContents = writeFormToXML(GEMPathTextBox, formContents);
+            formContents = writeFormToXML(GEMSourcesTextBox, formContents);
+            formContents = writeFormToXML(EC2HomeTextBox, formContents);
+            formContents = writeFormToXML(EC2UrlTextBox, formContents);
+            formContents = writeFormToXML(VagrantEmbeddedTextBox, formContents);
+            formContents = writeFormToXML(VagrantEmbeddedBinTextBox, formContents);
+            return newForm;
+        }
+
+        private bool formChanged(XDocument xForm, XElement xFileSettings)
+        {
+            //sanitize both for comparision by removing attribute from 'settings'
+            //must store sanitization in a new element to avooid damage to the original structures
+
+            XElement cleanedFileSettings = new XElement(xFileSettings);
+            cleanedFileSettings.RemoveAttributes();
+            XElement cleanedFormData = new XElement(xForm.XPathSelectElement("settings[@id = 'current']"));
+            cleanedFormData.RemoveAttributes();
+
+            if (XNode.DeepEquals(cleanedFormData, cleanedFileSettings))
+            {   //no variance detected, no action required
+                //reserving this space in the condition to present debugging data if needed
+                Debug.Write("formChanged: No changes were found.\n");
+                return false;
+            }
+            else
+            { //variance detected, return true
+                Debug.Write("formChanged: The data does not match.\n");
+                return true;                
+            }
+        }
+
+        private XElement writeFormToXML(TextBox tBox, XElement current)
         {
             if (tBox.Text != string.Empty)
-            {
-                XElement parent = doc.XPathSelectElement("configFile/settings[@id = 'current']");
-                //add the box's name and value as an element to the doc                    
-                parent.Add(
+            {   //add the box's name and value                  
+                current.Add(
                     new XElement(
                         tBox.Name.ToString(),
                         tBox.Text.ToString()
                         )
                     );
             }
-            return doc;
+            return current;
         }
 
-        private XDocument valueWriter(System.Windows.Forms.ComboBox cBox, XDocument doc)
+        private XElement writeFormToXML(ComboBox cBox, XElement current)
         {
-            //select the current node
-            XElement current = doc.XPathSelectElement("configFile/settings[@id = 'current']");
-            
             //add a new element in the node for the comboBox
-            current.Add(new XElement(cBox.Name.ToString()),string.Empty);
-            
+            current.Add(new XElement(cBox.Name.ToString()), string.Empty);
+
             //select the newly added element
             XElement cBoxElement = current.Element(cBox.Name.ToString());
 
             foreach (var item in cBox.Items)
-	        {
+            {
                 if ((string)cBox.SelectedItem == item.ToString())
                 { //this is the currently selected item in the form
 
@@ -196,11 +324,11 @@ namespace CS_MonsoonProjectSelector
                 {
                     cBoxElement.Add(new XElement("item", item.ToString()));
                 }
-	        }
-            return doc;
+            }
+            return current;
         }
 
-        private void valueReader(System.Windows.Forms.TextBox cBox, XElement root)
+        private void readXMLtoForm(TextBox cBox, XElement root)
         {
             string xmlValue = (string)root.Element(cBox.Name.ToString());
             if ((xmlValue != string.Empty) && (xmlValue != null))
@@ -208,54 +336,63 @@ namespace CS_MonsoonProjectSelector
                 cBox.Text = xmlValue;
                 cBox.ForeColor = System.Drawing.Color.Black;
             }
-        }                
+        }
 
-        private void valueReader(System.Windows.Forms.ComboBox cBox, XElement root)
-        {            
+        private void readXMLtoForm(ComboBox cBox, XElement root)
+        {
             XElement branch = root.XPathSelectElement(cBox.Name.ToString());
             if (branch != null)
             {
                 IEnumerable<XElement> ComboBoxitems =
-                from branchItems in branch.Descendants()
-                select branchItems;
-            
+                    from branchItems in branch.Descendants()
+                    select branchItems;
+
+                if (cBox.Items.Count > 0)
+                {   //if there are already items in the combo box, clear them
+                    cBox.Items.Clear();
+                }
+
                 foreach (XElement xmlData in ComboBoxitems)
                 {
                     cBox.Items.Add(xmlData.Value);
-                }  
+                    cBox.ForeColor = System.Drawing.Color.Black;
+                }
             }
-            
+
         }
 
-        private void setSelections(System.Windows.Forms.ComboBox cBox, XElement root) 
-        {            
+        private void setSelections(ComboBox cBox, XElement root)
+        {
             string value = (string)root.XPathSelectElement(cBox.Name.ToString() + "/item[@selected = '1']");
             if ((value != string.Empty) && (value != null))
             {
-                cBox.SelectedItem = value;                
+                cBox.SelectedItem = value;
             }
         }
 
-        private XElement loadSettings(string id)
-        {
-            string selectString = "configFile/settings[@id = '";
-            selectString += id + "']";
-            
-            //get the XML file
-            XDocument doc = XDocument.Load(Program.settings.ToString());
+        //private XElement loadSettings(string id)
+        //{
+        //    string selectString = "configFile/settings[@id = '";
+        //    selectString += id + "']";
 
-            //bind to the 
-            XElement settings = doc.XPathSelectElement(selectString);
-            return settings;
-        }
+        //    //get the XML file
+        //    XDocument doc = XDocument.Load(Program.settings.ToString());
+
+        //    //bind to the 
+        //    XElement settings = doc.XPathSelectElement(selectString);
+        //    return settings;
+        //}
 
 
         #endregion
 
+
         #region UI Validation and Automation
-        //The code below handles the UI behaviors
+        //The code below handles the direct form actions
         //and actions like link creation and 
         //changing, labels, Folder browsing, etc. 
+
+        //Indivudual actions: Links
         private void DashboardLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://monsoon.mo.sap.corp/organizations/sandbox");
@@ -269,8 +406,8 @@ namespace CS_MonsoonProjectSelector
         private void MonsoonKeysLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(
-                "https://monsoon.mo.sap.corp/users/"+
-                UserIDComboBox.Text+
+                "https://monsoon.mo.sap.corp/users/" +
+                UserIDComboBox.Text +
                 "/keys"
                 );
         }
@@ -278,155 +415,14 @@ namespace CS_MonsoonProjectSelector
         private void ProjectSettingsLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(
-                "https://monsoon.mo.sap.corp/organizations/"+
-                UserIDComboBox.Text+
-                "/projects/"+
+                "https://monsoon.mo.sap.corp/organizations/" +
+                UserIDComboBox.Text +
+                "/projects/" +
                 ProjectNameComboBox.Text
                 );
         }
 
-        private void ProjectNameComboBox_Leave(object sender, EventArgs e)
-        {
-            if (ProjectNameComboBox.Text.ToString() != string.Empty)
-            {   //There is text in this combo box
-
-                if (!this.ProjectNameComboBox.Items.Contains(this.ProjectNameComboBox.Text))
-                {   //The text is not in the item list, so add it
-		            this.ProjectNameComboBox.Items.Add(ProjectNameComboBox.Text);
-                    //and select it
-                    this.ProjectNameComboBox.SelectedItem = ProjectNameComboBox.Items.Count - 1;
-	            }
-
-                if ((UserIDComboBox.Text.ToString() != string.Empty))
-                {   //The user ID combo box is populated
-                    //show the settings link
-                    this.ProjectSettingsLink.Visible = true;
-                }
-
-                else
-                {   //The user ID combo box is not populated
-                    //ensure the settings link is hidden
-                    this.ProjectSettingsLink.Visible = false;
-                } 
-            }
-            
-        }
-
-        private void UserIDComboBox_Leave(object sender, EventArgs e)
-        {
-            //Check if box is empty
-            if (UserIDComboBox.Text == string.Empty)
-            {//Box is empty, ensure that the selected index is null 
-                Debug.Write("UserIDComboBox.Text = string.Empty in UserIDComboBox_Leave");
-                //set the combobox selected value to null
-                UserIDComboBox.SelectedIndex = -1;
-
-                MonsoonKeysLink.Visible = false;
-            }
-            else
-            {//box is not empty, select the entered text
-                Debug.Write("UserIDComboBox.Text != string.Empty in UserIDComboBox_Leave");
-                
-                //adds the entry to the Combo items if it is missing and ten selectes the entry
-                entryToItems(UserIDComboBox,UserIDComboBox.Text);
-
-                MonsoonKeysLink.Visible = true;
-            }
-
-            storeSelectedItem(UserIDComboBox, UserIDComboBox.Text);
-        }
-
-        
-        private void storeSelectedItem(ComboBox cBox, string entry)
-        {
-            //Get the current settings from the XML
-            XElement currentSettings = loadSettings("current");
-
-            //get the current selected value from the XML
-            XElement currentSelected = currentSettings.XPathSelectElement(cBox.Name + "[@selected = '1']");
-            string xmlValue = currentSelected.Value;
-            Debug.Write("The selected XML value for {" + cBox.Name + "} is {" + xmlValue + "}");
-            
-            //get the box's selected value
-            string boxValue = (string)cBox.SelectedValue;
-            Debug.Write("The selected form value for {" + cBox.Name + "} is {" + boxValue + "}");
-
-            //compare the two values: if they are not equal, then the item has changed
-            if (xmlValue != boxValue)
-            {
-                aSyncFields.Add(cBox.Name);
-            }
-            else
-            {
-                aSyncFields.Remove(cBox.Name);
-            }
-
-        }
-
-        private void entryToItems(ComboBox cBox, string entry)
-        {
-            if (cBox.Items.Contains(entry))
-            {
-                Debug.Write(cBox.Name + " contains {" + entry + "}");
-                cBox.SelectedValue = entry;
-                Debug.Write(cBox.Name + " now has a selected index of {" + cBox.SelectedIndex + "} with a value of {" + cBox.SelectedValue +"}.");
-            }
-            else
-            {
-                Debug.Write(cBox.Name + " is missing {" + entry + "}");
-                cBox.Items.Add(entry);
-                aSyncFields.Add(cBox.Name);
-                entryToItems( cBox, entry);
-            }
-        }
-
-        private void enableMooKeysLink(object sender, EventArgs e)
-        {
-            if (sender is ComboBox)
-            {
-                ComboBox box = (ComboBox)sender;
-                if (box.Text != string.Empty)
-                {   //There is text in this combo box
-                    if (box.Items.Contains(box.Text))
-                    {   //The text is not in the item list, so add it
-                        box.Items.Add(UserIDComboBox.Text);
-                    }
-
-                    this.MonsoonKeysLink.Visible = true;
-                    if (ProjectNameComboBox.Text != "")
-                    {   //The project settings combo box is populated
-                        //show the settings and monsoon links
-                        this.ProjectSettingsLink.Visible = true;
-                    }
-                    else
-                    {   //The project settings combo box is not populated
-                        //ensure the settings and monsoon links are hidden
-                        this.ProjectSettingsLink.Visible = false;
-                        this.MonsoonKeysLink.Visible = false;
-                    }
-                }       
-            }
-        }
-
-        private void FolderBrowser(object sender, EventArgs e)
-        {
-
-        }
-
-        private void FileBrowser(object sender, EventArgs e)
-        {   //basically the same as the folder browser above, but for selecting specific files
-            TextBox SenderBox = sender as TextBox;
-            if (SenderBox.Text != "")//if the text box is not empty
-            {
-                //set the selected path to the text box's current contents (incase of accidental entry)
-                FileBrowserDialog.FileName = SenderBox.Text;
-            }
-            if (FileBrowserDialog.ShowDialog() == DialogResult.OK)
-            {
-                SenderBox.Text = FileBrowserDialog.FileName;
-            }
-        }
-
+        //Individual actions: Other
         private void SaveAllButton_Click(object sender, EventArgs e)
         {
             SaveData();
@@ -444,32 +440,37 @@ namespace CS_MonsoonProjectSelector
             }
         }
 
+        private void openConfig(object sender, EventArgs e)
+        {
+            ProcessStartInfo editArgs = new ProcessStartInfo();
+            editArgs.FileName = "notepad.exe";
+            editArgs.Arguments = Program.settings.ToString();
+            Process.Start(editArgs);
+        }
+
+
+        //Reusued actions
         private void LoadButton_Click(object sender, EventArgs e)
         {
             //save the current settings
             SaveData();
-
-            //reload the file into a new document
-            XDocument document = XDocument.Load(Program.settings.ToString());
-
-            //load the current settings that we just saved as the working node
-            XElement currentConfig = document.XPathSelectElement("configFile/settings[@id = 'current']");
+            XElement currentConfig = fileSettings;
 
             //setup a new variable to store the scope of the configuration
             EnvironmentVariableTarget mode = new EnvironmentVariableTarget();
 
-            //setup a var to determin if the command window should be opened
+            //setup a var to determine if the command window should be opened
             bool commandWindow = new bool();
 
             //check to see which button called the fucntion, and set the scope accordingly
             if (sender.ToString().Contains("User"))
             {
-                mode  = EnvironmentVariableTarget.User;
+                mode = EnvironmentVariableTarget.User;
                 commandWindow = false;
             }
             else if (sender.ToString().Contains("Session"))
-            {                
-                mode  = EnvironmentVariableTarget.Process;
+            {
+                mode = EnvironmentVariableTarget.Process;
                 commandWindow = true;
             }
 
@@ -481,6 +482,39 @@ namespace CS_MonsoonProjectSelector
             {
                 System.Diagnostics.Process.Start("cmd");
             }
+        }
+
+        private void ComboBox_Leave(object sender, EventArgs e)
+        {
+            //this *will* hold the code to add newly entered text into a
+            //combobox list, and then select the newly entered item.
+            ComboBox cBox = (ComboBox)sender;
+
+            if (cBox.Text.ToString() != string.Empty)
+            {   //There is text in this combo box
+
+                if (!cBox.Items.Contains(cBox.Text))
+                {   //The text is not in the item list, so add it
+                    cBox.Items.Add(cBox.Text);
+                    Debug.Write("{" + cBox.Name + "}: added {" + cBox.Text + "} to item list. \n");
+                    //and select it
+                    cBox.SelectedIndex = cBox.FindString(cBox.Text);
+                    // cBox.SelectedItem = cBox.Items.Count - 1;
+                }
+            }
+            else
+            {
+                //there is no text int he combo box, this shouldn't be an option
+                Debug.Write("{" + cBox.Name + "} was empty.\n");
+            }
+
+            //when leaving the userID box, run the mooLink checker
+            if (cBox.Name == "UserIDComboBox")
+            {
+                checkMooKeysLink(sender, e);
+            }
+            Debug.Write("{" + cBox.Name + "}: selected item is {" + cBox.SelectedItem + "}.\n");
+            Debug.Write("{" + cBox.Name + "}: selected index is {" + cBox.SelectedIndex + "}.\n");
         }
 
         private void RestoreDefaultColor_Enter(object sender, EventArgs e)
@@ -497,34 +531,215 @@ namespace CS_MonsoonProjectSelector
             }
         }
 
-        private void FormTextFeild_TextChanged(object sender, EventArgs e)
+        //to be refactored....
+        //private void ProjectNameComboBox_Leave(object sender, EventArgs e)
+        //{
+        //    if (ProjectNameComboBox.Text.ToString() != string.Empty)
+        //    {   //There is text in this combo box
+
+        //        if (!this.ProjectNameComboBox.Items.Contains(this.ProjectNameComboBox.Text))
+        //        {   //The text is not in the item list, so add it
+        //            this.ProjectNameComboBox.Items.Add(ProjectNameComboBox.Text);
+        //            //and select it
+        //            this.ProjectNameComboBox.SelectedItem = ProjectNameComboBox.Items.Count - 1;
+        //        }
+
+        //        if ((UserIDComboBox.Text.ToString() != string.Empty))
+        //        {   //The user ID combo box is populated
+        //            //show the settings link
+        //            this.ProjectSettingsLink.Visible = true;
+        //        }
+
+        //        else
+        //        {   //The user ID combo box is not populated
+        //            //ensure the settings link is hidden
+        //            this.ProjectSettingsLink.Visible = false;
+        //        } 
+        //    }
+
+        //}
+
+        //private void UserIDComboBox_Leave(object sender, EventArgs e)
+        //{
+        //    //Check if box is empty
+        //    if (UserIDComboBox.Text == string.Empty)
+        //    {//Box is empty, ensure that the selected index is null 
+        //        Debug.Write("UserIDComboBox.Text = string.Empty in UserIDComboBox_Leave");
+        //        //set the combobox selected value to null
+        //        UserIDComboBox.SelectedIndex = -1;
+
+        //        MonsoonKeysLink.Visible = false;
+        //    }
+        //    else
+        //    {//box is not empty, select the entered text
+        //        Debug.Write("UserIDComboBox.Text != string.Empty in UserIDComboBox_Leave");
+
+        //        //adds the entry to the Combo items if it is missing and ten selectes the entry
+        //        entryToItems(UserIDComboBox,UserIDComboBox.Text);
+
+        //        MonsoonKeysLink.Visible = true;
+        //    }
+
+        //    storeSelectedItem(UserIDComboBox, UserIDComboBox.Text);
+        //}
+
+        private void checkMooKeysLink(object sender, EventArgs e)
         {
-            XElement current = XDocument.Load(Program.settings.ToString()).XPathSelectElement("configFile/settings[@id = 'current']");
-            string boxName = string.Empty;
-            string astring = string.Empty;
-            TextBox formBox = (TextBox)sender;
-            boxName = formBox.Name;
-            XElement xBox = current.XPathSelectElement(formBox.Name.ToString());
-            astring = "formText | " + formBox.Text.ToString() +
-                " vs. xText | " + (string)xBox;
-            if (formBox.Text.ToString() != (string)xBox)
+            //cast sender as combobox
+            ComboBox cBox = (ComboBox)sender;
+
+            Debug.Write("{" + cBox.Name + "} currently has text : {" + cBox.Text + "}.\n");
+            if (cBox.Text == string.Empty | cBox.Text == null)
             {
-                aSyncFields.Add(formBox.Name);
-                formBox.ForeColor = System.Drawing.Color.Black;
+                MonsoonKeysLink.Visible = false;
             }
             else
             {
-                aSyncFields.Remove(formBox.Name);                  
+                MonsoonKeysLink.Visible = true;
             }
-            label1.Text = "aSyncFields contains {" + aSyncFields.Count() + "} items\r\n " +
-                Environment.NewLine + "Last changed item: " + boxName +
-                Environment.NewLine + "Data: " + astring + "\r\n" +
-                "UserIDComboBox.SelectedItem: " + UserIDComboBox.SelectedItem + "\r\n" +
-                "UserIDComboBox.SelectedText: " + UserIDComboBox.SelectedText + "\r\n" +
-                "UserIDComboBox.SelectedValue: " + UserIDComboBox.SelectedValue + "\r\n" +
-                "UserIDComboBox.Text: " + UserIDComboBox.Text + "\r\n";
         }
-        
-        #endregion     
+
+        //private void FormTextFeild_TextChanged(object sender, EventArgs e)
+        //{
+        //    XElement current = XDocument.Load(Program.settings.ToString()).XPathSelectElement("configFile/settings[@id = 'current']");
+        //    string boxName = string.Empty;
+        //    string astring = string.Empty;
+        //    TextBox formBox = (TextBox)sender;
+        //    boxName = formBox.Name;
+        //    XElement xBox = current.XPathSelectElement(formBox.Name.ToString());
+        //    astring = "formText | " + formBox.Text.ToString() +
+        //        " vs. xText | " + (string)xBox;
+        //    if (formBox.Text.ToString() != (string)xBox)
+        //    {
+        //        aSyncFields.Add(formBox.Name);
+        //        formBox.ForeColor = System.Drawing.Color.Black;
+        //    }
+        //    else
+        //    {
+        //        aSyncFields.Remove(formBox.Name);                  
+        //    }
+        //    label1.Text = "aSyncFields contains {" + aSyncFields.Count() + "} items\r\n " +
+        //        Environment.NewLine + "Last changed item: " + boxName +
+        //        Environment.NewLine + "Data: " + astring + "\r\n" +
+        //        "UserIDComboBox.SelectedItem: " + UserIDComboBox.SelectedItem + "\r\n" +
+        //        "UserIDComboBox.SelectedText: " + UserIDComboBox.SelectedText + "\r\n" +
+        //        "UserIDComboBox.SelectedValue: " + UserIDComboBox.SelectedValue + "\r\n" +
+        //        "UserIDComboBox.Text: " + UserIDComboBox.Text + "\r\n";
+        //}
+
+        #endregion
+
+        #region formHelpers
+        //These are all helper methods for the form
+        //they handle any tasks that are not directly
+        //initiated by a form action        
+
+        private void entryToItems(ComboBox cBox, string entry)
+        {
+            if (cBox.Items.Contains(entry))
+            {
+                Debug.Write(cBox.Name + " contains {" + entry + "}\n");
+                cBox.SelectedText = entry;
+                Debug.Write(cBox.Name + " now has a selected index of {" + cBox.SelectedIndex + "} with a value of {" + cBox.SelectedValue + "}.\n");
+            }
+            else
+            {
+                Debug.Write(cBox.Name + " is missing {" + entry + "}\n");
+                cBox.Items.Add(entry);
+                entryToItems(cBox, entry);
+            }
+        }
+
+        //private void storeSelectedItem(ComboBox cBox, string entry)
+        //{
+        //    //Get the current settings from the XML
+        //    XElement currentSettings = fileSettings;
+
+        //    //get the current selected value from the XML
+        //    XElement currentSelected = currentSettings.XPathSelectElement(cBox.Name + "/item[@selected = '1']");
+        //    string xmlValue = currentSelected.Value;
+        //    Debug.Write("The selected XML value for {" + cBox.Name + "} is {" + xmlValue + "}\n");
+
+        //    //get the box's selected value
+        //    string boxValue = (string)cBox.SelectedValue;
+        //    Debug.Write("The selected form value for {" + cBox.Name + "} is {" + boxValue + "}\n");
+
+        //}
+
+        private void ffBrowser(object sender, EventArgs e)
+        {
+            //cast sender as a textbox
+            TextBox tBox = (TextBox)sender;
+            string selected = null;
+
+            if (tBox.Tag.ToString().Equals("Folder"))
+            {                
+                FileBrowserDialog.CheckFileExists = false;
+                string defaultFilename = "Select this folder";
+                FileBrowserDialog.FileName = defaultFilename;
+            }
+            else
+            {
+                FileBrowserDialog.CheckFileExists = true;
+                string defaultFilename = null;
+                FileBrowserDialog.FileName = defaultFilename;
+                if (tBox.Text != "")//if the text box is not empty
+                {
+                    //set the selected path to the text box's current contents (incase of accidental entry)
+                    string test = tBox.Tag.ToString().Equals("Folder") ? "Folder" : "File";
+                    MessageBox.Show("Test: " + test);
+                    FileBrowserDialog.FileName = tBox.Text;
+                }
+            }
+            if (FileBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                //Sanitize the folder selection
+                //Remove everything after the last '\'
+                string folder = FileBrowserDialog.FileName;
+                int index = folder.LastIndexOf(@"\");
+                Debug.Write("The selected folder path was: {" + folder + "}.\n");
+                Debug.Write("The index of the last \\: {" + index + "}.\n");
+                if (index > 0)
+                    folder = folder.Substring(0, index);
+
+                 tBox.Text = tBox.Tag.ToString().Equals("Folder") ?
+                     folder :
+                     FileBrowserDialog.FileName;
+            }
+        }
+
+        //private void FolderBrowser(object sender, EventArgs e)
+        //{
+        //    TextBox SenderBox = sender as TextBox;
+        //    if (SenderBox.Text != "")//if the text box is not empty
+        //    {
+        //        //set the selected path to the text box's current contents (incase of accidental entry)
+        //        FileBrowserDialog.FileName = SenderBox.Text;
+        //    }
+        //    if (FileBrowserDialog.ShowDialog() == DialogResult.OK)
+        //    {
+        //        SenderBox.Text = FileBrowserDialog.FileName;
+        //    }
+        //}
+
+        //private void FileBrowser(object sender, EventArgs e)
+        //{   //basically the same as the folder browser above, but for selecting specific files
+        //    TextBox SenderBox = sender as TextBox;
+
+
+
+        //    if (SenderBox.Text != "")//if the text box is not empty
+        //    {
+        //        //set the selected path to the text box's current contents (incase of accidental entry)
+        //        FileBrowserDialog.FileName = SenderBox.Text;
+        //    }
+        //    if (FileBrowserDialog.ShowDialog() == DialogResult.OK)
+        //    {
+        //        SenderBox.Text = FileBrowserDialog.FileName;
+        //    }
+        //}
+
+        #endregion
+
     }
 }
