@@ -370,20 +370,6 @@ namespace CS_MonsoonProjectSelector
             }
         }
 
-        //private XElement loadSettings(string id)
-        //{
-        //    string selectString = "configFile/settings[@id = '";
-        //    selectString += id + "']";
-
-        //    //get the XML file
-        //    XDocument doc = XDocument.Load(Program.settings.ToString());
-
-        //    //bind to the 
-        //    XElement settings = doc.XPathSelectElement(selectString);
-        //    return settings;
-        //}
-
-
         #endregion
 
 
@@ -531,58 +517,6 @@ namespace CS_MonsoonProjectSelector
             }
         }
 
-        //to be refactored....
-        //private void ProjectNameComboBox_Leave(object sender, EventArgs e)
-        //{
-        //    if (ProjectNameComboBox.Text.ToString() != string.Empty)
-        //    {   //There is text in this combo box
-
-        //        if (!this.ProjectNameComboBox.Items.Contains(this.ProjectNameComboBox.Text))
-        //        {   //The text is not in the item list, so add it
-        //            this.ProjectNameComboBox.Items.Add(ProjectNameComboBox.Text);
-        //            //and select it
-        //            this.ProjectNameComboBox.SelectedItem = ProjectNameComboBox.Items.Count - 1;
-        //        }
-
-        //        if ((UserIDComboBox.Text.ToString() != string.Empty))
-        //        {   //The user ID combo box is populated
-        //            //show the settings link
-        //            this.ProjectSettingsLink.Visible = true;
-        //        }
-
-        //        else
-        //        {   //The user ID combo box is not populated
-        //            //ensure the settings link is hidden
-        //            this.ProjectSettingsLink.Visible = false;
-        //        } 
-        //    }
-
-        //}
-
-        //private void UserIDComboBox_Leave(object sender, EventArgs e)
-        //{
-        //    //Check if box is empty
-        //    if (UserIDComboBox.Text == string.Empty)
-        //    {//Box is empty, ensure that the selected index is null 
-        //        Debug.Write("UserIDComboBox.Text = string.Empty in UserIDComboBox_Leave");
-        //        //set the combobox selected value to null
-        //        UserIDComboBox.SelectedIndex = -1;
-
-        //        MonsoonKeysLink.Visible = false;
-        //    }
-        //    else
-        //    {//box is not empty, select the entered text
-        //        Debug.Write("UserIDComboBox.Text != string.Empty in UserIDComboBox_Leave");
-
-        //        //adds the entry to the Combo items if it is missing and ten selectes the entry
-        //        entryToItems(UserIDComboBox,UserIDComboBox.Text);
-
-        //        MonsoonKeysLink.Visible = true;
-        //    }
-
-        //    storeSelectedItem(UserIDComboBox, UserIDComboBox.Text);
-        //}
-
         private void checkMooKeysLink(object sender, EventArgs e)
         {
             //cast sender as combobox
@@ -598,34 +532,6 @@ namespace CS_MonsoonProjectSelector
                 MonsoonKeysLink.Visible = true;
             }
         }
-
-        //private void FormTextFeild_TextChanged(object sender, EventArgs e)
-        //{
-        //    XElement current = XDocument.Load(Program.settings.ToString()).XPathSelectElement("configFile/settings[@id = 'current']");
-        //    string boxName = string.Empty;
-        //    string astring = string.Empty;
-        //    TextBox formBox = (TextBox)sender;
-        //    boxName = formBox.Name;
-        //    XElement xBox = current.XPathSelectElement(formBox.Name.ToString());
-        //    astring = "formText | " + formBox.Text.ToString() +
-        //        " vs. xText | " + (string)xBox;
-        //    if (formBox.Text.ToString() != (string)xBox)
-        //    {
-        //        aSyncFields.Add(formBox.Name);
-        //        formBox.ForeColor = System.Drawing.Color.Black;
-        //    }
-        //    else
-        //    {
-        //        aSyncFields.Remove(formBox.Name);                  
-        //    }
-        //    label1.Text = "aSyncFields contains {" + aSyncFields.Count() + "} items\r\n " +
-        //        Environment.NewLine + "Last changed item: " + boxName +
-        //        Environment.NewLine + "Data: " + astring + "\r\n" +
-        //        "UserIDComboBox.SelectedItem: " + UserIDComboBox.SelectedItem + "\r\n" +
-        //        "UserIDComboBox.SelectedText: " + UserIDComboBox.SelectedText + "\r\n" +
-        //        "UserIDComboBox.SelectedValue: " + UserIDComboBox.SelectedValue + "\r\n" +
-        //        "UserIDComboBox.Text: " + UserIDComboBox.Text + "\r\n";
-        //}
 
         #endregion
 
@@ -649,22 +555,6 @@ namespace CS_MonsoonProjectSelector
                 entryToItems(cBox, entry);
             }
         }
-
-        //private void storeSelectedItem(ComboBox cBox, string entry)
-        //{
-        //    //Get the current settings from the XML
-        //    XElement currentSettings = fileSettings;
-
-        //    //get the current selected value from the XML
-        //    XElement currentSelected = currentSettings.XPathSelectElement(cBox.Name + "/item[@selected = '1']");
-        //    string xmlValue = currentSelected.Value;
-        //    Debug.Write("The selected XML value for {" + cBox.Name + "} is {" + xmlValue + "}\n");
-
-        //    //get the box's selected value
-        //    string boxValue = (string)cBox.SelectedValue;
-        //    Debug.Write("The selected form value for {" + cBox.Name + "} is {" + boxValue + "}\n");
-
-        //}
 
         private void ffBrowser(object sender, EventArgs e)
         {
@@ -707,37 +597,6 @@ namespace CS_MonsoonProjectSelector
                      FileBrowserDialog.FileName;
             }
         }
-
-        //private void FolderBrowser(object sender, EventArgs e)
-        //{
-        //    TextBox SenderBox = sender as TextBox;
-        //    if (SenderBox.Text != "")//if the text box is not empty
-        //    {
-        //        //set the selected path to the text box's current contents (incase of accidental entry)
-        //        FileBrowserDialog.FileName = SenderBox.Text;
-        //    }
-        //    if (FileBrowserDialog.ShowDialog() == DialogResult.OK)
-        //    {
-        //        SenderBox.Text = FileBrowserDialog.FileName;
-        //    }
-        //}
-
-        //private void FileBrowser(object sender, EventArgs e)
-        //{   //basically the same as the folder browser above, but for selecting specific files
-        //    TextBox SenderBox = sender as TextBox;
-
-
-
-        //    if (SenderBox.Text != "")//if the text box is not empty
-        //    {
-        //        //set the selected path to the text box's current contents (incase of accidental entry)
-        //        FileBrowserDialog.FileName = SenderBox.Text;
-        //    }
-        //    if (FileBrowserDialog.ShowDialog() == DialogResult.OK)
-        //    {
-        //        SenderBox.Text = FileBrowserDialog.FileName;
-        //    }
-        //}
 
         #endregion
 
