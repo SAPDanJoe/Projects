@@ -99,19 +99,20 @@ namespace CS_MonsoonProjectSelector
 
             //!!!!!Monsoon SSH Keys
             //!!!!!!!!ID_RSA files
-            string sshPath = Environment.GetEnvironmentVariable("") + @"\.ssh\id_rsa";
+            string sshPath = Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\id_rsa";
             if (System.IO.File.Exists(sshPath))
             {   //there is already a private key, back it up
-                System.IO.File.Move(sshPath, sshPath + @"_BAK_" + DateTime.Now.ToString());
+                System.IO.File.Move(sshPath, sshPath + @"_BAK_" + DateTime.Now.ToString("yyyy-MM-dd_hhmmss"));
             }
             if (System.IO.File.Exists(sshPath +@".pub"))
             {   //there is already a public key, back it up
-                System.IO.File.Move(sshPath, sshPath + @".pub_BAK_" + DateTime.Now.ToString());
+                System.IO.File.Move(sshPath + @".pub", sshPath + @".pub_BAK_" + DateTime.Now.ToString("yyyy-MM-dd_hhmmss"));
             }
             string ID_RSA = (string)config.Element("PrivateKeyTextBox");
-            System.IO.File.WriteAllText(Environment.GetEnvironmentVariable("") + @"\.ssh\id_rsa",ID_RSA);
+            System.IO.File.WriteAllText(sshPath,ID_RSA);
+            MessageBox.Show(ID_RSA);
             string ID_RSA_PUB = (string)config.Element("PublicKeyTextBox");
-            System.IO.File.WriteAllText(Environment.GetEnvironmentVariable("") + @"\.ssh\id_rsa.pub", ID_RSA_PUB);
+            System.IO.File.WriteAllText(sshPath +".pub", ID_RSA_PUB);
 
             //!!!!!AWS
             //!!!!!!!!Variables
