@@ -102,6 +102,9 @@
             this.LoadSessionButton = new System.Windows.Forms.Button();
             this.LoadtoProfileButton = new System.Windows.Forms.Button();
             this.openSettingsButton = new System.Windows.Forms.Button();
+            this.puTTYGroupBox = new System.Windows.Forms.GroupBox();
+            this.puTTYgenTextBox = new System.Windows.Forms.TextBox();
+            this.puTTYgenLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.ProjectNameToolTipPictureBox)).BeginInit();
             this.WorkstationInformationTab.SuspendLayout();
             this.VagrantInstallationGroupBox.SuspendLayout();
@@ -113,6 +116,7 @@
             this.ProjectSettingsGroupBox.SuspendLayout();
             this.AccountSettingsGroupBox.SuspendLayout();
             this.MainFormTabs.SuspendLayout();
+            this.puTTYGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // ProjectNameToolTip
@@ -135,6 +139,7 @@
             // 
             // WorkstationInformationTab
             // 
+            this.WorkstationInformationTab.Controls.Add(this.puTTYGroupBox);
             this.WorkstationInformationTab.Controls.Add(this.VagrantInstallationGroupBox);
             this.WorkstationInformationTab.Controls.Add(this.GEMSourcesGroupBox);
             this.WorkstationInformationTab.Controls.Add(this.EC2CLISettingsGroupBox);
@@ -155,7 +160,7 @@
             this.VagrantInstallationGroupBox.Controls.Add(this.VagrantEmbeddedBinLabel);
             this.VagrantInstallationGroupBox.Controls.Add(this.VagrantEmbeddedBinTextBox);
             this.VagrantInstallationGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VagrantInstallationGroupBox.Location = new System.Drawing.Point(6, 276);
+            this.VagrantInstallationGroupBox.Location = new System.Drawing.Point(311, 253);
             this.VagrantInstallationGroupBox.Name = "VagrantInstallationGroupBox";
             this.VagrantInstallationGroupBox.Size = new System.Drawing.Size(299, 69);
             this.VagrantInstallationGroupBox.TabIndex = 15;
@@ -861,6 +866,37 @@
             this.openSettingsButton.UseVisualStyleBackColor = true;
             this.openSettingsButton.Click += new System.EventHandler(this.openConfig);
             // 
+            // puTTYGroupBox
+            // 
+            this.puTTYGroupBox.Controls.Add(this.puTTYgenTextBox);
+            this.puTTYGroupBox.Controls.Add(this.puTTYgenLabel);
+            this.puTTYGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.puTTYGroupBox.Location = new System.Drawing.Point(6, 282);
+            this.puTTYGroupBox.Name = "puTTYGroupBox";
+            this.puTTYGroupBox.Size = new System.Drawing.Size(299, 49);
+            this.puTTYGroupBox.TabIndex = 16;
+            this.puTTYGroupBox.TabStop = false;
+            this.puTTYGroupBox.Text = "puTTY";
+            // 
+            // puTTYgenTextBox
+            // 
+            this.puTTYgenTextBox.Location = new System.Drawing.Point(116, 13);
+            this.puTTYgenTextBox.Name = "puTTYgenTextBox";
+            this.puTTYgenTextBox.Size = new System.Drawing.Size(168, 20);
+            this.puTTYgenTextBox.TabIndex = 8;
+            this.puTTYgenTextBox.Tag = "Folder";
+            this.puTTYgenTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
+            this.puTTYgenTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
+            // 
+            // puTTYgenLabel
+            // 
+            this.puTTYgenLabel.AutoSize = true;
+            this.puTTYgenLabel.Location = new System.Drawing.Point(6, 16);
+            this.puTTYgenLabel.Name = "puTTYgenLabel";
+            this.puTTYgenLabel.Size = new System.Drawing.Size(92, 13);
+            this.puTTYgenLabel.TabIndex = 0;
+            this.puTTYgenLabel.Text = "...\\puTTYgen.exe";
+            // 
             // MonsoonSettingsMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -893,6 +929,8 @@
             this.AccountSettingsGroupBox.ResumeLayout(false);
             this.AccountSettingsGroupBox.PerformLayout();
             this.MainFormTabs.ResumeLayout(false);
+            this.puTTYGroupBox.ResumeLayout(false);
+            this.puTTYGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -970,6 +1008,9 @@
         private System.Windows.Forms.Button LoadSessionButton;
         private System.Windows.Forms.Button LoadtoProfileButton;
         private System.Windows.Forms.Button openSettingsButton;
+        private System.Windows.Forms.GroupBox puTTYGroupBox;
+        private System.Windows.Forms.TextBox puTTYgenTextBox;
+        private System.Windows.Forms.Label puTTYgenLabel;
 
     }
 }

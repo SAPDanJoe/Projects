@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Automation;
 
 namespace CS_MonsoonProjectSelector
 {
@@ -99,20 +101,84 @@ namespace CS_MonsoonProjectSelector
 
             //!!!!!Monsoon SSH Keys
             //!!!!!!!!ID_RSA files
-            string sshPath = Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\id_rsa";
-            if (System.IO.File.Exists(sshPath))
-            {   //there is already a private key, back it up
-                System.IO.File.Move(sshPath, sshPath + @"_BAK_" + DateTime.Now.ToString("yyyy-MM-dd_hhmmss"));
+
+            //this will backup the existing files on the 1st run
+            string sshPath = Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\";
+            string sshFile = Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\id_rsa";
+            string sshBackup = Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\backup\";
+
+            bool sshPathExist = Directory.Exists(sshPath);
+            bool sshFileExist = Directory.Exists(sshFile);
+            bool sshBackupExist = Directory.Exists(sshBackup);
+
+            //Create a backup if .ssh\id_rsa exists and .ssh\backup does not
+            if (sshFileExist & !sshBackupExist)
+            {
+                Directory.CreateDirectory(sshBackup);
+
+                //now backup the exiting private key                
+                File.Move(
+                    sshFile,
+                    sshBackup + @"id_rsa_BAK_" + DateTime.Now.ToString("yyyy-MM-dd_hhmmss"));  
+   
+                //now backup the existing public key, after checking existence
+                string pubKey = sshPath + @".pub";
+                if (File.Exists(pubKey))
+                {
+		            File.Move(
+                        pubKey,
+                        sshBackup + @"id_rsa.pub_BAK_" + DateTime.Now.ToString("yyyy-MM-dd_hhmmss"));
+                }
+
+                //Also backup the putty key if it exists
+                string putKey = sshPath + @".ppk";
+                if (File.Exists(putKey))
+                {
+		            File.Move(
+                        putKey,
+                        sshBackup + @"id_rsa.ppk_BAK_" + DateTime.Now.ToString("yyyy-MM-dd_hhmmss"));
+                }
             }
-            if (System.IO.File.Exists(sshPath +@".pub"))
-            {   //there is already a public key, back it up
-                System.IO.File.Move(sshPath + @".pub", sshPath + @".pub_BAK_" + DateTime.Now.ToString("yyyy-MM-dd_hhmmss"));
-            }
+                
+            //create the new files
+
+            //private key
             string ID_RSA = (string)config.Element("PrivateKeyTextBox");
-            System.IO.File.WriteAllText(sshPath,ID_RSA);
-            MessageBox.Show(ID_RSA);
+            File.WriteAllText(sshPath,ID_RSA);
+
+            //public key
             string ID_RSA_PUB = (string)config.Element("PublicKeyTextBox");
-            System.IO.File.WriteAllText(sshPath +".pub", ID_RSA_PUB);
+            File.WriteAllText(sshPath +".pub", ID_RSA_PUB);
+
+            //puTTY Key
+            string puTTYgemPath = (string)config.Element("puTTYgenTextBox");
+            if (File.Exists(puTTYgemPath))
+            {
+                System.Diagnostics.Process PPKgenerator = new System.Diagnostics.Process();
+                PPKgenerator.StartInfo.FileName = puTTYgemPath;
+                PPKgenerator.StartInfo.Arguments = ID_RSA;
+                PPKgenerator.Start();
+
+                AutomationElement  genWindow = 
+                    AutomationElement.RootElement.FindAll(
+                    TreeScope.Children,
+                    new PropertyCondition(
+                        AutomationElement.ProcessIdProperty, PPKgenerator.Id))[0];                
+                
+                TreeWalker uiTree = TreeWalker.ControlViewWalker;
+                AutomationElement parent;
+                AutomationElement node = genWindow;
+
+                
+
+                AutomationElement genSaveBurron =
+                    genWindow.FindFirst(
+                    TreeScope.Children,
+                    new PropertyCondition(
+                        AutomationElement.NameProperty, "Save private key"));
+                genSaveBurron.
+            }
+
 
             //!!!!!AWS
             //!!!!!!!!Variables
