@@ -379,13 +379,6 @@ namespace CS_MonsoonProjectSelector
             PropertyCondition buttonName = new PropertyCondition(
                 AutomationElement.NameProperty, ButtonName);
 
-            //Debug.Write("Setting the PropertyCondition buttonType." + Environment.NewLine);
-            //PropertyCondition buttonType = new PropertyCondition(
-            //    AutomationElement.LocalizedControlTypeProperty, "button");
-
-            //Debug.Write("Setting the AndCondidtion." + Environment.NewLine);
-            //AndCondition condition = new AndCondition(buttonName, buttonType);
-
             Debug.Write("Setting the button element." + Environment.NewLine);
             //AutomationElement button = waitForElement(sub, TreeScope.Children, condition);
             AutomationElement button = waitForElement(sub, TreeScope.Children, buttonName);
