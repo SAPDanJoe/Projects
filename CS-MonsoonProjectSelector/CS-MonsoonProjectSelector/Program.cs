@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Automation;
@@ -108,7 +110,7 @@ namespace CS_MonsoonProjectSelector
             string sshBackup = Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\backup\";
 
             bool sshPathExist = Directory.Exists(sshPath);
-            bool sshFileExist = Directory.Exists(sshFile);
+            bool sshFileExist = File.Exists(sshFile);
             bool sshBackupExist = Directory.Exists(sshBackup);
 
             //Create a backup if .ssh\id_rsa exists and .ssh\backup does not
@@ -122,7 +124,7 @@ namespace CS_MonsoonProjectSelector
                     sshBackup + @"id_rsa_BAK_" + DateTime.Now.ToString("yyyy-MM-dd_hhmmss"));  
    
                 //now backup the existing public key, after checking existence
-                string pubKey = sshPath + @".pub";
+                string pubKey = sshFile + @".pub";
                 if (File.Exists(pubKey))
                 {
 		            File.Move(
@@ -131,7 +133,7 @@ namespace CS_MonsoonProjectSelector
                 }
 
                 //Also backup the putty key if it exists
-                string putKey = sshPath + @".ppk";
+                string putKey = sshFile + @".ppk";
                 if (File.Exists(putKey))
                 {
 		            File.Move(
@@ -144,39 +146,57 @@ namespace CS_MonsoonProjectSelector
 
             //private key
             string ID_RSA = (string)config.Element("PrivateKeyTextBox");
-            File.WriteAllText(sshPath,ID_RSA);
+            File.WriteAllText(sshFile,ID_RSA);
 
             //public key
             string ID_RSA_PUB = (string)config.Element("PublicKeyTextBox");
-            File.WriteAllText(sshPath +".pub", ID_RSA_PUB);
+            File.WriteAllText(sshFile +".pub", ID_RSA_PUB);
 
             //puTTY Key
-            string puTTYgemPath = (string)config.Element("puTTYgenTextBox");
-            if (File.Exists(puTTYgemPath))
+            string ppkFile = Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\id_rsa.ppk";            
+            
+            string puTTYgenPath = (string)config.Element("puTTYgenTextBox");
+            if (File.Exists(puTTYgenPath))
             {
-                System.Diagnostics.Process PPKgenerator = new System.Diagnostics.Process();
-                PPKgenerator.StartInfo.FileName = puTTYgemPath;
-                PPKgenerator.StartInfo.Arguments = ID_RSA;
+                if (System.IO.File.Exists(ppkFile))
+                {   //the file already exists, so delete it first
+                    System.IO.File.Delete(ppkFile);
+                }                
+                
+                Process PPKgenerator = new Process();
+                PPKgenerator.StartInfo.FileName = puTTYgenPath;
+                PPKgenerator.StartInfo.Arguments = sshFile;
                 PPKgenerator.Start();
 
-                AutomationElement  genWindow = 
-                    AutomationElement.RootElement.FindAll(
-                    TreeScope.Children,
-                    new PropertyCondition(
-                        AutomationElement.ProcessIdProperty, PPKgenerator.Id))[0];                
-                
-                TreeWalker uiTree = TreeWalker.ControlViewWalker;
-                AutomationElement parent;
-                AutomationElement node = genWindow;
+                int PPKid = PPKgenerator.Id;
 
-                
+                Debug.Write("Clicking the OK button...");
+                clickButton(PPKid, "OK");
 
-                AutomationElement genSaveBurron =
-                    genWindow.FindFirst(
-                    TreeScope.Children,
-                    new PropertyCondition(
-                        AutomationElement.NameProperty, "Save private key"));
-                genSaveBurron.
+                Debug.Write("Clicking the Save Key button...");
+                clickButton(PPKid, "Save private key");
+
+                Debug.Write("Clicking the Yes button...");
+                clickButton(PPKid, "Yes", "PuTTYgen Warning");
+
+                Debug.Write("Writing the destination path...");
+                enterText(PPKid, ppkFile,@"Save private key as:");
+
+                Debug.Write("Clicking the Save file button...");
+                clickButton(PPKid, "Save", @"Save private key as:");
+
+                //wait for the file to be written to the system
+                while (!System.IO.File.Exists(ppkFile))
+                {
+                    System.Threading.Thread.Sleep(50);
+                }
+
+                //close the window
+                PPKgenerator.Kill();
+            }
+            else
+            {
+                Debug.Write("The PuTTY key generator does not appear to be installed.  A PuTTY keyfile has not been generated.");
             }
 
 
@@ -317,6 +337,202 @@ namespace CS_MonsoonProjectSelector
             /// NOTE: this will override a previous variable in the given scope
             /// </summanry>
             Environment.SetEnvironmentVariable(varName, value, scope);
+        }
+
+        /// <summary>
+        /// Clicks a button on a main or subwindow of a windows form.  Use Inspect 
+        /// or UISpy to get the element names (windows and buttons).
+        /// </summary>
+        /// <param name="ProcID">The process ID of the target application</param>
+        /// <param name="ButtonName">The name of the button to click</param>
+        /// <param name="subWindowName">[optional] The name of the subwindow</param>
+        static void clickButton(int ProcID, string ButtonName, string subWindowName = null)
+        {
+            //binds to the desktop (root element of all windows)
+            Debug.Write("Binding to the root desktop element." + Environment.NewLine);
+            AutomationElement root = AutomationElement.RootElement;
+
+            Debug.Write("Setting PropertyCondition UIAProcID." + Environment.NewLine);
+            PropertyCondition UIAProcID = new PropertyCondition(
+                AutomationElement.ProcessIdProperty, ProcID);
+
+            Debug.Write("Setting AutomationElement Window." + Environment.NewLine);
+            AutomationElement Window = waitForElement(root,TreeScope.Children, UIAProcID);
+
+            AutomationElement sub = null;
+            if (subWindowName != null)
+            {
+                Debug.Write("Setting PropertyCondition subWindow ." + Environment.NewLine);
+                PropertyCondition subWindow = new PropertyCondition(
+                    AutomationElement.NameProperty, subWindowName);
+
+                Debug.Write("Setting the ActionElement sub to subWindow." + Environment.NewLine);
+                sub = waitForElement(Window,TreeScope.Children, subWindow);
+            }
+            else
+            {
+                Debug.Write("No sub-window specified, Setting the ActionElement sub to Window." + Environment.NewLine);
+                sub = Window;
+            }
+
+            Debug.Write("Setting PropertyCondition buttonName." + Environment.NewLine);
+            PropertyCondition buttonName = new PropertyCondition(
+                AutomationElement.NameProperty, ButtonName);
+
+            //Debug.Write("Setting the PropertyCondition buttonType." + Environment.NewLine);
+            //PropertyCondition buttonType = new PropertyCondition(
+            //    AutomationElement.LocalizedControlTypeProperty, "button");
+
+            //Debug.Write("Setting the AndCondidtion." + Environment.NewLine);
+            //AndCondition condition = new AndCondition(buttonName, buttonType);
+
+            Debug.Write("Setting the button element." + Environment.NewLine);
+            //AutomationElement button = waitForElement(sub, TreeScope.Children, condition);
+            AutomationElement button = waitForElement(sub, TreeScope.Children, buttonName);
+
+            Debug.Write("Setting the button invocation action." + Environment.NewLine);
+            InvokePattern doClick = (InvokePattern)button.GetCurrentPattern(InvokePattern.Pattern);
+
+
+            Debug.Write("Invoking the button action (click)." + Environment.NewLine);
+            System.Threading.ThreadStart invokeModal = new System.Threading.ThreadStart(doClick.Invoke);
+            System.Threading.Thread modal = new System.Threading.Thread(invokeModal);
+            modal.Start();
+
+            Debug.Write("The button has been clicked." + Environment.NewLine);
+        }
+
+        /// <summary>
+        /// Enters text in a a main or subwindow combo entry box.  Use Inspect 
+        /// or UISpy to get the main and sub window names.
+        /// </summary>
+        /// <param name="ProcID">The process ID of the target application</param>
+        /// <param name="text">The text to be entered</param>
+        /// <param name="subWindowName">[optional] The name of the subwindow</param>
+        static void enterText(int ProcID, string text, string subWindowName = null)
+        {
+            //binds to the desktop (root element of all windows)
+            Debug.Write("Binding to the root desktop element." + Environment.NewLine);
+            AutomationElement root = AutomationElement.RootElement;
+
+            Debug.Write("Setting PropertyCondition UIAProcID." + Environment.NewLine);
+            PropertyCondition UIAProcID = new PropertyCondition(
+                AutomationElement.ProcessIdProperty, ProcID);
+
+            Debug.Write("Setting AutomationElement Window." + Environment.NewLine);
+            AutomationElement Window = waitForElement(root, TreeScope.Children, UIAProcID);
+
+            AutomationElement sub = null;
+            if (subWindowName != null)
+            {
+                Debug.Write("Setting PropertyCondition subWindow ." + Environment.NewLine);
+                PropertyCondition subWindow = new PropertyCondition(
+                    AutomationElement.NameProperty, subWindowName);
+
+                Debug.Write("Setting the ActionElement sub to subWindow." + Environment.NewLine);       
+                sub = waitForElement(Window,TreeScope.Children, subWindow);
+            }
+            else
+            {
+                Debug.Write("No sub-window specified, Setting the ActionElement sub to Window." + Environment.NewLine);
+                sub = Window;
+            }
+
+            Debug.Write("Setting PropertyCondition fieldType." + Environment.NewLine);
+            PropertyCondition fieldType = new PropertyCondition(
+                AutomationElement.LocalizedControlTypeProperty, "combo box");
+
+            Debug.Write("Setting the field element." + Environment.NewLine);
+            AutomationElement field = waitForElement(sub,TreeScope.Descendants, fieldType);
+
+            object valuePattern = null;
+
+            if (field.TryGetCurrentPattern(
+                ValuePattern.Pattern, out valuePattern))
+            {
+                Debug.Write("Writing text to the path name." + Environment.NewLine);
+                field.SetFocus();
+                ((ValuePattern)valuePattern).SetValue(text);
+            }
+            else
+            {
+                Debug.Write("field does not support VlauePattern, use SendKeys" + Environment.NewLine);
+            }
+        }
+
+        /// <summary>
+        /// Searches for an Element inside the specified root with that matches the given condition.  Returns and AutomationElement.
+        /// </summary>
+        /// <param name="root">The root element in which to search</param>
+        /// <param name="scope">This is the level at which to search.</param>
+        /// <param name="condition">The UIA condition to use as a filter.</param>
+        /// <returns></returns>
+        static AutomationElement waitForElement(AutomationElement root, TreeScope scope, PropertyCondition condition)
+        {
+            while (root.FindFirst(scope, condition) == null)
+            {
+                Thread.Sleep(50);
+            }
+
+            AutomationElement resultElement = root.FindFirst(scope, condition);
+            return resultElement;
+        }
+
+        static void auto()
+        {//this was my scratch code for the automation
+            
+            //using System.Diagnostics;
+            //using System.Windows.Automation;
+            //added references for Framework: UIAutomationClient and UIAutomationTypes
+
+            //the goal is to launch puttygen with a specific private key, and save it in 
+            //putty's ppk format without any user interaction
+
+            //define some variables
+            string puTTYgenPath =
+                Environment.GetEnvironmentVariable("ProgramFiles(x86)") +
+                @"\putty\puttygen.exe"; //location of Puttygen
+            string ID_RSA =
+                Environment.GetEnvironmentVariable("USERPROFILE") +
+                @"\.ssh\ID_RSA";        //location of file to convert
+
+            //create a process
+            System.Diagnostics.Process PPKgenerator = new System.Diagnostics.Process();
+
+            //add start info to the process
+            PPKgenerator.StartInfo.FileName = puTTYgenPath;
+            PPKgenerator.StartInfo.Arguments = ID_RSA;
+
+            //start the process
+            PPKgenerator.Start();
+
+            //get the process ID
+            int procID = PPKgenerator.Id;
+
+            Debug.Write("Clicking the OK button...");
+            clickButton(procID, "OK");
+
+            Debug.Write("Clicking the Save Key button...");
+            clickButton(procID, "Save private key");
+
+            Debug.Write("Clicking the Yes button...");
+            clickButton(procID, "Yes", "PuTTYgen Warning");
+
+            Debug.Write("Writing the destination path...");
+            enterText(
+                procID,
+                Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\id_rsa.ppk",
+                @"Save private key as:");
+
+            Debug.Write("Clicking the Save file button...");
+            clickButton(procID, "Save", @"Save private key as:");
+
+            while (!System.IO.File.Exists(Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\id_rsa.ppk"))
+            {
+                System.Threading.Thread.Sleep(50);
+            }
+
+            Process.GetProcessById(procID).Kill();
         }
 
     }

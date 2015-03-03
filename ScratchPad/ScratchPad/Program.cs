@@ -60,19 +60,36 @@ namespace ScratchPad
             Debug.Write("Clicking the OK button...");
             clickButton(procID, "OK");
 
-            Debug.Write("Clicking the Save button...");
+            Debug.Write("Clicking the Save Key button...");
             clickButton(procID, "Save private key");
 
             Debug.Write("Clicking the Yes button...");
             clickButton(procID, "Yes", "PuTTYgen Warning");
 
-            //Debug.Write("Writing the destination path...");
+            Debug.Write("Writing the destination path...");
             enterText(
                 procID, 
                 Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\id_rsa.ppk",
                 @"Save private key as:");
+
+            Debug.Write("Clicking the Save file button...");
+            clickButton(procID, "Save", @"Save private key as:");
+
+            while (!System.IO.File.Exists(Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\id_rsa.ppk"))
+            {
+                System.Threading.Thread.Sleep(50);
+            }
+
+            Process.GetProcessById(procID).Kill();
         }
 
+        /// <summary>
+        /// Clicks a button on a main or subwindow of a windows form.  Use Inspect 
+        /// or UISpy to get the element names (windows and buttons).
+        /// </summary>
+        /// <param name="ProcID">The process ID of the target application</param>
+        /// <param name="ButtonName">The name of the button to click</param>
+        /// <param name="subWindowName">[optional] The name of the subwindow</param>
         static void clickButton(int ProcID, string ButtonName, string subWindowName = null)
         {
             AutomationElement root = AutomationElement.RootElement;
@@ -140,6 +157,13 @@ namespace ScratchPad
             //cache.Add(AutomationElement.)
         }
 
+        /// <summary>
+        /// Enters text in a a main or subwindow combo entry box.  Use Inspect 
+        /// or UISpy to get the main and sub window names.
+        /// </summary>
+        /// <param name="ProcID">The process ID of the target application</param>
+        /// <param name="text">The text to be entered</param>
+        /// <param name="subWindowName">[optional] The name of the subwindow</param>
         static void enterText(int ProcID, string text, string subWindowName = null)
         {
             AutomationElement root = AutomationElement.RootElement;
@@ -172,47 +196,37 @@ namespace ScratchPad
                 string tes1 = (string)Window.FindFirst(TreeScope.Children, subWindow).Current.Name;
                 string tes2 = (string)Window.FindFirst(TreeScope.Children, new PropertyCondition(
                     AutomationElement.NameProperty, @"Save private key as:")).Current.Name;
-                //PropertyCondition(AutomationElement.NameProperty, "Save private key as:")
 
             }
             else
             {
                 sub = Window;
             }
-
-            PropertyCondition fieldName = new PropertyCondition(
-                AutomationElement.NameProperty, text);
-
-            Debug.Write("fieldName has been set." + Environment.NewLine);
-
+            
             PropertyCondition fieldType = new PropertyCondition(
                 AutomationElement.LocalizedControlTypeProperty, "combo box");
 
             Debug.Write("fieldType has been set." + Environment.NewLine);
 
-            AndCondition condition = new AndCondition(fieldName, fieldType);
-
-            Debug.Write("condition has been set." + Environment.NewLine);
-
-            AutomationElement field = sub.FindFirst(TreeScope.Descendants, fieldType);
-
-            
+            AutomationElement field = sub.FindFirst(TreeScope.Descendants, fieldType);            
             
             Debug.Write("field has been set." + Environment.NewLine);
 
-            //InvokePattern doClick = (InvokePattern)button.GetCurrentPattern(InvokePattern.Pattern);
 
-            //Debug.Write("doClick has been set." + Environment.NewLine);
-            //Debug.Write("Before action: { doClick.Invoke() } with window {" + Window.Current.Name + "} and button: {" + button.Current.Name + "}." + Environment.NewLine);
+            object valuePattern = null;
 
-            //System.Threading.ThreadStart invokeModal = new System.Threading.ThreadStart(doClick.Invoke);
-            //System.Threading.Thread modal = new System.Threading.Thread(invokeModal);
-            //modal.Start();
-            //// doClick.Invoke();
-            //Debug.Write("Action exited: { doClick.Invoke() }." + Environment.NewLine);
+            if (field.TryGetCurrentPattern(
+                ValuePattern.Pattern, out valuePattern))
+            {
+                field.SetFocus();
+                ((ValuePattern)valuePattern).SetValue(text);
+                Debug.Write("text has been set!" + Environment.NewLine);
+            }
+            else
+            {
+                Debug.Write("field does not support VlauePattern, use SendKeys" + Environment.NewLine);
+            }
 
-            //CacheRequest cache = new CacheRequest();
-            //cache.Add(AutomationElement.)
         }
     }
 }
