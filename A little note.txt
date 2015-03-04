@@ -1,0 +1,54 @@
+<settings id="current" created="3/3/2015 11:51:31 AM">	<DevkitBinTextBox>C:\monsoon\chef\embedded</DevkitBinTextBox>
+	<MachineConfigItem0>Machine config item value</MachineConfigItem0>
+	<KitchentLogLevelComboBox>
+	  <item selected="1">Default</item>
+	  <item>Debug</item>
+	  <item>Verbose</item>
+	</KitchentLogLevelComboBox>
+	<MachineConfigItem1>Machine config item value</MachineConfigItem1>
+	<MachineConfigItem2>Machine config item value</MachineConfigItem2>
+	<UserIDComboBox>
+	  <item selected="1">
+		<name>i837633</name>
+		<PublicKeyTextBox>PublicKey Value</PublicKeyTextBox>
+		<PrivateKeyTextBox>
+		-----BEGIN RSA PRIVATE KEY-----
+		-----END RSA PRIVATE KEY-----
+		</PrivateKeyTextBox>
+	  </item>
+	  <item>
+		<name>i837644</name>
+	  </item>
+	  <item>
+		<name>i837655</name>
+	  </item>
+	  <item>
+		<name>i837666</name>
+	  </item>
+	</UserIDComboBox>
+	<OrgTextBox>
+	  <item selected="1">
+		<name>i837644</name>
+		<ProjectNameComboBox>
+		  <item>
+			<name>test</name>
+		  </item>
+		  <item>
+			<name>third test</name>
+		  </item>
+		  <item selected = "1">
+			<name>kitchen</name>
+			<KeyIDTextBox>Default</KeyIDTextBox>
+			<AccessKeyTextBox>AccessKey Value</AccessKeyTextBox>
+			<SecretKeyTextBox>SecretKey Value</SecretKeyTextBox>
+		  </item>		  
+		  <item>
+			<name>other test</name>
+		  </item>
+		  <item>
+			<name>one more test</name>
+		  </item>
+		</ProjectNameComboBox>
+	  </item>
+    </OrgTextBox>
+</settings>
