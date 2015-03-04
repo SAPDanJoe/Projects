@@ -20,7 +20,6 @@ namespace CS_MonsoonProjectSelector
             InitializeComponent();  //designer code, don't modify
             LoadDefaults();
             LoadData();
-            Debug.Write("");
         }
 
         #region Private form variable definitions
@@ -48,6 +47,7 @@ namespace CS_MonsoonProjectSelector
             VagrantEmbeddedTextBox.Text = "\\Vagrant\\embedded";
             VagrantEmbeddedBinTextBox.Text = "\\Vagrant\\embedded\\bin";
             KitchentLogLevelComboBox.Text = "Default";
+            puTTYgenTextBox.Text = "C:\\Program Files (x86)\\PuTTY\\puttygen.exe";
             UserIDComboBox.Items.Add(Environment.GetEnvironmentVariable("USERNAME").ToLower());
             UserIDComboBox.SelectedItem = (string)Environment.GetEnvironmentVariable("USERNAME").ToLower();
 
@@ -65,6 +65,7 @@ namespace CS_MonsoonProjectSelector
             EC2UrlTextBox.ForeColor = System.Drawing.Color.Gray;
             VagrantEmbeddedTextBox.ForeColor = System.Drawing.Color.Gray;
             VagrantEmbeddedBinTextBox.ForeColor = System.Drawing.Color.Gray;
+            puTTYgenTextBox.ForeColor = System.Drawing.Color.Gray;
             KitchentLogLevelComboBox.ForeColor = System.Drawing.Color.Gray;
             UserIDComboBox.ForeColor = System.Drawing.Color.Gray;
         }
@@ -92,13 +93,14 @@ namespace CS_MonsoonProjectSelector
             readXMLtoForm(EC2UrlTextBox, fileSettings);
             readXMLtoForm(VagrantEmbeddedTextBox, fileSettings);
             readXMLtoForm(VagrantEmbeddedBinTextBox, fileSettings);
+            readXMLtoForm(puTTYgenTextBox, fileSettings);
             readXMLtoForm(ProjectNameComboBox, fileSettings);
             //valueReader(KitchentLogLevelComboBox, fileSettings);  <-- This is not necessary, because adding values is not allowed.
             readXMLtoForm(UserIDComboBox, fileSettings);
 
             //set selected items in combo boxes
             setSelections(ProjectNameComboBox, fileSettings);
-            setSelections(KitchentLogLevelComboBox, fileSettings);
+            setSelections(KitchentLogLevelComboBox, fileSettings);  //but we do need to get the selected value from the XML File
             setSelections(UserIDComboBox, fileSettings);
         }
 
@@ -228,67 +230,6 @@ namespace CS_MonsoonProjectSelector
 //            }
         }
 
-        private XDocument xmlFormData()
-        {   
-            XDocument newForm = new XDocument(
-                new XElement("settings",
-                    new XAttribute("id", "current")
-                    )
-                );
-
-            //select that single settings current element
-            XElement formContents = newForm.XPathSelectElement("settings[@id = 'current']");
-
-            //load the form data into the new element
-            formContents = writeFormToXML(UserIDComboBox, formContents);
-            formContents = writeFormToXML(PublicKeyTextBox, formContents);
-            formContents = writeFormToXML(PrivateKeyTextBox, formContents);
-            formContents = writeFormToXML(OrgTextBox, formContents);
-            formContents = writeFormToXML(ProjectNameComboBox, formContents);
-            formContents = writeFormToXML(KeyIDTextBox, formContents);
-            formContents = writeFormToXML(AccessKeyTextBox, formContents);
-            formContents = writeFormToXML(SecretKeyTextBox, formContents);
-            formContents = writeFormToXML(DevkitBinTextBox, formContents);
-            formContents = writeFormToXML(MinGWBinTextBox, formContents);
-            formContents = writeFormToXML(ChefEmbeddedBinTextBox, formContents);
-            formContents = writeFormToXML(ChefRootTextBox, formContents);
-            formContents = writeFormToXML(KitchentLogLevelComboBox, formContents);
-            formContents = writeFormToXML(GitSSHTextBox, formContents);
-            formContents = writeFormToXML(GitEmailAddressTextBox, formContents);
-            formContents = writeFormToXML(GitFirstNameTextBox, formContents);
-            formContents = writeFormToXML(GitLastNameTextBox, formContents);
-            formContents = writeFormToXML(GEMPathTextBox, formContents);
-            formContents = writeFormToXML(GEMSourcesTextBox, formContents);
-            formContents = writeFormToXML(EC2HomeTextBox, formContents);
-            formContents = writeFormToXML(EC2UrlTextBox, formContents);
-            formContents = writeFormToXML(VagrantEmbeddedTextBox, formContents);
-            formContents = writeFormToXML(VagrantEmbeddedBinTextBox, formContents);
-            return newForm;
-        }
-
-        private bool formChanged(XDocument xForm, XElement xFileSettings)
-        {
-            //sanitize both for comparision by removing attribute from 'settings'
-            //must store sanitization in a new element to avooid damage to the original structures
-
-            XElement cleanedFileSettings = new XElement(xFileSettings);
-            cleanedFileSettings.RemoveAttributes();
-            XElement cleanedFormData = new XElement(xForm.XPathSelectElement("settings[@id = 'current']"));
-            cleanedFormData.RemoveAttributes();
-
-            if (XNode.DeepEquals(cleanedFormData, cleanedFileSettings))
-            {   //no variance detected, no action required
-                //reserving this space in the condition to present debugging data if needed
-                Debug.Write("formChanged: No changes were found.\n");
-                return false;
-            }
-            else
-            { //variance detected, return true
-                Debug.Write("formChanged: The data does not match.\n");
-                return true;                
-            }
-        }
-
         private XElement writeFormToXML(TextBox tBox, XElement current)
         {
             if (tBox.Text != string.Empty)
@@ -408,6 +349,7 @@ namespace CS_MonsoonProjectSelector
                 );
         }
 
+
         //Individual actions: Other
         private void SaveAllButton_Click(object sender, EventArgs e)
         {
@@ -461,7 +403,7 @@ namespace CS_MonsoonProjectSelector
             }
 
             //run the setting loader
-            Program.loadSettings(currentConfig, mode);
+            Program.loadEnvironment(currentConfig, mode);
 
             //open the command prompt
             if (commandWindow)
@@ -535,7 +477,7 @@ namespace CS_MonsoonProjectSelector
 
         #endregion
 
-        #region formHelpers
+        #region Helpers
         //These are all helper methods for the form
         //they handle any tasks that are not directly
         //initiated by a form action        
@@ -595,6 +537,78 @@ namespace CS_MonsoonProjectSelector
                  tBox.Text = tBox.Tag.ToString().Equals("Folder") ?
                      folder :
                      FileBrowserDialog.FileName;
+            }
+        }
+
+        /// <summary>
+        /// Collects all the data stored in the form in the specidied XML format.
+        /// </summary>
+        /// <returns>Returns and XDocument representing the data currently on the form.</returns>
+        private XDocument xmlFormData()
+        {   
+            XDocument newForm = new XDocument(
+                new XElement("settings",
+                    new XAttribute("id", "current")
+                    )
+                );
+
+            //select that single settings current element
+            XElement formContents = newForm.XPathSelectElement("settings[@id = 'current']");
+
+            //load the form data into the new element
+            formContents = writeFormToXML(UserIDComboBox, formContents);
+            formContents = writeFormToXML(PublicKeyTextBox, formContents);
+            formContents = writeFormToXML(PrivateKeyTextBox, formContents);
+            formContents = writeFormToXML(OrgTextBox, formContents);
+            formContents = writeFormToXML(ProjectNameComboBox, formContents);
+            formContents = writeFormToXML(KeyIDTextBox, formContents);
+            formContents = writeFormToXML(AccessKeyTextBox, formContents);
+            formContents = writeFormToXML(SecretKeyTextBox, formContents);
+            formContents = writeFormToXML(DevkitBinTextBox, formContents);
+            formContents = writeFormToXML(MinGWBinTextBox, formContents);
+            formContents = writeFormToXML(ChefEmbeddedBinTextBox, formContents);
+            formContents = writeFormToXML(ChefRootTextBox, formContents);
+            formContents = writeFormToXML(KitchentLogLevelComboBox, formContents);
+            formContents = writeFormToXML(GitSSHTextBox, formContents);
+            formContents = writeFormToXML(GitEmailAddressTextBox, formContents);
+            formContents = writeFormToXML(GitFirstNameTextBox, formContents);
+            formContents = writeFormToXML(GitLastNameTextBox, formContents);
+            formContents = writeFormToXML(GEMPathTextBox, formContents);
+            formContents = writeFormToXML(GEMSourcesTextBox, formContents);
+            formContents = writeFormToXML(EC2HomeTextBox, formContents);
+            formContents = writeFormToXML(EC2UrlTextBox, formContents);
+            formContents = writeFormToXML(VagrantEmbeddedTextBox, formContents);
+            formContents = writeFormToXML(VagrantEmbeddedBinTextBox, formContents);
+            formContents = writeFormToXML(puTTYgenTextBox, formContents);            
+            return newForm;
+        }
+
+        /// <summary>
+        /// Checks to see if the data on the form is different from the data in the XML Settings.
+        /// </summary>
+        /// <param name="xForm">XDocument representing the Form</param>
+        /// <param name="xFileSettings">XElement representing the current settings in the file.</param>
+        /// <returns>Returns bool</returns>
+        private bool formChanged(XDocument xForm, XElement xFileSettings)
+        {
+            //sanitize both for comparision by removing attribute from 'settings'
+            //must store sanitization in a new element to avooid damage to the original structures
+
+            XElement cleanedFileSettings = new XElement(xFileSettings);
+            cleanedFileSettings.RemoveAttributes();
+            XElement cleanedFormData = new XElement(xForm.XPathSelectElement("settings[@id = 'current']"));
+            cleanedFormData.RemoveAttributes();
+
+            if (XNode.DeepEquals(cleanedFormData, cleanedFileSettings))
+            {   //no variance detected, no action required
+                //reserving this space in the condition to present debugging data if needed
+                Debug.Write("formChanged: No changes were found.\n");
+                return false;
+            }
+            else
+            { //variance detected, return true
+                Debug.Write("formChanged: The data does not match.\n");
+                return true;                
             }
         }
 

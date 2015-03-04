@@ -24,14 +24,14 @@ namespace CS_MonsoonProjectSelector
             Application.Run(new MonsoonSettingsMainForm());
         }
 
-        public static System.IO.FileInfo settings = initializeConfig();
+        public static FileInfo settings = initializeConfig();
        
-        public static System.IO.FileInfo initializeConfig ()
+        /// <summary>
+        /// Check if there is an existing config file, and if not creates one.
+        /// </summary>
+        /// <returns>Returns the file as a fileinfo object.</returns>
+        public static FileInfo initializeConfig ()
         {   
-            //Check if there is an existing config file
-            //if not, create one
-            //return the file as a fileinfo object
-
             //string components of path to confilg file
             string appdata = System.Environment.GetEnvironmentVariable("APPDATA");
             string configPath = @"\SAPIT\Monsoon\";
@@ -53,31 +53,33 @@ namespace CS_MonsoonProjectSelector
             return config;
         }
 
-        public static void generateNewConfig(System.IO.FileInfo configFile)
+        /// <summary>
+        /// This generates a new empty XML settings file, and logs the date/time when the file was initialized.
+        /// </summary>
+        /// <param name="configFile">The FileInfo for the destination file.</param>
+        public static void generateNewConfig(FileInfo configFile)
         {
-            //This generates a new empty XML settings file, and 
-            //logs the date/time when the file was initialized.
-           
-            System.Xml.Linq.XDocument xconfig = new System.Xml.Linq.XDocument(
-                new System.Xml.Linq.XElement("configFile",
-                    new System.Xml.Linq.XAttribute("created",
-                        System.DateTime.Now.ToString()
+            XDocument xconfig = new XDocument(
+                new XElement("configFile",
+                    new XAttribute("created",
+                        DateTime.Now.ToString()
                     ),
-                    new System.Xml.Linq.XElement("settings",
-                        new System.Xml.Linq.XAttribute("id","current"),
-                        new System.Xml.Linq.XAttribute("created",System.DateTime.Now.ToString())
+                    new XElement("settings",
+                        new XAttribute("id","current"),
+                        new XAttribute("created",DateTime.Now.ToString())
                     )
                 )
             );
-
             xconfig.Save(configFile.ToString());
         }
 
-        public static void loadSettings(XElement config, EnvironmentVariableTarget mode)
+        /// <summary>
+        /// This will load the settings from the form into the environment based on the provided mode, then launch a command window. NOTE: some of these settings are environment variables, and some are files
+        /// </summary>
+        /// <param name="config">This XElement is the XML configuration element</param>
+        /// <param name="mode">The intended scope for the settings. {Process, User, Machine}</param>
+        public static void loadEnvironment(XElement config, EnvironmentVariableTarget mode)
         {
-            //this will load the settings based on the provided mode, and launch a command window
-            //note that some of these settings are environment variables, and some are files
-
             //environmental Variables
             //!!!!!Chef
             //!!!!!!!!Variables
@@ -299,21 +301,19 @@ namespace CS_MonsoonProjectSelector
             addEnv("Mo_Configured", DateTime.Now.ToString(), mode);
         }
 
+        #region Environment
+        //All of the handlers for the environmental variables and local setting files
+
+        /// <summary>
+        /// Adds value to the PATH, in the specified order.
+        /// </summary>
+        /// <param name="value">The value to add to the path</param>
+        /// <param name="scope">[Optional] The variable scope {*Process, User, Machine}</param>
+        /// <param name="order">[Optional] Where to add the value {beginning, *end}(</param>
         public static void addEnv(string value, EnvironmentVariableTarget scope = EnvironmentVariableTarget.Process, string order = "end")
-        {   /// <summary>
-            /// Adds a value to the PATH using the provided:
-            /// [string]value {The value to add to the path}
-            /// [EnvironmentVariableTarget]scope {*Process, User, Machine}
-            /// [string]order {beginning, *end}
-            /// *defaults
-            /// </summanry>
-                      
-            
-            //Adds a vaue to the system path
-            //get current contents of the PATH
+        {   
             string currentPath = Environment.GetEnvironmentVariable("PATH");
             string newPath;
-
 
             switch (order)
             {
@@ -328,16 +328,20 @@ namespace CS_MonsoonProjectSelector
             Environment.SetEnvironmentVariable("PATH", newPath, scope);
         }
 
+        /// <summary>
+        /// Adds and environmental variable in the specified scope, overriding a previous variable in the given scope.
+        /// </summary>
+        /// <param name="varName">The variable name to be set.</param>
+        /// <param name="value">The value to assign the variable.</param>
+        /// <param name="scope">Specifies the scope for the variable (user, system, etc.)</param>
         public static void addEnv(string varName, string value, EnvironmentVariableTarget scope)
-        {   /// <summary>
-            /// Adds an env Variable using the provided:
-            /// [string]name {The name of the var to add}
-            /// [string]value {The variable value to add}
-            /// [EnvironmentVariableTarget]scope {Process, User, Machine}
-            /// NOTE: this will override a previous variable in the given scope
-            /// </summanry>
+        {   
             Environment.SetEnvironmentVariable(varName, value, scope);
         }
+        #endregion
+
+        #region UIAutomation
+        //Contains the code for the UI automation that the PPK generation requires
 
         /// <summary>
         /// Clicks a button on a main or subwindow of a windows form.  Use Inspect 
@@ -471,6 +475,8 @@ namespace CS_MonsoonProjectSelector
             return resultElement;
         }
 
+        #endregion
+
         static void auto()
         {//this was my scratch code for the automation
             
@@ -527,6 +533,5 @@ namespace CS_MonsoonProjectSelector
 
             Process.GetProcessById(procID).Kill();
         }
-
     }
 }
