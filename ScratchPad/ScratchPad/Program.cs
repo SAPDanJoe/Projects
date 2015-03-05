@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.XPath;
+using System.Xml.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
@@ -15,9 +16,44 @@ namespace ScratchPad
     {
         static void Main(string[] args)
         {
-           auto();
+            XDocument myDoc = XMLStore("configFile");
+
+            myDoc = XMLStore("name", "value", myDoc);
+
         }
 
+        #region Hierarchal XML
+
+        public static XDocument createXML(string rootName)
+        {
+            XDocument doc = new XDocument();
+            doc.Add(new XElement(rootName));
+            return doc;
+        }
+
+        public static XDocument XMLStore(string name, string value = null, XDocument doc = null, string parent = "configFile", bool attrib = false)
+        {
+            if (value == null)
+            {
+                doc = new XDocument();
+                doc.Add(new XElement(name));
+            }
+            else if (attrib)
+            {
+                doc.XPathSelectElement(parent).Add(new XAttribute(name, value));
+            }
+            else
+            {
+                doc.XPathSelectElement(parent).Add(new XElement(name, value));
+            }
+
+            return doc;
+        }
+
+
+        #endregion
+
+        #region File Cryptogrophy
         static void crypt()
         {
             //using System.Security.Cryptography;
@@ -26,6 +62,9 @@ namespace ScratchPad
             string keys = provider.ToXmlString(true);
             int i = 0;
         }
+        #endregion
+
+        #region UIAutomation testing
 
         static void auto()
         {
@@ -228,6 +267,8 @@ namespace ScratchPad
             }
 
         }
+        #endregion
+
     }
 }
 
