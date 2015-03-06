@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.XPath;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
@@ -9,14 +8,149 @@ using System.Security.Cryptography;
 using System.Diagnostics;
 using System.Windows.Automation;
 
+using System.Xml.Linq;
+using System.Xml.XPath;
+
+using System.Data;
+
+
 namespace ScratchPad
 {
     class Program
-    {
+    {        
         static void Main(string[] args)
         {
-           auto();
+            System.Windows.Forms.Application.EnableVisualStyles();
+            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+            System.Windows.Forms.Application.Run(new ScratchForm());
+            makeXML();
         }
+
+        #region XMLdata
+        
+        static void makeXML()
+        {
+            //base root name of the XML
+            string rootParent = "configFile";
+
+            //create a document
+            XDocument xdoc = XMLDoc(rootParent);
+
+            //add a 'settings' element node
+            xdoc = XMLDoc(xdoc, rootParent, "settings");
+
+            //reference to the newly added node
+            string currentSettings = rootParent + "/settings";
+
+            //add the "current" attribute
+            xdoc = XMLDoc(xdoc, currentSettings, "current", "1", true);
+            //add another settings node without the current attribute
+            xdoc = XMLDoc(xdoc, rootParent, "settings", "These are some other non-current settings, without the \"current\" attribute.");
+
+            //respecify the currentSettings to be the one with the "current" attribute
+            currentSettings += "[@current = '1']";
+
+            //generate some machine settings
+            for (int i = 0; i < 10; i++)
+            {
+                xdoc = XMLDoc(xdoc, currentSettings, "machineSetting" + i.ToString(), @"C:\monsoon\chef\bin");
+            }
+
+            //defines the name of the next element, and the XPath where it will be found
+            string moElementName = "monsoon";
+            string moPath = currentSettings + "/" + moElementName;
+
+            //defines the name of the next element, and the XPath where it will be found
+            string orgElementName = "organization";
+            string currentOrg = moPath + "/" + orgElementName;
+
+            //add the mo element
+            xdoc = XMLDoc(xdoc, currentSettings, moElementName);
+
+            //add some mo settings
+            xdoc = XMLDoc(xdoc, moPath, "SSH_Public_Key", @"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjCLCr+dnXbKjguZ7okOJmwZnYzp8h2VWEMnnTMPyM/iL0A+EQebw2PzSFSZVtGQaAJ4rq5j5DD6dPOp7I6FrzVgWnie6RTUd7sqC+Uu1z/SoNOMIjPvzYvp8bmMi9lLK0S/zPq7fnTr00rLW6pRM0HoeH5IXqeoOfk0Zzz4qMcPpeR5j4Q2Snaq6KAu9xWiBfGkgWrmwYAc0ny8vqWlkGfqnFDhegZekW1v/g4s+NvMjFXb0ZJjB+u2zPe5MJmjSvE5PRqU3Tq953E0cpjPnie1H7bz5XBrFKEueXQ9mprfwe5aGKlggODlgEQMvVHXRDNiUtyRpnr8IWBzA2H1ZZ Generated key for I837633 (Dan Joe Lopez)");
+            xdoc = XMLDoc(xdoc, moPath, "SSH_Private_Key", "A very private Key");
+
+            //add the org element and an attribute indicating that it is selected (as for a comboBox)
+            xdoc = XMLDoc(xdoc, moPath, orgElementName);
+            xdoc = XMLDoc(xdoc, currentOrg, "name", Environment.GetEnvironmentVariable("USERNAME"), true);
+            xdoc = XMLDoc(xdoc, currentOrg, "selected", "1", true);
+
+            //update the selection string to point to the currently 'selected' XElement
+            currentOrg += "[@selected = '1']";
+
+            //generate some 'Project' elements
+            for (int i = 0; i < 5; i++)
+            {
+                bool test = i == 2 ? true : false;
+                string num = (i + 1).ToString();
+                string projectName = "project_" + num + "_name";
+
+                xdoc = XMLDoc(xdoc, currentOrg, "Project");
+                xdoc = XMLDoc(xdoc, currentOrg + "/Project[last()]", "name", projectName, true);
+
+                //set one of the projects to be 'selected'
+                if (test)
+                {
+                    xdoc = XMLDoc(xdoc, currentOrg + "/Project[@name = '" + projectName + "']", "selected", "1", true);
+                }
+            }
+
+            //define the path to the selected project in the selected org in the current settings...
+            string currentProject = currentOrg + "/Project[@selected = '1']";
+
+            //in the selected project add some relevant data
+            xdoc = XMLDoc(xdoc, currentProject, "EC2_URL", @"https://ec2-us-west.api.monsoon.mo.sap.corp:443");
+            xdoc = XMLDoc(xdoc, currentProject, "AWS_ACCESS_KEY", @"STgzNzYzMzo6MTc3OTc%3D%0A");
+            xdoc = XMLDoc(xdoc, currentProject, "AWS_SECRET_KEY", @"hRfAb%2FmOz6Phg%2B%2B73%2BwuQhMmqz%2BmSAHg%2FZ%2FyR1Ch4b4%3D%0A");
+
+            //store the xml file to disk
+            xdoc.Save(Environment.GetEnvironmentVariable("USERPROFILE") + @"\downloads\scratch.xml");
+        }
+
+        static XDocument XMLDoc(string rootNode)
+        {
+            XDocument doc = new XDocument(new XElement(rootNode));
+            return doc;
+        }
+
+        static XDocument XMLDoc(XDocument doc, string parent, string name, string value = null, bool attrib=false)
+        {            
+            //check for null parameters
+            if (doc == null || name == null || parent == null)
+            {
+                throw new Exception("Null parameters are not valid!");
+            }
+
+            //check if the parent path is found in the document
+            if (doc.XPathSelectElement(parent) == null)
+            {
+                throw new Exception("The parent path {" + parent + "} was not found in the XML document.");
+            }
+
+            //if the value is null (default) then add a valuless element
+            if (value == null)
+            {
+                doc.XPathSelectElement(parent).Add(new XElement(name));
+            }
+
+            //if the value is not null, and attrib is true, add an element with a value
+            else if (attrib)
+            {
+                doc.XPathSelectElement(parent).Add(new XAttribute(name, value));
+            }
+            //otherwise add the information as a new child element
+            else
+            {
+                doc.XPathSelectElement(parent).Add(new XElement(name, value));
+            }            
+            
+            return doc;
+        }
+
+        #endregion
+
+        #region file encryption
 
         static void crypt()
         {
@@ -26,6 +160,10 @@ namespace ScratchPad
             string keys = provider.ToXmlString(true);
             int i = 0;
         }
+
+        #endregion
+
+        #region UI Automation
 
         static void auto()
         {
@@ -228,7 +366,7 @@ namespace ScratchPad
             }
 
         }
+        
+        #endregion
     }
 }
-
-
