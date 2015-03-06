@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.OrgComboBox = new System.Windows.Forms.ComboBox();
             this.projectComboBox = new System.Windows.Forms.ComboBox();
             this.settingsLabel = new System.Windows.Forms.Label();
@@ -43,16 +44,19 @@
             this.EC2_URLLabel = new System.Windows.Forms.Label();
             this.AWS_SECRET_KEYTextBox = new System.Windows.Forms.TextBox();
             this.AWS_SECRET_KEYLabel = new System.Windows.Forms.Label();
+            this.programBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // OrgComboBox
             // 
             this.OrgComboBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.OrgComboBox.DataSource = this.programBindingSource;
             this.OrgComboBox.FormattingEnabled = true;
             this.OrgComboBox.Location = new System.Drawing.Point(126, 83);
             this.OrgComboBox.Name = "OrgComboBox";
             this.OrgComboBox.Size = new System.Drawing.Size(121, 21);
-            this.OrgComboBox.TabIndex = 0;
+            this.OrgComboBox.TabIndex = 3;
             // 
             // projectComboBox
             // 
@@ -60,7 +64,7 @@
             this.projectComboBox.Location = new System.Drawing.Point(126, 110);
             this.projectComboBox.Name = "projectComboBox";
             this.projectComboBox.Size = new System.Drawing.Size(121, 21);
-            this.projectComboBox.TabIndex = 1;
+            this.projectComboBox.TabIndex = 4;
             // 
             // settingsLabel
             // 
@@ -94,14 +98,14 @@
             this.publicKeyTextBox.Location = new System.Drawing.Point(126, 31);
             this.publicKeyTextBox.Name = "publicKeyTextBox";
             this.publicKeyTextBox.Size = new System.Drawing.Size(100, 20);
-            this.publicKeyTextBox.TabIndex = 5;
+            this.publicKeyTextBox.TabIndex = 1;
             // 
             // privateKeyTextBox
             // 
             this.privateKeyTextBox.Location = new System.Drawing.Point(126, 57);
             this.privateKeyTextBox.Name = "privateKeyTextBox";
             this.privateKeyTextBox.Size = new System.Drawing.Size(100, 20);
-            this.privateKeyTextBox.TabIndex = 6;
+            this.privateKeyTextBox.TabIndex = 2;
             // 
             // orgLabel
             // 
@@ -126,14 +130,14 @@
             this.AWS_Access_KEYTextBox.Location = new System.Drawing.Point(126, 163);
             this.AWS_Access_KEYTextBox.Name = "AWS_Access_KEYTextBox";
             this.AWS_Access_KEYTextBox.Size = new System.Drawing.Size(100, 20);
-            this.AWS_Access_KEYTextBox.TabIndex = 12;
+            this.AWS_Access_KEYTextBox.TabIndex = 6;
             // 
             // EC2_URLTextBox
             // 
             this.EC2_URLTextBox.Location = new System.Drawing.Point(126, 137);
             this.EC2_URLTextBox.Name = "EC2_URLTextBox";
             this.EC2_URLTextBox.Size = new System.Drawing.Size(100, 20);
-            this.EC2_URLTextBox.TabIndex = 11;
+            this.EC2_URLTextBox.TabIndex = 5;
             // 
             // AWS_ACCESS_KEYLabel
             // 
@@ -158,7 +162,7 @@
             this.AWS_SECRET_KEYTextBox.Location = new System.Drawing.Point(126, 189);
             this.AWS_SECRET_KEYTextBox.Name = "AWS_SECRET_KEYTextBox";
             this.AWS_SECRET_KEYTextBox.Size = new System.Drawing.Size(100, 20);
-            this.AWS_SECRET_KEYTextBox.TabIndex = 14;
+            this.AWS_SECRET_KEYTextBox.TabIndex = 7;
             // 
             // AWS_SECRET_KEYLabel
             // 
@@ -168,6 +172,10 @@
             this.AWS_SECRET_KEYLabel.Size = new System.Drawing.Size(108, 13);
             this.AWS_SECRET_KEYLabel.TabIndex = 13;
             this.AWS_SECRET_KEYLabel.Text = "AWS_SECRET_KEY";
+            // 
+            // programBindingSource
+            // 
+            this.programBindingSource.DataSource = typeof(ScratchPad.Program);
             // 
             // ScratchForm
             // 
@@ -191,6 +199,7 @@
             this.Controls.Add(this.OrgComboBox);
             this.Name = "ScratchForm";
             this.Text = "ScratchForm";
+            ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -213,5 +222,6 @@
         private System.Windows.Forms.Label EC2_URLLabel;
         private System.Windows.Forms.TextBox AWS_SECRET_KEYTextBox;
         private System.Windows.Forms.Label AWS_SECRET_KEYLabel;
+        private System.Windows.Forms.BindingSource programBindingSource;
     }
 }
