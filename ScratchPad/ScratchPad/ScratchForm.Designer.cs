@@ -51,12 +51,13 @@
             // OrgComboBox
             // 
             this.OrgComboBox.Cursor = System.Windows.Forms.Cursors.Default;
-            this.OrgComboBox.DataSource = this.programBindingSource;
             this.OrgComboBox.FormattingEnabled = true;
             this.OrgComboBox.Location = new System.Drawing.Point(126, 83);
             this.OrgComboBox.Name = "OrgComboBox";
             this.OrgComboBox.Size = new System.Drawing.Size(121, 21);
             this.OrgComboBox.TabIndex = 3;
+            this.OrgComboBox.Tag = "parent:monsoon";
+            this.OrgComboBox.SelectedIndexChanged += new System.EventHandler(this.comboSelectionChanged);
             // 
             // projectComboBox
             // 
@@ -65,6 +66,8 @@
             this.projectComboBox.Name = "projectComboBox";
             this.projectComboBox.Size = new System.Drawing.Size(121, 21);
             this.projectComboBox.TabIndex = 4;
+            this.projectComboBox.Tag = "parent:organization";
+            this.projectComboBox.SelectedIndexChanged += new System.EventHandler(this.comboSelectionChanged);
             // 
             // settingsLabel
             // 
@@ -99,6 +102,7 @@
             this.publicKeyTextBox.Name = "publicKeyTextBox";
             this.publicKeyTextBox.Size = new System.Drawing.Size(100, 20);
             this.publicKeyTextBox.TabIndex = 1;
+            this.publicKeyTextBox.Tag = "parent:monsoon";
             // 
             // privateKeyTextBox
             // 
@@ -106,6 +110,7 @@
             this.privateKeyTextBox.Name = "privateKeyTextBox";
             this.privateKeyTextBox.Size = new System.Drawing.Size(100, 20);
             this.privateKeyTextBox.TabIndex = 2;
+            this.privateKeyTextBox.Tag = "parent:monsoon";
             // 
             // orgLabel
             // 
@@ -131,6 +136,7 @@
             this.AWS_Access_KEYTextBox.Name = "AWS_Access_KEYTextBox";
             this.AWS_Access_KEYTextBox.Size = new System.Drawing.Size(100, 20);
             this.AWS_Access_KEYTextBox.TabIndex = 6;
+            this.AWS_Access_KEYTextBox.Tag = "parent:project";
             // 
             // EC2_URLTextBox
             // 
@@ -138,6 +144,7 @@
             this.EC2_URLTextBox.Name = "EC2_URLTextBox";
             this.EC2_URLTextBox.Size = new System.Drawing.Size(100, 20);
             this.EC2_URLTextBox.TabIndex = 5;
+            this.EC2_URLTextBox.Tag = "parent:project";
             // 
             // AWS_ACCESS_KEYLabel
             // 
@@ -163,6 +170,7 @@
             this.AWS_SECRET_KEYTextBox.Name = "AWS_SECRET_KEYTextBox";
             this.AWS_SECRET_KEYTextBox.Size = new System.Drawing.Size(100, 20);
             this.AWS_SECRET_KEYTextBox.TabIndex = 7;
+            this.AWS_SECRET_KEYTextBox.Tag = "parent:project";
             // 
             // AWS_SECRET_KEYLabel
             // 

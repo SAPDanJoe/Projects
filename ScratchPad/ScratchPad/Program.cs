@@ -76,6 +76,11 @@ namespace ScratchPad
             xdoc = XMLDoc(xdoc, currentOrg, "name", Environment.GetEnvironmentVariable("USERNAME"), true);
             xdoc = XMLDoc(xdoc, currentOrg, "selected", "1", true);
 
+            //add an addition not selected organization
+            xdoc = XMLDoc(xdoc, moPath, orgElementName);
+            xdoc = XMLDoc(xdoc, currentOrg + "[last()]", "name", "some other org", true);
+
+
             //update the selection string to point to the currently 'selected' XElement
             currentOrg += "[@selected = '1']";
 
@@ -158,7 +163,7 @@ namespace ScratchPad
             RSACryptoServiceProvider provider = new RSACryptoServiceProvider();
             RSAParameters keyPair = provider.ExportParameters(true);
             string keys = provider.ToXmlString(true);
-            int i = 0;
+            System.Threading.Thread.Sleep(1);
         }
 
         #endregion
