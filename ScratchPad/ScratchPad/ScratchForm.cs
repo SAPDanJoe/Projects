@@ -42,6 +42,11 @@ namespace ScratchPad
             populate(myComboBoxes);
         }
 
+        /// <summary>
+        /// Event handler for the ComboBox.SelectionChanged event
+        /// </summary>
+        /// <param name="sender">The comboBox where the selection was changed</param>
+        /// <param name="e">Not currently impimented, use new EventArgs()</param>
         public void comboSelectionChanged(object sender, EventArgs e)
         {
             //when the selection changes...
