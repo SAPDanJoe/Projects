@@ -79,66 +79,49 @@ namespace ScratchPad
             // 1) cast the sender as a comboBox
             ComboBox cBox = (ComboBox)sender;
 
-            // 2) identify the sender
-            if (cBox.Tag.ToString() == "monsoon")
-            {   //this is the organization combo box                
-                
-                //get the old and newly selected elements
-                XElement was = xdoc.XPathSelectElement(currentOrganization);
-                XElement now = xdoc.XPathSelectElement(organizations + "[@name = '" + cBox.SelectedItem.ToString() + "']");
+            
+            // 2)puts the new selection in the Xdocument, and removes 'seleceted' from the item that is no longer selected
+            if (cBox.SelectedIndex != -1)
+            {   //this happens regardless of which box is selected
+                exchangeSelections(cBox);
+            }
 
-                //remove the previous element's "seleted" attribute, and add it to the newly selected attribute
-                was.SetAttributeValue("selected", null);
-                now.SetAttributeValue("selected", 1);
+            // 3) identify the sender by parent
+            if (cBox.Tag.ToString() == "monsoon")
+            {   //this is the organization combo box, whose parent is the monsoon level
 
                 //load the children of the new selection into the form
                 //child of the organization is the project combo box
-                projectComboBox.Items.Clear();
-                projectComboBox.Text = null;
-                string selected = null;
-                foreach (XElement item in xdoc.XPathSelectElements(projects))
+                var children = listControls(this, "organization");
+                populate(children);
+
+                var childCombos = children.FindAll(delegate(Control box) { return box.GetType().ToString() == "System.Windows.Forms.ComboBox"; });
+
+                //fire the selectionChanged event for the child combobox
+                foreach (ComboBox childBox in childCombos)
                 {
-                    projectComboBox.Items.Add(item.Attribute("name").Value.ToString());
-                    if (item.Attribute("selected") != null && item.Attribute("selected").Value.ToString() == "1")
-                    {
-                        selected = item.Attribute("name").Value.ToString();
-                    }
+                    comboSelectionChanged(childBox, new EventArgs());                    
                 }
-                //need to set the selection last, because this will (hopefully) fire the selection changed event on the child
-                if (selected != null)
-                {
-                    projectComboBox.SelectedItem = selected;
-                }
-                else
-                {
-                    projectComboBox.SelectedIndex = -1;
-                }
-                comboSelectionChanged(projectComboBox, new EventArgs());
             }
             else if (cBox.Tag.ToString() == "organization")
-            {   //this is the project name combo box               
-
-                //check if the box has a selected item...
-                if (cBox.SelectedIndex != -1)
-                {
-                    //get the old and newly selected elements
-                    XElement was = xdoc.XPathSelectElement(currentProject);
-                    XElement now = xdoc.XPathSelectElement(projects + "[@name = '" + cBox.SelectedItem.ToString() + "']");
-
-                    //remove the previous element's "seleted" attribute, and add it to the newly selected attribute
-                    was.SetAttributeValue("selected", null);
-                    now.SetAttributeValue("selected", 1);
-                }
-
+            {   //the only combobox whose parent is 'organization' is the project combo
 
                 //load the children of the new selection into the form
                 //EC2_URL and AWS keys are children
-                EC2_URLTextBox.Text =
-                    xdoc.XPathSelectElement(currentProject + "/EC2_URL") == null ? null : xdoc.XPathSelectElement(currentProject + "/EC2_URL").Value.ToString();
-                AWS_Access_KEYTextBox.Text =
-                    xdoc.XPathSelectElement(currentProject + "/AWS_ACCESS_KEY") == null ? null : xdoc.XPathSelectElement(currentProject + "/AWS_ACCESS_KEY").Value.ToString();
-                AWS_SECRET_KEYTextBox.Text =
-                    xdoc.XPathSelectElement(currentProject + "/AWS_SECRET_KEY") == null ? null : xdoc.XPathSelectElement(currentProject + "/AWS_SECRET_KEY").Value.ToString();
+                List<Control> projectChildren = new List<Control>();
+                projectChildren.Add(EC2_URLTextBox);
+                projectChildren.Add(AWS_Access_KEYTextBox);
+                projectChildren.Add(AWS_SECRET_KEYTextBox);
+                
+                //populate the children
+                populate(projectChildren);
+
+                //EC2_URLTextBox.Text =
+                //    xdoc.XPathSelectElement(currentProject + "/EC2_URL") == null ? null : xdoc.XPathSelectElement(currentProject + "/EC2_URL").Value.ToString();
+                //AWS_Access_KEYTextBox.Text =
+                //    xdoc.XPathSelectElement(currentProject + "/AWS_ACCESS_KEY") == null ? null : xdoc.XPathSelectElement(currentProject + "/AWS_ACCESS_KEY").Value.ToString();
+                //AWS_SECRET_KEYTextBox.Text =
+                //    xdoc.XPathSelectElement(currentProject + "/AWS_SECRET_KEY") == null ? null : xdoc.XPathSelectElement(currentProject + "/AWS_SECRET_KEY").Value.ToString();
             }
             else
             {   //I messed something up, because the combobox name is invalid
@@ -164,6 +147,23 @@ namespace ScratchPad
             }            
             return theList;
         }
+        public List<Control> listControls(Control root, string tag)
+        {
+            List<Control> theList = new List<Control>();
+
+            foreach (Control control in root.Controls)
+            {
+                if (control.Tag != null && control.Tag.ToString() == tag)
+                {
+                    theList.Add(control);
+                }
+                else if (control.HasChildren)
+                {
+                    theList.InsertRange(theList.Count(), listControls(control, tag));
+                }
+            }
+            return theList;
+        }
 
         private void populate(List<Control> boxes)
         {
@@ -178,15 +178,7 @@ namespace ScratchPad
                         break;
                     case "System.Windows.Forms.ComboBox":
                         ComboBox cBox = (ComboBox)box;
-                        cBox.Items.Clear();
-                        foreach (XElement item in xdoc.XPathSelectElements(settingPath(box)))
-                        {
-                            cBox.Items.Add(item.Attribute("name").Value.ToString());
-                            if (item.Attribute("selected") != null && item.Attribute("selected").Value.ToString() == "1")
-                            {
-                                cBox.SelectedItem = item.Attribute("name").Value.ToString();
-                            }
-                        }
+                        populate(cBox);
                         break;
                     default:
                         Debug.Write("Control Type : {" + boxes.GetType().ToString() + "} does not have a defined population method." + Environment.NewLine);
@@ -198,28 +190,7 @@ namespace ScratchPad
         private void populate(ComboBox cBox)
         {
             //check if handling the project or organization comboBox
-            string current = cBox.Name.ToString().Contains("project") ? currentProject : currentOrganization;
             string parent = cBox.Name.ToString().Contains("project") ? projects : organizations;
-            
-            //this happens the same to both...
-            //check if the box has a selected item...
-            if (
-                cBox.SelectedIndex != -1 && 
-                xdoc.XPathSelectElement(current) != xdoc.XPathSelectElement(settingPath(cBox) + "[@name = '" + cBox.SelectedItem.ToString() + "']"))
-            {   
-                //store the selected item
-                //get the old and newly selected elements
-                XElement formerElement = xdoc.XPathSelectElement(current);  //the former element is the one still stored in the XDOC
-                XElement newElement = xdoc.XPathSelectElement(settingPath(cBox) + "[@name = '" + cBox.SelectedItem.ToString() + "']");
-
-                //remove the previous element's "seleted" attribute, and add it to the newly selected attribute
-                formerElement.SetAttributeValue("selected", null);
-                newElement.SetAttributeValue("selected", 1);
-            }
-
-            //load the children of the new selection into the form
-            //this happens differently depending on which box (cause they have different children)
-
 
             //child of the organization is the project combo box
             cBox.Items.Clear();
@@ -233,9 +204,27 @@ namespace ScratchPad
                 if (item.Attribute("selected") != null && item.Attribute("selected").Value.ToString() == "1")
                 {   
                     selected = item.Attribute("name").Value.ToString();
-                    cBox.SelectedIndex = cBox.Items.Count;
+                    cBox.SelectedIndex = cBox.Items.Count - 1;
                 }
             }
+        }
+
+        private void exchangeSelections(ComboBox cBox)
+        {
+            string basePath = (cBox.Name.Contains("project")) ? projects : organizations;
+            string baseElement = (cBox.Name.Contains("project")) ? currentProject : currentOrganization;
+            
+            //get the old and newly selected elements
+
+            //this is the item still 'selected' in the xdoc
+            XElement docSelection = xdoc.XPathSelectElement(baseElement);
+
+            //this is the item currently selected in the UI
+            XElement uiSelection = xdoc.XPathSelectElement(basePath + "[@name = '" + cBox.SelectedItem.ToString() + "']");  
+
+            //remove the previous element's "seleted" attribute, and add it to the newly selected attribute
+            docSelection.SetAttributeValue("selected", null);
+            uiSelection.SetAttributeValue("selected", 1);
         }
 
         private string settingPath(Control pathItem)
@@ -245,7 +234,6 @@ namespace ScratchPad
                 pathItem.Tag.ToString() :
                 string.Empty;
             string pathSuffix = "[@controlName = '" + pathItem.Name.ToString() + "']";
-
             switch (itemTag)
             {
                 case "monsoon":
