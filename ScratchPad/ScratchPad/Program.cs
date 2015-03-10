@@ -12,6 +12,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 
 using System.Data;
+using System.Windows.Forms;
 
 
 namespace ScratchPad
@@ -25,6 +26,7 @@ namespace ScratchPad
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             System.Windows.Forms.Application.Run(new ScratchForm());
         }
+
 
         #region XMLdata
         
@@ -53,7 +55,8 @@ namespace ScratchPad
             //generate some machine settings
             for (int i = 0; i < 10; i++)
             {
-                xdoc = XMLDoc(xdoc, currentSettings, "machineSetting" + i.ToString(), @"C:\monsoon\chef\bin");
+                xdoc = XMLDoc(xdoc, currentSettings, "machineSetting", @"C:\monsoon\chef\bin");
+                xdoc = XMLDoc(xdoc, currentSettings + "/machineSetting[last()]", "controlName", "someControl" + i.ToString(), true);
             }
 
             //defines the name of the next element, and the XPath where it will be found
@@ -68,46 +71,54 @@ namespace ScratchPad
             xdoc = XMLDoc(xdoc, currentSettings, moElementName);
 
             //add some mo settings
-            xdoc = XMLDoc(xdoc, moPath, "SSH_Public_Key", @"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjCLCr+dnXbKjguZ7okOJmwZnYzp8h2VWEMnnTMPyM/iL0A+EQebw2PzSFSZVtGQaAJ4rq5j5DD6dPOp7I6FrzVgWnie6RTUd7sqC+Uu1z/SoNOMIjPvzYvp8bmMi9lLK0S/zPq7fnTr00rLW6pRM0HoeH5IXqeoOfk0Zzz4qMcPpeR5j4Q2Snaq6KAu9xWiBfGkgWrmwYAc0ny8vqWlkGfqnFDhegZekW1v/g4s+NvMjFXb0ZJjB+u2zPe5MJmjSvE5PRqU3Tq953E0cpjPnie1H7bz5XBrFKEueXQ9mprfwe5aGKlggODlgEQMvVHXRDNiUtyRpnr8IWBzA2H1ZZ Generated key for I837633 (Dan Joe Lopez)");
-            xdoc = XMLDoc(xdoc, moPath, "SSH_Private_Key", "A very private Key");
+            xdoc = XMLDoc(xdoc, moPath, "moSetting", @"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjCLCr+dnXbKjguZ7okOJmwZnYzp8h2VWEMnnTMPyM/iL0A+EQebw2PzSFSZVtGQaAJ4rq5j5DD6dPOp7I6FrzVgWnie6RTUd7sqC+Uu1z/SoNOMIjPvzYvp8bmMi9lLK0S/zPq7fnTr00rLW6pRM0HoeH5IXqeoOfk0Zzz4qMcPpeR5j4Q2Snaq6KAu9xWiBfGkgWrmwYAc0ny8vqWlkGfqnFDhegZekW1v/g4s+NvMjFXb0ZJjB+u2zPe5MJmjSvE5PRqU3Tq953E0cpjPnie1H7bz5XBrFKEueXQ9mprfwe5aGKlggODlgEQMvVHXRDNiUtyRpnr8IWBzA2H1ZZ Generated key for I837633 (Dan Joe Lopez)");
+            xdoc = XMLDoc(xdoc, moPath + "/moSetting", "controlName","publicKeyTextBox" , true);
+            xdoc = XMLDoc(xdoc, moPath, "moSetting", "A very private Key");
+            xdoc = XMLDoc(xdoc, moPath + "/moSetting[last()]", "controlName", "privateKeyTextBox", true);
 
             //add the org element and an attribute indicating that it is selected (as for a comboBox)
             xdoc = XMLDoc(xdoc, moPath, orgElementName);
+            xdoc = XMLDoc(xdoc, currentOrg, "controlName", "OrgComboBox", true);
             xdoc = XMLDoc(xdoc, currentOrg, "name", Environment.GetEnvironmentVariable("USERNAME"), true);
             xdoc = XMLDoc(xdoc, currentOrg, "selected", "1", true);
 
             //add an addition not selected organization
             xdoc = XMLDoc(xdoc, moPath, orgElementName);
+            xdoc = XMLDoc(xdoc, currentOrg + "[last()]", "controlName", "OrgComboBox", true);
             xdoc = XMLDoc(xdoc, currentOrg + "[last()]", "name", "some other org", true);
 
 
             //update the selection string to point to the currently 'selected' XElement
             currentOrg += "[@selected = '1']";
 
-            //generate some 'Project' elements
+            //generate some 'project' elements
             for (int i = 0; i < 5; i++)
             {
                 bool test = i == 2 ? true : false;
                 string num = (i + 1).ToString();
                 string projectName = "project_" + num + "_name";
 
-                xdoc = XMLDoc(xdoc, currentOrg, "Project");
-                xdoc = XMLDoc(xdoc, currentOrg + "/Project[last()]", "name", projectName, true);
+                xdoc = XMLDoc(xdoc, currentOrg, "project");
+                xdoc = XMLDoc(xdoc, currentOrg + "/project[last()]", "controlName", "projectComboBox", true);
+                xdoc = XMLDoc(xdoc, currentOrg + "/project[last()]", "name", projectName, true);
 
                 //set one of the projects to be 'selected'
                 if (test)
                 {
-                    xdoc = XMLDoc(xdoc, currentOrg + "/Project[@name = '" + projectName + "']", "selected", "1", true);
+                    xdoc = XMLDoc(xdoc, currentOrg + "/project[@name = '" + projectName + "']", "selected", "1", true);
                 }
             }
 
             //define the path to the selected project in the selected org in the current settings...
-            string currentProject = currentOrg + "/Project[@selected = '1']";
+            string currentProject = currentOrg + "/project[@selected = '1']";
 
             //in the selected project add some relevant data
-            xdoc = XMLDoc(xdoc, currentProject, "EC2_URL", @"https://ec2-us-west.api.monsoon.mo.sap.corp:443");
-            xdoc = XMLDoc(xdoc, currentProject, "AWS_ACCESS_KEY", @"STgzNzYzMzo6MTc3OTc%3D%0A");
-            xdoc = XMLDoc(xdoc, currentProject, "AWS_SECRET_KEY", @"hRfAb%2FmOz6Phg%2B%2B73%2BwuQhMmqz%2BmSAHg%2FZ%2FyR1Ch4b4%3D%0A");
+            xdoc = XMLDoc(xdoc, currentProject, "projectSetting", @"https://ec2-us-west.api.monsoon.mo.sap.corp:443");
+            xdoc = XMLDoc(xdoc, currentProject + "/projectSetting[last()]", "controlName", "EC2_URLTextBox", true);
+            xdoc = XMLDoc(xdoc, currentProject, "projectSetting", @"STgzNzYzMzo6MTc3OTc%3D%0A");
+            xdoc = XMLDoc(xdoc, currentProject + "/projectSetting[last()]", "controlName", "AWS_Access_KEYTextBox", true);
+            xdoc = XMLDoc(xdoc, currentProject, "projectSetting", @"hRfAb%2FmOz6Phg%2B%2B73%2BwuQhMmqz%2BmSAHg%2FZ%2FyR1Ch4b4%3D%0A");
+            xdoc = XMLDoc(xdoc, currentProject + "/projectSetting[last()]", "controlName", "AWS_SECRET_KEYTextBox", true);
 
             //store the xml file to disk
             xdoc.Save(Environment.GetEnvironmentVariable("USERPROFILE") + @"\downloads\scratch.xml");

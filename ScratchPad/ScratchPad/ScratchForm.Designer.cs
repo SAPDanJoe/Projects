@@ -44,7 +44,10 @@
             this.EC2_URLLabel = new System.Windows.Forms.Label();
             this.AWS_SECRET_KEYTextBox = new System.Windows.Forms.TextBox();
             this.AWS_SECRET_KEYLabel = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.programBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -56,7 +59,7 @@
             this.OrgComboBox.Name = "OrgComboBox";
             this.OrgComboBox.Size = new System.Drawing.Size(121, 21);
             this.OrgComboBox.TabIndex = 3;
-            this.OrgComboBox.Tag = "parent:monsoon";
+            this.OrgComboBox.Tag = "monsoon";
             this.OrgComboBox.SelectedIndexChanged += new System.EventHandler(this.comboSelectionChanged);
             // 
             // projectComboBox
@@ -66,7 +69,7 @@
             this.projectComboBox.Name = "projectComboBox";
             this.projectComboBox.Size = new System.Drawing.Size(121, 21);
             this.projectComboBox.TabIndex = 4;
-            this.projectComboBox.Tag = "parent:organization";
+            this.projectComboBox.Tag = "organization";
             this.projectComboBox.SelectedIndexChanged += new System.EventHandler(this.comboSelectionChanged);
             // 
             // settingsLabel
@@ -102,7 +105,7 @@
             this.publicKeyTextBox.Name = "publicKeyTextBox";
             this.publicKeyTextBox.Size = new System.Drawing.Size(100, 20);
             this.publicKeyTextBox.TabIndex = 1;
-            this.publicKeyTextBox.Tag = "parent:monsoon";
+            this.publicKeyTextBox.Tag = "monsoon";
             // 
             // privateKeyTextBox
             // 
@@ -110,7 +113,7 @@
             this.privateKeyTextBox.Name = "privateKeyTextBox";
             this.privateKeyTextBox.Size = new System.Drawing.Size(100, 20);
             this.privateKeyTextBox.TabIndex = 2;
-            this.privateKeyTextBox.Tag = "parent:monsoon";
+            this.privateKeyTextBox.Tag = "monsoon";
             // 
             // orgLabel
             // 
@@ -136,7 +139,7 @@
             this.AWS_Access_KEYTextBox.Name = "AWS_Access_KEYTextBox";
             this.AWS_Access_KEYTextBox.Size = new System.Drawing.Size(100, 20);
             this.AWS_Access_KEYTextBox.TabIndex = 6;
-            this.AWS_Access_KEYTextBox.Tag = "parent:project";
+            this.AWS_Access_KEYTextBox.Tag = "project";
             // 
             // EC2_URLTextBox
             // 
@@ -144,7 +147,7 @@
             this.EC2_URLTextBox.Name = "EC2_URLTextBox";
             this.EC2_URLTextBox.Size = new System.Drawing.Size(100, 20);
             this.EC2_URLTextBox.TabIndex = 5;
-            this.EC2_URLTextBox.Tag = "parent:project";
+            this.EC2_URLTextBox.Tag = "project";
             // 
             // AWS_ACCESS_KEYLabel
             // 
@@ -170,7 +173,7 @@
             this.AWS_SECRET_KEYTextBox.Name = "AWS_SECRET_KEYTextBox";
             this.AWS_SECRET_KEYTextBox.Size = new System.Drawing.Size(100, 20);
             this.AWS_SECRET_KEYTextBox.TabIndex = 7;
-            this.AWS_SECRET_KEYTextBox.Tag = "parent:project";
+            this.AWS_SECRET_KEYTextBox.Tag = "project";
             // 
             // AWS_SECRET_KEYLabel
             // 
@@ -181,6 +184,23 @@
             this.AWS_SECRET_KEYLabel.TabIndex = 13;
             this.AWS_SECRET_KEYLabel.Text = "AWS_SECRET_KEY";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Location = new System.Drawing.Point(306, 31);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(200, 100);
+            this.groupBox1.TabIndex = 14;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "groupBox1";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(47, 44);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.TabIndex = 0;
+            // 
             // programBindingSource
             // 
             this.programBindingSource.DataSource = typeof(ScratchPad.Program);
@@ -190,6 +210,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(543, 255);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.AWS_SECRET_KEYTextBox);
             this.Controls.Add(this.AWS_SECRET_KEYLabel);
             this.Controls.Add(this.AWS_Access_KEYTextBox);
@@ -207,6 +228,8 @@
             this.Controls.Add(this.OrgComboBox);
             this.Name = "ScratchForm";
             this.Text = "ScratchForm";
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -231,5 +254,7 @@
         private System.Windows.Forms.TextBox AWS_SECRET_KEYTextBox;
         private System.Windows.Forms.Label AWS_SECRET_KEYLabel;
         private System.Windows.Forms.BindingSource programBindingSource;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
