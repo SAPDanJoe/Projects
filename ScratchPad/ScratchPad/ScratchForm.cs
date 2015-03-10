@@ -39,38 +39,7 @@ namespace ScratchPad
 
             //populate the fields
             populate(myTextBoxes);
-            populate(myComboBoxes);
-
-            //load the 1st two textboxes with the XML data
-            //publicKeyTextBox.Text = xdoc.XPathSelectElement(monsoon + "/SSH_Public_Key").Value.ToString();
-            //privateKeyTextBox.Text = xdoc.XPathSelectElement(monsoon + "/SSH_Private_Key").Value.ToString();
-
-            //load the comboBoxes with the XML data
-            //OrgComboBox.Items.Clear();
-            //foreach (XElement item in xdoc.XPathSelectElements(organizations))
-            //{
-            //    OrgComboBox.Items.Add(item.Attribute("name").Value.ToString());
-            //    if (item.Attribute("selected") != null && item.Attribute("selected").Value.ToString() == "1")
-            //    {
-            //        OrgComboBox.SelectedItem = item.Attribute("name").Value.ToString();
-            //    }
-            //}
-
-            //projectComboBox.Items.Clear();
-            //foreach (XElement item in xdoc.XPathSelectElements(projects))
-            //{
-            //    projectComboBox.Items.Add(item.Attribute("name").Value.ToString());
-            //    if (item.Attribute("selected") != null && item.Attribute("selected").Value.ToString() == "1")
-            //    {
-            //        projectComboBox.SelectedItem = item.Attribute("name").Value.ToString();
-            //    }
-            //}
-
-            ////load the current project's items
-            //EC2_URLTextBox.Text = xdoc.XPathSelectElement(currentProject + "/EC2_URL").Value.ToString();
-            //AWS_Access_KEYTextBox.Text = xdoc.XPathSelectElement(currentProject + "/AWS_ACCESS_KEY").Value.ToString();
-            //AWS_SECRET_KEYTextBox.Text = xdoc.XPathSelectElement(currentProject + "/AWS_SECRET_KEY").Value.ToString();
-            
+            populate(myComboBoxes);            
         }
 
         public void comboSelectionChanged(object sender, EventArgs e)
@@ -78,7 +47,6 @@ namespace ScratchPad
             //when the selection changes...
             // 1) cast the sender as a comboBox
             ComboBox cBox = (ComboBox)sender;
-
             
             // 2)puts the new selection in the Xdocument, and removes 'seleceted' from the item that is no longer selected
             if (cBox.SelectedIndex != -1)
@@ -86,48 +54,53 @@ namespace ScratchPad
                 exchangeSelections(cBox);
             }
 
-            // 3) identify the sender by parent
-            if (cBox.Tag.ToString() == "monsoon")
-            {   //this is the organization combo box, whose parent is the monsoon level
+            //determine which combo level we have
+            string myChildren = (cBox.Name.Contains("project")) ? "project" : "organization";
+            
+            //collect all the children of this item
+            var children = listControls(this, myChildren);
 
-                //load the children of the new selection into the form
-                //child of the organization is the project combo box
-                var children = listControls(this, "organization");
-                populate(children);
+            //populate the children
+            populate(children);
+            
+            //if any of the chilbren are combo boxes, fire their selectionChanged events in order
+            var childCombos = children.FindAll(delegate(Control box) { return box.GetType().ToString() == "System.Windows.Forms.ComboBox"; });
 
-                var childCombos = children.FindAll(delegate(Control box) { return box.GetType().ToString() == "System.Windows.Forms.ComboBox"; });
-
-                //fire the selectionChanged event for the child combobox
-                foreach (ComboBox childBox in childCombos)
-                {
-                    comboSelectionChanged(childBox, new EventArgs());                    
-                }
+            //fire the selectionChanged event for the child combobox
+            foreach (ComboBox childBox in childCombos)
+            {
+                comboSelectionChanged(childBox, new EventArgs());                    
             }
-            else if (cBox.Tag.ToString() == "organization")
-            {   //the only combobox whose parent is 'organization' is the project combo
 
-                //load the children of the new selection into the form
-                //EC2_URL and AWS keys are children
-                List<Control> projectChildren = new List<Control>();
-                projectChildren.Add(EC2_URLTextBox);
-                projectChildren.Add(AWS_Access_KEYTextBox);
-                projectChildren.Add(AWS_SECRET_KEYTextBox);
+            //// 3) identify the sender by parent
+            //if (cBox.Tag.ToString() == "monsoon")
+            //{   //this is the organization combo box, whose parent is the monsoon level
+
+
+            //}
+            //else if (cBox.Tag.ToString() == "organization")
+            //{   //the only combobox whose parent is 'organization' is the project combo
+
+            //    //load the children of the new selection into the form
+            //    //EC2_URL and AWS keys are children
+            //    var children = listControls(this, "project");
+
+            //    //populate the children
+            //    populate(children);
+
+            //    List<Control> projectChildren = new List<Control>();
+            //    projectChildren.Add(EC2_URLTextBox);
+            //    projectChildren.Add(AWS_Access_KEYTextBox);
+            //    projectChildren.Add(AWS_SECRET_KEYTextBox);
                 
-                //populate the children
-                populate(projectChildren);
-
-                //EC2_URLTextBox.Text =
-                //    xdoc.XPathSelectElement(currentProject + "/EC2_URL") == null ? null : xdoc.XPathSelectElement(currentProject + "/EC2_URL").Value.ToString();
-                //AWS_Access_KEYTextBox.Text =
-                //    xdoc.XPathSelectElement(currentProject + "/AWS_ACCESS_KEY") == null ? null : xdoc.XPathSelectElement(currentProject + "/AWS_ACCESS_KEY").Value.ToString();
-                //AWS_SECRET_KEYTextBox.Text =
-                //    xdoc.XPathSelectElement(currentProject + "/AWS_SECRET_KEY") == null ? null : xdoc.XPathSelectElement(currentProject + "/AWS_SECRET_KEY").Value.ToString();
-            }
-            else
-            {   //I messed something up, because the combobox name is invalid
-                Debug.Write("Unreachable code encountered: The combobox name {" + cBox.Name.ToString() + "} is not valid!");
-                return;
-            }            
+            //    //populate the children
+            //    populate(projectChildren);
+            //}
+            //else
+            //{   //I messed something up, because the combobox name is invalid
+            //    Debug.Write("Unreachable code encountered: The combobox name {" + cBox.Name.ToString() + "} is not valid!");
+            //    return;
+            //}            
         }
 
         public List<Control> listControls(Control root, Control type)
