@@ -130,7 +130,7 @@ namespace ScratchPad
             return doc;
         }
 
-        static XDocument XMLDoc(XDocument doc, string parent, string name, string value = null, bool attrib=false)
+        public static XDocument XMLDoc(XDocument doc, string parent, string name, string value = null, bool attrib=false)
         {            
             //check for null parameters
             if (doc == null || name == null || parent == null)

@@ -18,7 +18,7 @@ namespace ScratchPad
     public partial class ScratchForm : Form
     {
         //some itmes that need to be available to the whole form
-        private static XDocument xdoc = XDocument.Load(Environment.GetEnvironmentVariable("USERPROFILE") + @"\downloads\Scratch.xml");
+        private XDocument xdoc = XDocument.Load(Environment.GetEnvironmentVariable("USERPROFILE") + @"\downloads\Scratch.xml");
 
         //define XPath strings
         private static string root = "configFile";
@@ -126,7 +126,83 @@ namespace ScratchPad
             return theList;
         }
 
-        #region Box Population
+        #region Save entries to XML
+
+        /// <summary>
+        /// Main event handler for the TextChanged events of the Text and Combo boxes
+        /// </summary>
+        /// <param name="sender">Box in which the text changed.</param>
+        /// <param name="e">Not currently impimented, use new EventArgs()</param>
+        public void leaveBox(object sender, EventArgs e)
+        { 
+            string uiValue = string.Empty;
+            string docValue = string.Empty;
+
+            if (sender is ComboBox)
+            {
+                ComboBox box = (ComboBox)sender;
+                uiValue = box.SelectedItem.ToString();
+                docValue = xdoc.XPathSelectElement(settingPath(box)).Attribute("name").Value.ToString();
+                if (uiValue != docValue)
+                {
+                    //store uiValue in xdoc
+                    xdoc = Program.XMLDoc(xdoc, settingPath(box), "name", uiValue, true);                
+                    xdoc = Program.XMLDoc(xdoc, settingPath(box) + "[last()]", "controlName", box.Name.ToString() , true);
+
+                    //select new value in combobox
+                    box.SelectedIndex = box.Items.Count - 1;
+
+                    //fire selection changed event
+                    comboSelectionChanged(box, new EventArgs());
+                }
+            }
+            else if (sender is TextBox)
+            {
+                TextBox box = (TextBox)sender;
+                uiValue = box.SelectedText.ToString();
+                docValue = (xdoc.XPathSelectElement(settingPath(box)) == null) ? string.Empty : xdoc.XPathSelectElement(settingPath(box)).Value.ToString();
+
+                if (uiValue != docValue)
+                {
+                    //store uiValue in xdoc
+                    xdoc = Program.XMLDoc(xdoc, settingPath(box), "name", uiValue);
+                    xdoc = Program.XMLDoc(xdoc, settingPath(box) + "[last()]", "controlName", box.Name.ToString(), true);
+                }
+            }
+
+        }
+
+        ///// <summary>
+        ///// Main event handler for the TextChanged events of the Combo boxes
+        ///// </summary>
+        ///// <param name="sender">Box in which the text changed.</param>
+        ///// <param name="e">Not currently impimented, use new EventArgs()</param>
+        //public void leaveComboBox(ComboBox box)
+        //{
+            
+        //}
+
+        ///// <summary>
+        ///// Main event handler for the TextChanged events of the Text boxes
+        ///// </summary>
+        ///// <param name="sender">Box in which the text changed.</param>
+        ///// <param name="e">Not currently impimented, use new EventArgs()</param>
+        //public void leaveTextBox(TextBox box)
+        //{
+        //    string path = settingPath(box);
+        //    string storedValue = ;
+        //    string uiValue = 
+        //    if (true)
+        //    {
+                
+        //    }
+        //}
+
+
+
+        #endregion
+
+        #region Populate Boxes from xdoc
 
         /// <summary>
         /// Populates TextBoxes and ComboBoxes
