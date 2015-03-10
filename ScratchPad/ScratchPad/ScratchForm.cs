@@ -39,7 +39,7 @@ namespace ScratchPad
 
             //populate the fields
             populate(myTextBoxes);
-            populate(myComboBoxes);            
+            populate(myComboBoxes);
         }
 
         public void comboSelectionChanged(object sender, EventArgs e)
@@ -54,16 +54,16 @@ namespace ScratchPad
                 exchangeSelections(cBox);
             }
 
-            //determine which combo level we have
+            // 3) determine which combo level we have
             string myChildren = (cBox.Name.Contains("project")) ? "project" : "organization";
             
-            //collect all the children of this item
+            // 3) collect all the children of this item
             var children = listControls(this, myChildren);
 
-            //populate the children
+            // 4) populate the children
             populate(children);
             
-            //if any of the chilbren are combo boxes, fire their selectionChanged events in order
+            // * if any of the chilbren are combo boxes...
             var childCombos = children.FindAll(delegate(Control box) { return box.GetType().ToString() == "System.Windows.Forms.ComboBox"; });
 
             //fire the selectionChanged event for the child combobox
@@ -71,38 +71,14 @@ namespace ScratchPad
             {
                 comboSelectionChanged(childBox, new EventArgs());                    
             }
-
-            //// 3) identify the sender by parent
-            //if (cBox.Tag.ToString() == "monsoon")
-            //{   //this is the organization combo box, whose parent is the monsoon level
-
-
-            //}
-            //else if (cBox.Tag.ToString() == "organization")
-            //{   //the only combobox whose parent is 'organization' is the project combo
-
-            //    //load the children of the new selection into the form
-            //    //EC2_URL and AWS keys are children
-            //    var children = listControls(this, "project");
-
-            //    //populate the children
-            //    populate(children);
-
-            //    List<Control> projectChildren = new List<Control>();
-            //    projectChildren.Add(EC2_URLTextBox);
-            //    projectChildren.Add(AWS_Access_KEYTextBox);
-            //    projectChildren.Add(AWS_SECRET_KEYTextBox);
-                
-            //    //populate the children
-            //    populate(projectChildren);
-            //}
-            //else
-            //{   //I messed something up, because the combobox name is invalid
-            //    Debug.Write("Unreachable code encountered: The combobox name {" + cBox.Name.ToString() + "} is not valid!");
-            //    return;
-            //}            
         }
 
+        /// <summary>
+        /// Recurses through a root control and gets all child controls.
+        /// </summary>
+        /// <param name="root">The root control from which to begin recursing. Usually "this", but could also be a groupBox, tabPane, etc.</param>
+        /// <param name="type">The type of control to find.  You can put any control to match here, or use "new TextBox", for example.</param>
+        /// <returns>List&lt;Control&gt;</returns>
         public List<Control> listControls(Control root, Control type)
         {
             List<Control> theList = new List<Control>();
@@ -120,6 +96,13 @@ namespace ScratchPad
             }            
             return theList;
         }
+
+        /// <summary>
+        /// Recurses through a root control and gets all child controls.
+        /// </summary>
+        /// <param name="root">The root control from which to begin recursing. Usually "this", but could also be a groupBox, tabPane, etc.</param>
+        /// <param name="tag">A string to which the control's tag will be matched.</param>
+        /// <returns>List&lt;Control&gt;</returns>
         public List<Control> listControls(Control root, string tag)
         {
             List<Control> theList = new List<Control>();
@@ -138,6 +121,12 @@ namespace ScratchPad
             return theList;
         }
 
+        #region Box Population
+
+        /// <summary>
+        /// Populates TextBoxes and ComboBoxes
+        /// </summary>
+        /// <param name="boxes">The list of boxes to populate</param>
         private void populate(List<Control> boxes)
         {
             foreach (var box in boxes)
@@ -160,6 +149,10 @@ namespace ScratchPad
             }
         }
 
+        /// <summary>
+        /// Helper function that overloads the population method to handle a single ComboBox
+        /// </summary>
+        /// <param name="cBox">The Combobox to be populated from the xdoc</param>
         private void populate(ComboBox cBox)
         {
             //check if handling the project or organization comboBox
@@ -182,6 +175,10 @@ namespace ScratchPad
             }
         }
 
+        /// <summary>
+        /// When a new selection is made in a combobox, this ensures that the change is reflected in the acompanying XDocument
+        /// </summary>
+        /// <param name="cBox">The ComboBox where the selection has been changed.</param>
         private void exchangeSelections(ComboBox cBox)
         {
             string basePath = (cBox.Name.Contains("project")) ? projects : organizations;
@@ -200,6 +197,11 @@ namespace ScratchPad
             uiSelection.SetAttributeValue("selected", 1);
         }
 
+        /// <summary>
+        /// gets XPath of a control item
+        /// </summary>
+        /// <param name="pathItem">The Control whose setting path you want to retrieve</param>
+        /// <returns>XPath string</returns>
         private string settingPath(Control pathItem)
         {
             string path = string.Empty;
@@ -227,5 +229,6 @@ namespace ScratchPad
             return path;
         }
 
+        #endregion
     }
 }
