@@ -27,109 +27,216 @@ namespace ScratchPad
             System.Windows.Forms.Application.Run(new ScratchForm());
         }
 
-
+        
         #region XMLdata
+
+        public static class Path
+        {
+            #region LevelNames            
+            private static string rootName = "configFile";
+            public static string level1 = "settings";
+            public static string level2 = "thisMachine";
+            public static string level3 = "monsoonGroup";
+            public static string level4 = "monsoonSetting";
+            public static string level5 = "organization";
+            public static string level6 = "project";
+            public static string level7 = "projectSetting";
+
+            private static string attribCurrent = "[@current = '1']";
+            private static string attribSelected = "[@selected = '1']";
+            #endregion
+
+            /// <summary>
+            /// XPath string to which a NEW *element* can be added
+            /// </summary>
+            /// <param name="level">The level to which the item should be added. (The level of the parent, NOT the level of the item)</param>
+            /// <returns>XPath formatted string</returns>
+            public static string AddNew(int level)
+            {
+                string pathString = string.Empty;
+
+                switch (level)
+                {
+                    case 0:
+                        pathString = rootName;
+                        break;
+                    case 1:
+                        pathString = rootName + "/" + level1 + attribCurrent;
+                        break;
+                    case 2:
+                        pathString = rootName + "/" + level1 + attribCurrent + "/" + level2;
+                        break;
+                    case 3:
+                        pathString = rootName + "/" + level1 + attribCurrent + "/" + level3;
+                        break;
+                    case 4:
+                        pathString = rootName + "/" + level1 + attribCurrent + "/" + level3 + "/" +  level4;
+                        break;
+                    case 5:
+                        pathString = rootName + "/" + level1 + attribCurrent + "/" + level3 + "/"  + level5 + attribSelected;
+                        break;
+                    case 6:
+                        pathString = rootName + "/" + level1 + attribCurrent + "/" + level3 + "/" + level5 + "/" + level6 + attribSelected;
+                        break;
+                    default:
+                        Debug.Write("Error in Path.AddNew: the level {" + level.ToString() + "} was not recognized." + Environment.NewLine);
+                        Debug.Write("Error in Path.AddNew: an error is expected accessing the xDoc." + Environment.NewLine);
+                        break;
+                }
+                return pathString;
+            }
+
+            /// <summary>
+            /// Gets the XPath of the element.
+            /// </summary>
+            /// <param name="level">The level at which the element should be found</param>
+            /// <param name="additionAttributes">List&lt;String&gt; of additional attributes in XPath format ([@name = 'value']) used to identify the XElement.</param>
+            /// <returns>XPath formatted string</returns>            
+            public static string Access(int level, string additionAttributes = null)
+            {
+                string pathString = string.Empty;
+                string attribs = additionAttributes;
+
+                switch (level)
+                {
+                    case 0:
+                        pathString = rootName + attribs;
+                        break;
+                    case 1:
+                        pathString = rootName + "/" + level1 + attribs;
+                        break;
+                    case 2:
+                        pathString = rootName + "/" + level1 + attribCurrent + "/" + level2 + attribs;
+                        break;
+                    case 3:
+                        pathString = rootName + "/" + level1 + attribCurrent + "/" + level3 + attribs;
+                        break;
+                    case 4:
+                        pathString = rootName + "/" + level1 + attribCurrent + "/" + level3 + "/" + level4  + attribs;
+                        break;
+                    case 5:
+                        pathString = rootName + "/" + level1 + attribCurrent + "/" + level3 + "/" +  level5 + attribs;
+                        break;
+                    case 6:
+                        pathString = rootName + "/" + level1 + attribCurrent + "/" + level3 + "/" +  level5 + attribSelected + "/" + level6 + attribs;
+                        break;
+                    case 7:
+                        pathString = rootName + "/" + level1 + attribCurrent + "/" + level3 + "/" + level5 + attribSelected + "/" + level6 + attribSelected + "/" + level7 + attribs;
+                        break;
+                    default:
+                        Debug.Write("Error in Path.Remove: the level {" + level.ToString() + "} was not recognized." + Environment.NewLine);
+                        Debug.Write("Error in Path.AddNew: an error is expected accessing the xDoc." + Environment.NewLine);
+                        break;
+                }
+                return pathString;
+        }
+        }
         
         static void makeXML()
         {
-            //base root name of the XML
-            string rootParent = "configFile";
-
             //create a document
-            XDocument xdoc = XMLDoc(rootParent);
+            XDocument xdoc = XMLDoc();
 
-            //add a 'settings' element node
-            xdoc = XMLDoc(xdoc, rootParent, "settings");
-
-            //reference to the newly added node
-            string currentSettings = rootParent + "/settings";
+            //add a 1st level element under the root
+            xdoc = XMLDoc(xdoc, Path.AddNew(0), Path.level1);
 
             //add the "current" attribute
-            xdoc = XMLDoc(xdoc, currentSettings, "current", "1", true);
-            //add another settings node without the current attribute
-            xdoc = XMLDoc(xdoc, rootParent, "settings", "These are some other non-current settings, without the \"current\" attribute.");
+            xdoc = XMLDoc(xdoc, Path.Access(1), "current", "1", true);
 
-            //respecify the currentSettings to be the one with the "current" attribute
-            currentSettings += "[@current = '1']";
+            //add another 1st level element under the root, without the current attribute
+            xdoc = XMLDoc(xdoc, Path.AddNew(0), Path.level1, "These are some other non-current settings, without the \"current\" attribute.");
 
             //generate some machine settings
             for (int i = 0; i < 10; i++)
             {
-                xdoc = XMLDoc(xdoc, currentSettings, "machineSetting", @"C:\monsoon\chef\bin");
-                xdoc = XMLDoc(xdoc, currentSettings + "/machineSetting[last()]", "controlName", "someControl" + i.ToString(), true);
+                string controlName = "someControl" + i.ToString(); //some randon name for a control
+                xdoc = XMLDoc(xdoc, Path.AddNew(1), Path.level2, @"C:\monsoon\chef\bin");
+                xdoc = XMLDoc(xdoc, Path.Access(2, @"[last()]"), "controlName",controlName , true);
             }
 
-            //defines the name of the next element, and the XPath where it will be found
-            string moElementName = "monsoon";
-            string moPath = currentSettings + "/" + moElementName;
 
-            //defines the name of the next element, and the XPath where it will be found
-            string orgElementName = "organization";
-            string currentOrg = moPath + "/" + orgElementName;
+            //add a container element at the 3rd level (which actually resides at the same level as the 2nd level elements)
+            xdoc = XMLDoc(xdoc, Path.AddNew(1), Program.Path.level3);
 
-            //add the mo element
-            xdoc = XMLDoc(xdoc, currentSettings, moElementName);
+            //add a 4th level element 
+            xdoc = XMLDoc(xdoc, Path.AddNew(3), Program.Path.level4, 
+                @"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjCLCr+dnXbKjguZ7okOJmwZnYzp8h2VWEMnnTMPyM/iL0A+EQebw2PzSFSZVtGQaAJ4rq5j5DD6dPOp7I6FrzVgWnie6RTUd7sqC+Uu1z/SoNOMIjPvzYvp8bmMi9lLK0S/zPq7fnTr00rLW6pRM0HoeH5IXqeoOfk0Zzz4qMcPpeR5j4Q2Snaq6KAu9xWiBfGkgWrmwYAc0ny8vqWlkGfqnFDhegZekW1v/g4s+NvMjFXb0ZJjB+u2zPe5MJmjSvE5PRqU3Tq953E0cpjPnie1H7bz5XBrFKEueXQ9mprfwe5aGKlggODlgEQMvVHXRDNiUtyRpnr8IWBzA2H1ZZ Generated key for I837633 (Dan Joe Lopez)"
+                );
+            xdoc = XMLDoc(xdoc, Path.Access(4,"[last()]"),"controlName", "publicKeyTextBox", true);
 
-            //add some mo settings
-            xdoc = XMLDoc(xdoc, moPath, "moSetting", @"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjCLCr+dnXbKjguZ7okOJmwZnYzp8h2VWEMnnTMPyM/iL0A+EQebw2PzSFSZVtGQaAJ4rq5j5DD6dPOp7I6FrzVgWnie6RTUd7sqC+Uu1z/SoNOMIjPvzYvp8bmMi9lLK0S/zPq7fnTr00rLW6pRM0HoeH5IXqeoOfk0Zzz4qMcPpeR5j4Q2Snaq6KAu9xWiBfGkgWrmwYAc0ny8vqWlkGfqnFDhegZekW1v/g4s+NvMjFXb0ZJjB+u2zPe5MJmjSvE5PRqU3Tq953E0cpjPnie1H7bz5XBrFKEueXQ9mprfwe5aGKlggODlgEQMvVHXRDNiUtyRpnr8IWBzA2H1ZZ Generated key for I837633 (Dan Joe Lopez)");
-            xdoc = XMLDoc(xdoc, moPath + "/moSetting", "controlName","publicKeyTextBox" , true);
-            xdoc = XMLDoc(xdoc, moPath, "moSetting", "A very private Key");
-            xdoc = XMLDoc(xdoc, moPath + "/moSetting[last()]", "controlName", "privateKeyTextBox", true);
+            //add another 4th level element 
+            xdoc = XMLDoc(xdoc, Path.AddNew(3), Path.level4, "A very private Key");
+            xdoc = XMLDoc(xdoc,Path.Access(4,"[last()]"), "controlName", "privateKeyTextBox", true);
 
-            //add the org element and an attribute indicating that it is selected (as for a comboBox)
-            xdoc = XMLDoc(xdoc, moPath, orgElementName);
-            xdoc = XMLDoc(xdoc, currentOrg, "controlName", "OrgComboBox", true);
-            xdoc = XMLDoc(xdoc, currentOrg, "name", Environment.GetEnvironmentVariable("USERNAME"), true);
-            xdoc = XMLDoc(xdoc, currentOrg, "selected", "1", true);
+            //add the 4th level element and an attribute indicating that it is selected (as for a comboBox)
+            xdoc = XMLDoc(xdoc, Path.AddNew(3), Path.level5);
+            xdoc = XMLDoc(xdoc, Path.Access(5, "[last()]"), "controlName", "OrgComboBox", true);
+            xdoc = XMLDoc(xdoc, Path.Access(5, "[last()]"), "name", Environment.GetEnvironmentVariable("USERNAME"), true);
+            xdoc = XMLDoc(xdoc, Path.Access(5, "[last()]"), "selected", "1", true);
 
-            //add an addition not selected organization
-            xdoc = XMLDoc(xdoc, moPath, orgElementName);
-            xdoc = XMLDoc(xdoc, currentOrg + "[last()]", "controlName", "OrgComboBox", true);
-            xdoc = XMLDoc(xdoc, currentOrg + "[last()]", "name", "some other org", true);
+            //add another level4 without the selected atribute
+            xdoc = XMLDoc(xdoc, Path.AddNew(3), Path.level5);
+            xdoc = XMLDoc(xdoc, Path.Access(5, "[last()]"), "controlName", "OrgComboBox", true);
+            xdoc = XMLDoc(xdoc, Path.Access(5, "[last()]"), "name", "some other org", true);
 
-
-            //update the selection string to point to the currently 'selected' XElement
-            currentOrg += "[@selected = '1']";
-
-            //generate some 'project' elements
+            //generate some level 5 elements
             for (int i = 0; i < 5; i++)
             {
                 bool test = i == 2 ? true : false;
                 string num = (i + 1).ToString();
                 string projectName = "project_" + num + "_name";
 
-                xdoc = XMLDoc(xdoc, currentOrg, "project");
-                xdoc = XMLDoc(xdoc, currentOrg + "/project[last()]", "controlName", "projectComboBox", true);
-                xdoc = XMLDoc(xdoc, currentOrg + "/project[last()]", "name", projectName, true);
+                xdoc = XMLDoc(xdoc, Path.AddNew(5), Path.level6);
+                xdoc = XMLDoc(xdoc, Path.Access(6, "[last()]"), "controlName", "projectComboBox", true);
+                xdoc = XMLDoc(xdoc, Path.Access(6, "[last()]"), "name", projectName, true);
 
                 //set one of the projects to be 'selected'
                 if (test)
                 {
-                    xdoc = XMLDoc(xdoc, currentOrg + "/project[@name = '" + projectName + "']", "selected", "1", true);
+                    xdoc = XMLDoc(xdoc, Path.Access(6, "[@name = '" + projectName + "']"), "selected", "1", true);
                 }
             }
 
-            //define the path to the selected project in the selected org in the current settings...
-            string currentProject = currentOrg + "/project[@selected = '1']";
+            ////in the selected project add some relevant data
+            //xdoc = XMLDoc(xdoc, Path.Access(6, "[@selected = '1']"), "projectSetting", @"https://ec2-us-west.api.monsoon.mo.sap.corp:443");
+            //xdoc = XMLDoc(xdoc, Path.Access(6, "[@selected = '1']") + "/projectSetting[last()]", "controlName", "EC2_URLTextBox", true);
+            //xdoc = XMLDoc(xdoc, Path.Access(6, "[@selected = '1']"), "projectSetting", @"STgzNzYzMzo6MTc3OTc%3D%0A");
+            //xdoc = XMLDoc(xdoc, Path.Access(6, "[@selected = '1']") + "/projectSetting[last()]", "controlName", "AWS_Access_KEYTextBox", true);
+            //xdoc = XMLDoc(xdoc, Path.Access(6, "[@selected = '1']"), "projectSetting", @"hRfAb%2FmOz6Phg%2B%2B73%2BwuQhMmqz%2BmSAHg%2FZ%2FyR1Ch4b4%3D%0A");
+            //xdoc = XMLDoc(xdoc, Path.Access(6, "[@selected = '1']") + "/projectSetting[last()]", "controlName", "AWS_SECRET_KEYTextBox", true);
 
             //in the selected project add some relevant data
-            xdoc = XMLDoc(xdoc, currentProject, "projectSetting", @"https://ec2-us-west.api.monsoon.mo.sap.corp:443");
-            xdoc = XMLDoc(xdoc, currentProject + "/projectSetting[last()]", "controlName", "EC2_URLTextBox", true);
-            xdoc = XMLDoc(xdoc, currentProject, "projectSetting", @"STgzNzYzMzo6MTc3OTc%3D%0A");
-            xdoc = XMLDoc(xdoc, currentProject + "/projectSetting[last()]", "controlName", "AWS_Access_KEYTextBox", true);
-            xdoc = XMLDoc(xdoc, currentProject, "projectSetting", @"hRfAb%2FmOz6Phg%2B%2B73%2BwuQhMmqz%2BmSAHg%2FZ%2FyR1Ch4b4%3D%0A");
-            xdoc = XMLDoc(xdoc, currentProject + "/projectSetting[last()]", "controlName", "AWS_SECRET_KEYTextBox", true);
-
+            xdoc = XMLDoc(xdoc, Path.AddNew(6), Path.level7 , @"https://ec2-us-west.api.monsoon.mo.sap.corp:443");
+            xdoc = XMLDoc(xdoc, Path.Access(7, "[last()]"), "controlName", "EC2_URLTextBox", true);
+            xdoc = XMLDoc(xdoc, Path.AddNew(6), Path.level7, @"STgzNzYzMzo6MTc3OTc%3D%0A");
+            xdoc = XMLDoc(xdoc, Path.Access(7, "[last()]"), "controlName", "AWS_Access_KEYTextBox", true);
+            xdoc = XMLDoc(xdoc, Path.AddNew(6), Path.level7, @"hRfAb%2FmOz6Phg%2B%2B73%2BwuQhMmqz%2BmSAHg%2FZ%2FyR1Ch4b4%3D%0A");
+            xdoc = XMLDoc(xdoc, Path.Access(7, "[last()]"), "controlName", "AWS_SECRET_KEYTextBox", true);
             //store the xml file to disk
             xdoc.Save(Environment.GetEnvironmentVariable("USERPROFILE") + @"\downloads\scratch.xml");
         }
 
-        static XDocument XMLDoc(string rootNode)
+        /// <summary>
+        /// Creates a new XML Doc with the specified Root Node
+        /// </summary>
+        /// <param name="rootNode">Name of the root node. default is the conde configured Program.Path.rootName</param>
+        /// <returns>XDocument</returns>
+        static XDocument XMLDoc(string rootNode = null)
         {
+            rootNode = (rootNode == null) ? Program.Path.AddNew(0) : rootNode;
             XDocument doc = new XDocument(new XElement(rootNode));
             return doc;
         }
 
+        /// <summary>
+        /// Adds Elements or atributes to an XML Document
+        /// </summary>
+        /// <param name="doc">The XDocument to which the data should be added</param>
+        /// <param name="parent">The XPath to the parent of the element upon which changes are to be made.</param>
+        /// <param name="name">The string name of the element or attribute.</param>
+        /// <param name="value">The (optional)string value of the element or attribute.</param>
+        /// <param name="attrib">a(optional) bool indicating if this should be an attribute of an existing element.</param>
+        /// <returns>A new XDocument based on the document that you supplied, with the specified changes.</returns>
         public static XDocument XMLDoc(XDocument doc, string parent, string name, string value = null, bool attrib=false)
         {            
             //check for null parameters

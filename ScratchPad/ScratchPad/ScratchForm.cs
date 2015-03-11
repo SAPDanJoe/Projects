@@ -49,33 +49,7 @@ namespace ScratchPad
         /// <param name="e">Not currently impimented, use new EventArgs()</param>
         public void comboSelectionChanged(object sender, EventArgs e)
         {
-            //when the selection changes...
-            // 1) cast the sender as a comboBox
-            ComboBox cBox = (ComboBox)sender;
-            
-            // 2)puts the new selection in the Xdocument, and removes 'seleceted' from the item that is no longer selected
-            if (cBox.SelectedIndex != -1)
-            {   //this happens regardless of which box is selected
-                exchangeSelections(cBox);
-            }
 
-            // 3) determine which combo level we have
-            string myChildren = (cBox.Name.Contains("project")) ? "project" : "organization";
-            
-            // 3) collect all the children of this item
-            var children = listControls(this, myChildren);
-
-            // 4) populate the children
-            populate(children);
-            
-            // * if any of the chilbren are combo boxes...
-            var childCombos = children.FindAll(delegate(Control box) { return box.GetType().ToString() == "System.Windows.Forms.ComboBox"; });
-
-            //fire the selectionChanged event for the child combobox
-            foreach (ComboBox childBox in childCombos)
-            {
-                comboSelectionChanged(childBox, new EventArgs());                    
-            }
         }
 
         /// <summary>
@@ -141,13 +115,17 @@ namespace ScratchPad
             if (sender is ComboBox)
             {
                 ComboBox box = (ComboBox)sender;
-                uiValue = box.SelectedItem.ToString();
-                docValue = xdoc.XPathSelectElement(settingPath(box)).Attribute("name").Value.ToString();
+                uiValue = box.Text.ToString();
+                docValue = (xdoc.XPathSelectElement(settingPath(box)) == null) ? string.Empty : xdoc.XPathSelectElement(settingPath(box)).Attribute("name").Value.ToString();
                 if (uiValue != docValue)
                 {
                     //store uiValue in xdoc
-                    xdoc = Program.XMLDoc(xdoc, settingPath(box), "name", uiValue, true);                
-                    xdoc = Program.XMLDoc(xdoc, settingPath(box) + "[last()]", "controlName", box.Name.ToString() , true);
+                    xdoc = Program.XMLDoc(xdoc, addSettingPath(box), box.Tag + "Setting");
+                    xdoc = Program.XMLDoc(xdoc, addSettingPath(box) + "/" + box.Tag + "Setting[last()]", "controlName", box.Name.ToString(), true);
+                    xdoc = Program.XMLDoc(xdoc, addSettingPath(box) + "/" + box.Tag + "Setting[last()]", "name", uiValue, true); 
+
+                    //add new item to box list
+                    box.Items.Add(box.Text);
 
                     //select new value in combobox
                     box.SelectedIndex = box.Items.Count - 1;
@@ -159,17 +137,17 @@ namespace ScratchPad
             else if (sender is TextBox)
             {
                 TextBox box = (TextBox)sender;
-                uiValue = box.SelectedText.ToString();
+                uiValue = box.Text.ToString();
                 docValue = (xdoc.XPathSelectElement(settingPath(box)) == null) ? string.Empty : xdoc.XPathSelectElement(settingPath(box)).Value.ToString();
 
                 if (uiValue != docValue)
                 {
                     //store uiValue in xdoc
-                    xdoc = Program.XMLDoc(xdoc, settingPath(box), "name", uiValue);
-                    xdoc = Program.XMLDoc(xdoc, settingPath(box) + "[last()]", "controlName", box.Name.ToString(), true);
+                    xdoc = Program.XMLDoc(xdoc, addSettingPath(box), box.Tag + "Setting", uiValue);
+                    xdoc = Program.XMLDoc(xdoc, addSettingPath(box) + "/" + box.Tag + "Setting[last()]", "controlName", box.Name.ToString(), true);
                 }
+                System.Threading.Thread.Sleep(1);
             }
-
         }
 
         ///// <summary>
@@ -212,11 +190,15 @@ namespace ScratchPad
         {
             foreach (var box in boxes)
             {
+                int tag = int.Parse(box.Tag.ToString());                
+                string boxPath = Program.Path.Access(tag,
+                    "[@controlName = '" + box.Name.ToString() + "']");
+
                 switch (box.GetType().ToString())
                 {
                     case "System.Windows.Forms.TextBox":
-                        box.Text = (xdoc.XPathSelectElement(settingPath(box)) != null) ?
-                            xdoc.XPathSelectElement(settingPath(box)).Value.ToString() :
+                        box.Text = (xdoc.XPathSelectElement(boxPath) != null) ?
+                            xdoc.XPathSelectElement(boxPath).Value.ToString() :
                             string.Empty;
                         break;
                     case "System.Windows.Forms.ComboBox":
@@ -237,7 +219,8 @@ namespace ScratchPad
         private void populate(ComboBox cBox)
         {
             //check if handling the project or organization comboBox
-            string parent = cBox.Name.ToString().Contains("project") ? projects : organizations;
+            string parent = cBox.Name.ToString().Contains(Program.Path.level6) ?
+                Program.Path.Access(6) : Program.Path.Access(5);
 
             //child of the organization is the project combo box
             cBox.Items.Clear();
@@ -310,6 +293,40 @@ namespace ScratchPad
             return path;
         }
 
+        /// <summary>
+        /// gets XPathto add a control item
+        /// </summary>
+        /// <param name="pathItem">The Control whose setting path you want to add</param>
+        /// <returns>XPath string</returns>
+        private string addSettingPath(Control pathItem)
+        {
+            string path = string.Empty;
+            string itemTag = (pathItem.Tag != null) ?
+                pathItem.Tag.ToString() :
+                string.Empty;
+            //string pathSuffix = "[@controlName = '" + pathItem.Name.ToString() + "']";
+
+            switch (itemTag)
+            {
+                case "monsoon":
+                    path = (pathItem.Name.ToString() == "OrgComboBox") ?
+                        monsoon + "/organization" :
+                        monsoon + "/moSetting";
+                    break;
+                case "organization":
+                    path = currentOrganization + "/project";
+                    break;
+                case "project":
+                    path = currentProject;
+                    break;
+                default:
+                    path = currentSettings + "/machineSetting";
+                    break;
+            }
+            return path;
+        }
+
         #endregion
+
     }
 }
