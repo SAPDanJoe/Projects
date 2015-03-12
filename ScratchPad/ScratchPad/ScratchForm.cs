@@ -115,36 +115,45 @@ namespace ScratchPad
             if (sender is ComboBox)
             {
                 ComboBox box = (ComboBox)sender;
+                int level = int.Parse(box.Tag.ToString());
                 uiValue = box.Text.ToString();
-                docValue = (xdoc.XPathSelectElement(settingPath(box)) == null) ? string.Empty : xdoc.XPathSelectElement(settingPath(box)).Attribute("name").Value.ToString();
-                if (uiValue != docValue)
-                {
+                docValue = (xdoc.XPathSelectElement(Program.Path.Access(level)) == null) ? string.Empty : xdoc.XPathSelectElement(Program.Path.Access(level,"[@selected = '1']")).Attribute("name").Value.ToString();
+                bool existsInDoc = (xdoc.XPathSelectElement(Program.Path.Access(level, "[@name = '" + box.Text.ToString() + "']")) != null) ? true : false;
+
+                if (!existsInDoc)
+                {   //if the uiValue in the Combobox is not yet in the document, add it, reload the box's items, and select the newly added item
+
                     //store uiValue in xdoc
-                    xdoc = Program.XMLDoc(xdoc, addSettingPath(box), box.Tag + "Setting");
-                    xdoc = Program.XMLDoc(xdoc, addSettingPath(box) + "/" + box.Tag + "Setting[last()]", "controlName", box.Name.ToString(), true);
-                    xdoc = Program.XMLDoc(xdoc, addSettingPath(box) + "/" + box.Tag + "Setting[last()]", "name", uiValue, true); 
+                    xdoc = Program.XMLDoc(xdoc, level);
+                    xdoc = Program.XMLDoc(xdoc, level, box.Name.ToString(), true);
+                    xdoc = Program.XMLDoc(xdoc, level, uiValue, true, "name");
 
                     //add new item to box list
                     box.Items.Add(box.Text);
 
                     //select new value in combobox
                     box.SelectedIndex = box.Items.Count - 1;
-
-                    //fire selection changed event
+                }
+                
+                if (uiValue != docValue)
+                {
+                    //if the value in the UI has deviated from that in the document, fire selection changed event
                     comboSelectionChanged(box, new EventArgs());
+                    exchangeSelections(box);
                 }
             }
             else if (sender is TextBox)
             {
                 TextBox box = (TextBox)sender;
+                int level = int.Parse(box.Tag.ToString());
                 uiValue = box.Text.ToString();
-                docValue = (xdoc.XPathSelectElement(settingPath(box)) == null) ? string.Empty : xdoc.XPathSelectElement(settingPath(box)).Value.ToString();
+                docValue = (xdoc.XPathSelectElement(Program.Path.Access(level)) == null) ? string.Empty : xdoc.XPathSelectElement(Program.Path.Access(level)).Value.ToString();
 
                 if (uiValue != docValue)
                 {
                     //store uiValue in xdoc
-                    xdoc = Program.XMLDoc(xdoc, addSettingPath(box), box.Tag + "Setting", uiValue);
-                    xdoc = Program.XMLDoc(xdoc, addSettingPath(box) + "/" + box.Tag + "Setting[last()]", "controlName", box.Name.ToString(), true);
+                    xdoc = Program.XMLDoc(xdoc, level, uiValue);
+                    xdoc = Program.XMLDoc(xdoc, level, box.Name.ToString(), true);
                 }
                 System.Threading.Thread.Sleep(1);
             }
@@ -218,9 +227,11 @@ namespace ScratchPad
         /// <param name="cBox">The Combobox to be populated from the xdoc</param>
         private void populate(ComboBox cBox)
         {
-            //check if handling the project or organization comboBox
-            string parent = cBox.Name.ToString().Contains(Program.Path.level6) ?
-                Program.Path.Access(6) : Program.Path.Access(5);
+            //get the box's level
+            int level = int.Parse(cBox.Tag.ToString());
+            
+            //get the parent path for this combobox
+            string parent = Program.Path.AddNew(level);
 
             //child of the organization is the project combo box
             cBox.Items.Clear();
@@ -245,16 +256,14 @@ namespace ScratchPad
         /// <param name="cBox">The ComboBox where the selection has been changed.</param>
         private void exchangeSelections(ComboBox cBox)
         {
-            string basePath = (cBox.Name.Contains("project")) ? projects : organizations;
-            string baseElement = (cBox.Name.Contains("project")) ? currentProject : currentOrganization;
-            
+            int level = int.Parse(cBox.Tag.ToString());
             //get the old and newly selected elements
 
             //this is the item still 'selected' in the xdoc
-            XElement docSelection = xdoc.XPathSelectElement(baseElement);
+            XElement docSelection = xdoc.XPathSelectElement(Program.Path.Access(level,"[@selected = '1']"));
 
             //this is the item currently selected in the UI
-            XElement uiSelection = xdoc.XPathSelectElement(basePath + "[@name = '" + cBox.SelectedItem.ToString() + "']");  
+            XElement uiSelection = xdoc.XPathSelectElement(Program.Path.Access(level,"[@name = '" + cBox.SelectedItem.ToString() + "']"));  
 
             //remove the previous element's "seleted" attribute, and add it to the newly selected attribute
             docSelection.SetAttributeValue("selected", null);

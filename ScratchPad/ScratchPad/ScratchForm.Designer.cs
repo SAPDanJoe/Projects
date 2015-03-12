@@ -59,7 +59,7 @@
             this.OrgComboBox.Name = "OrgComboBox";
             this.OrgComboBox.Size = new System.Drawing.Size(121, 21);
             this.OrgComboBox.TabIndex = 3;
-            this.OrgComboBox.Tag = "4";
+            this.OrgComboBox.Tag = "5";
             this.OrgComboBox.Leave += new System.EventHandler(this.leaveBox);
             // 
             // projectComboBox
@@ -69,7 +69,7 @@
             this.projectComboBox.Name = "projectComboBox";
             this.projectComboBox.Size = new System.Drawing.Size(121, 21);
             this.projectComboBox.TabIndex = 4;
-            this.projectComboBox.Tag = "5";
+            this.projectComboBox.Tag = "6";
             this.projectComboBox.Leave += new System.EventHandler(this.leaveBox);
             // 
             // settingsLabel
