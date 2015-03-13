@@ -83,42 +83,6 @@ namespace ScratchPad
 
             return result;
         }
-        
-        ///// <summary>
-        ///// Gets all of the controls in a specified level of the form hierarchy
-        ///// </summary>
-        ///// <param name="childLevel">The number of the level whose controls are to be retrieved</param>
-        ///// <returns>A list of contorls whose Control.Tag match the int level provided</returns>
-        //private List<Control> controlsInLevel(int childLevel)
-        //{
-        //    //initialize the result list
-        //    List<Control> result = new List<Control>();
-
-        //    //get all the controls on the form
-        //    List<Control> formBoxes = listControls(this, new TextBox());
-        //    formBoxes.AddRange(listControls(this, new ComboBox()));
-
-        //    foreach (Control formControl in formBoxes)
-        //    {
-        //        int boxLevel = int.Parse(formControl.Tag.ToString());
-        //        if (boxLevel == childLevel)
-        //        {
-        //            result.Add(formControl);
-        //        }
-        //    }            
-
-        //    return result;
-        //}
-
-        /// <summary>
-        /// Event handler for the ComboBox.SelectionChanged event
-        /// </summary>
-        /// <param name="sender">The comboBox where the selection was changed</param>
-        /// <param name="e">Not currently impimented, use new EventArgs()</param>
-        public void comboSelectionChanged(object sender, EventArgs e)
-        {
-            //this is currently doing jack shit
-        }
 
         /// <summary>
         /// Recurses through a root control and gets all child controls by Type.
@@ -242,34 +206,6 @@ namespace ScratchPad
             }
         }
 
-        ///// <summary>
-        ///// Main event handler for the TextChanged events of the Combo boxes
-        ///// </summary>
-        ///// <param name="sender">Box in which the text changed.</param>
-        ///// <param name="e">Not currently impimented, use new EventArgs()</param>
-        //public void leaveComboBox(ComboBox box)
-        //{
-            
-        //}
-
-        ///// <summary>
-        ///// Main event handler for the TextChanged events of the Text boxes
-        ///// </summary>
-        ///// <param name="sender">Box in which the text changed.</param>
-        ///// <param name="e">Not currently impimented, use new EventArgs()</param>
-        //public void leaveTextBox(TextBox box)
-        //{
-        //    string path = settingPath(box);
-        //    string storedValue = ;
-        //    string uiValue = 
-        //    if (true)
-        //    {
-                
-        //    }
-        //}
-
-
-
         #endregion
 
         #region Populate Boxes from xdoc
@@ -356,71 +292,6 @@ namespace ScratchPad
                 docSelection.SetAttributeValue("selected", null);
             }
             uiSelection.SetAttributeValue("selected", 1);
-        }
-
-        /// <summary>
-        /// gets XPath of a control item
-        /// </summary>
-        /// <param name="pathItem">The Control whose setting path you want to retrieve</param>
-        /// <returns>XPath string</returns>
-        private string settingPath(Control pathItem)
-        {
-            string path = string.Empty;
-            string itemTag = (pathItem.Tag != null) ?
-                pathItem.Tag.ToString() :
-                string.Empty;
-            string pathSuffix = "[@controlName = '" + pathItem.Name.ToString() + "']";
-            switch (itemTag)
-            {
-                case "monsoon":
-                    path = (pathItem.Name.ToString() == "OrgComboBox") ?
-                        monsoon + "/organization" + pathSuffix :
-                        monsoon + "/moSetting" + pathSuffix;
-                    break;
-                case "organization":
-                    path = currentOrganization + "/project" + pathSuffix;
-                    break;
-                case "project":
-                    path = currentProject + "/projectSetting" + pathSuffix;
-                    break;
-                default:
-                    path = currentSettings + "/machineSetting" + pathSuffix;
-                    break;
-            }
-            return path;
-        }
-
-        /// <summary>
-        /// gets XPathto add a control item
-        /// </summary>
-        /// <param name="pathItem">The Control whose setting path you want to add</param>
-        /// <returns>XPath string</returns>
-        private string addSettingPath(Control pathItem)
-        {
-            string path = string.Empty;
-            string itemTag = (pathItem.Tag != null) ?
-                pathItem.Tag.ToString() :
-                string.Empty;
-            //string pathSuffix = "[@controlName = '" + pathItem.Name.ToString() + "']";
-
-            switch (itemTag)
-            {
-                case "monsoon":
-                    path = (pathItem.Name.ToString() == "OrgComboBox") ?
-                        monsoon + "/organization" :
-                        monsoon + "/moSetting";
-                    break;
-                case "organization":
-                    path = currentOrganization + "/project";
-                    break;
-                case "project":
-                    path = currentProject;
-                    break;
-                default:
-                    path = currentSettings + "/machineSetting";
-                    break;
-            }
-            return path;
         }
 
         #endregion

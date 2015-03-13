@@ -248,15 +248,7 @@ namespace ScratchPad
                     xdoc = XMLDoc(xdoc, 6, "1", true);
                 }
             }
-
-            ////in the selected project add some relevant data
-            //xdoc = XMLDoc(xdoc, Path.Access(6, "[@selected = '1']"), "projectSetting", @"https://ec2-us-west.api.monsoon.mo.sap.corp:443");
-            //xdoc = XMLDoc(xdoc, Path.Access(6, "[@selected = '1']") + "/projectSetting[last()]", "controlName", "EC2_URLTextBox", true);
-            //xdoc = XMLDoc(xdoc, Path.Access(6, "[@selected = '1']"), "projectSetting", @"STgzNzYzMzo6MTc3OTc%3D%0A");
-            //xdoc = XMLDoc(xdoc, Path.Access(6, "[@selected = '1']") + "/projectSetting[last()]", "controlName", "AWS_Access_KEYTextBox", true);
-            //xdoc = XMLDoc(xdoc, Path.Access(6, "[@selected = '1']"), "projectSetting", @"hRfAb%2FmOz6Phg%2B%2B73%2BwuQhMmqz%2BmSAHg%2FZ%2FyR1Ch4b4%3D%0A");
-            //xdoc = XMLDoc(xdoc, Path.Access(6, "[@selected = '1']") + "/projectSetting[last()]", "controlName", "AWS_SECRET_KEYTextBox", true);
-
+            
             //in the selected project add some relevant data
             xdoc = XMLDoc(xdoc, 7, @"https://ec2-us-west.api.monsoon.mo.sap.corp:443");
             xdoc = XMLDoc(xdoc, 7, "EC2_URLTextBox", true);
