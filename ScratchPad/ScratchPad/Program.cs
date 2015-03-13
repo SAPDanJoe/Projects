@@ -172,7 +172,8 @@ namespace ScratchPad
                             (attrib && !secondary) ? sel : level6;
                         break;
                     case 7:
-                        pathString = level7;
+                        pathString =
+                            (attrib && secondary) ? cont : level7;
                         break;
                     default:
                         Debug.Write("Error in Path.LevelName: the level {" + level.ToString() + "} was not recognized." + Environment.NewLine);
