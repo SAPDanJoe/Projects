@@ -18,14 +18,298 @@ namespace CS_MonsoonProjectSelector
         public MonsoonSettingsMainForm()
         {
             InitializeComponent();  //designer code, don't modify
-            LoadDefaults();
-            LoadData();
+
+            //enumerate populable fields
+            List<Control> myTextBoxes = listControls(this, new TextBox());
+            List<Control> myComboBoxes = listControls(this, new ComboBox());
+
+            //populate the fields
+            populate(myTextBoxes);
+            populate(myComboBoxes);
+            Debug.Write("******Intial loading of form is completed!**********" + Environment.NewLine);
+        
+            //LoadDefaults();
+            //LoadData();
         }
 
         #region Private form variable definitions
         private XElement fileSettings = XDocument.Load(Program.settings.ToString()).XPathSelectElement("configFile/settings[@id = 'current']");
+        private XDocument xdoc = XDocument.Load(Program.settings.ToString());        
         #endregion
 
+
+
+        /// <summary>
+        /// Lists all the controls that are children of the specified control.
+        /// </summary>
+        /// <param name="parent">The control whose child ocontrols are to be retrieved.</param>
+        /// <returns>List&lt;Control&gt;</returns>
+        private List<Control> childrenOf(Control parent)
+        {
+            //initialize the result list
+            List<Control> result = new List<Control>();
+
+            //get the parameter's level
+            int boxLevel = int.Parse(parent.Tag.ToString());
+            int childLevel = new int();
+            List<Control> formTextBoxes = listControls(this, new TextBox());
+
+            switch (boxLevel)
+            {
+                case 1:
+                    childLevel = 2;
+                    break;
+                case 3:
+                    childLevel = 4;
+                    break;
+                case 4:
+                    childLevel = 5;
+                    break;
+                case 5:
+                    childLevel = 6;
+                    break;
+                case 6:
+                    childLevel = 7;
+                    break;
+                default:
+                    Debug.Write("The control {" + parent.Name + "} at level {" + boxLevel + "} does not have any children!" + Environment.NewLine);
+                    break;
+            }
+            result = listControls(this, childLevel.ToString());
+
+            return result;
+        }
+
+        /// <summary>
+        /// Recurses through a root control and gets all child controls by Type.
+        /// </summary>
+        /// <param name="root">The root control from which to begin recursing. Usually "this", but could also be a groupBox, tabPane, etc.</param>
+        /// <param name="type">The type of control to find.  You can put any control to match here, or use "new TextBox", for example.</param>
+        /// <returns>List&lt;Control&gt;</returns>
+        public List<Control> listControls(Control root, Control type)
+        {
+            List<Control> theList = new List<Control>();
+
+            foreach (Control control in root.Controls)
+            {
+                if (control.GetType() == type.GetType())
+                {
+                    theList.Add(control);
+                }
+                else if (control.HasChildren)
+                {
+                    theList.InsertRange(theList.Count(), listControls(control, type));
+                }
+            }
+            return theList;
+        }
+
+        /// <summary>
+        /// Recurses through a root control and gets all child controls by Control.Tag(string).
+        /// </summary>
+        /// <param name="root">The root control from which to begin recursing. Usually "this", but could also be a groupBox, tabPane, etc.</param>
+        /// <param name="tag">A string to which the control's tag will be matched.</param>
+        /// <returns>List&lt;Control&gt;</returns>
+        public List<Control> listControls(Control root, string tag)
+        {
+            List<Control> theList = new List<Control>();
+
+            foreach (Control control in root.Controls)
+            {
+                if (control.Tag != null && control.Tag.ToString() == tag)
+                {
+                    theList.Add(control);
+                }
+                else if (control.HasChildren)
+                {
+                    theList.InsertRange(theList.Count(), listControls(control, tag));
+                }
+            }
+            return theList;
+        }
+
+        #region Save entries to XML
+
+        /// <summary>
+        /// Main event handler for the TextChanged events of the Text and Combo boxes
+        /// </summary>
+        /// <param name="sender">Box in which the text changed.</param>
+        /// <param name="e">Not currently impimented, use new EventArgs()</param>
+        public void leaveBox(object sender, EventArgs e)
+        {
+            string uiValue = string.Empty;
+            string docValue = string.Empty;
+
+            var dbg = (Control)sender;
+            Debug.Write("Leaving a {" + dbg.GetType().ToString() + "} named {" + dbg.Name.ToString() + "} at level {" + dbg.Tag + "} ." + Environment.NewLine);
+
+            if (sender is ComboBox)
+            {
+                ComboBox box = (ComboBox)sender;
+                int level = int.Parse(box.Tag.ToString());
+                uiValue = box.Text.ToString();
+                docValue = (xdoc.XPathSelectElement(Program.Path.Access(level, "[@selected = '1']")) == null) ? string.Empty : xdoc.XPathSelectElement(Program.Path.Access(level, "[@selected = '1']")).Attribute("name").Value.ToString();
+                bool existsInDoc = (xdoc.XPathSelectElement(Program.Path.Access(level, "[@name = '" + box.Text.ToString() + "']")) != null) ? true : false;
+
+                if (!existsInDoc && !string.IsNullOrEmpty(uiValue))
+                {   //if the uiValue in the Combobox is not yet in the document, add it
+                    Debug.Write("The control's value {" + uiValue + "} is not in the document, adding..." + Environment.NewLine);
+
+                    //store uiValue in xdoc
+                    xdoc = Program.XMLDoc(xdoc, level);
+                    xdoc = Program.XMLDoc(xdoc, level, box.Name.ToString(), true);
+                    xdoc = Program.XMLDoc(xdoc, level, uiValue, true, "name");
+                }
+
+                if (!box.Items.Contains(uiValue) && !string.IsNullOrEmpty(uiValue))
+                {   //if the uiValue is not already in the combobox's list...
+                    Debug.Write("The control's value {" + uiValue + "} is not in the list, adding and selecting..." + Environment.NewLine);
+
+                    //add new item to box list
+                    box.Items.Add(box.Text);
+
+                    //select new value in combobox
+                    box.SelectedIndex = box.Items.Count - 1;
+                }
+
+
+
+                if (uiValue != docValue)
+                {
+                    //if the value in the UI has deviated from that in the document, fire selection changed event
+                    Debug.Write("The form entered value {" + uiValue + "} does not match the selected document's value {" + docValue + "}, updating document to reflect the changes..." + Environment.NewLine);
+
+                    //comboSelectionChanged(box, new EventArgs());
+                    exchangeSelections(box);
+                }
+                else
+                {
+                    Debug.Write("{" + box.Name + "} had no changes to commit." + Environment.NewLine);
+                }
+                Debug.Write("{" + box.Name + "} has {" + childrenOf(box).Count + "} children to populate..." + Environment.NewLine);
+                populate(childrenOf(box));
+            }
+            else if (sender is TextBox)
+            {
+                TextBox box = (TextBox)sender;
+                int level = int.Parse(box.Tag.ToString());
+                uiValue = box.Text.ToString();
+                docValue = (xdoc.XPathSelectElement(Program.Path.Access(level,"[@ControlName = '" + box.Name.ToString() + "']")) == null) ? 
+                    string.Empty : xdoc.XPathSelectElement(Program.Path.Access(level,"[@ControlName = '" + box.Name.ToString() + "']")).Value.ToString();
+
+                if (uiValue != docValue && !string.IsNullOrEmpty(uiValue))
+                {
+                    Debug.Write("The control's value is not in the document, adding..." + Environment.NewLine);
+                    //store uiValue in xdoc
+                    xdoc = Program.XMLDoc(xdoc, level, uiValue);
+                    xdoc = Program.XMLDoc(xdoc, level, box.Name.ToString(), true);
+                }
+                else
+                {
+                    Debug.Write("{" + box.Name + "} had no changes to commit." + Environment.NewLine);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Populate Boxes from xdoc
+
+        /// <summary>
+        /// Populates TextBoxes and ComboBoxes
+        /// </summary>
+        /// <param name="boxes">The list of boxes to populate</param>
+        private void populate(List<Control> boxes)
+        {
+            foreach (var box in boxes)
+            {
+                int tag = int.Parse(box.Tag.ToString());
+                string boxPath = Program.Path.Access(tag,
+                    "[@ControlName = '" + box.Name.ToString() + "']");
+
+                switch (box.GetType().ToString())
+                {
+                    case "System.Windows.Forms.TextBox":
+                        box.Text = (xdoc.XPathSelectElement(boxPath) != null) ?
+                            xdoc.XPathSelectElement(boxPath).Value.ToString() :
+                            string.Empty;
+                        leaveBox(box, new EventArgs());
+                        break;
+                    case "System.Windows.Forms.ComboBox":
+                        ComboBox cBox = (ComboBox)box;
+                        populate(cBox);
+                        break;
+                    default:
+                        Debug.Write("Control Type : {" + boxes.GetType().ToString() + "} does not have a defined population method." + Environment.NewLine);
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Helper function that overloads the population method to handle a single ComboBox
+        /// </summary>
+        /// <param name="cBox">The Combobox to be populated from the xdoc</param>
+        private void populate(ComboBox cBox)
+        {
+            //get the box's level
+            int level = int.Parse(cBox.Tag.ToString());
+
+            //get the parent path for this combobox
+            string parent = Program.Path.Access(level);
+
+            if (cBox.Name != KitchentLogLevelComboBox.Name)
+            {
+                //Clear the ComboBox and get ready to load data into it
+                cBox.Items.Clear();
+                cBox.Text = null;
+                string selected = string.Empty;
+
+                foreach (XElement item in xdoc.XPathSelectElements(parent))
+                {
+                    //add each item to the Combobox item list
+                    cBox.Items.Add(item.Attribute("name").Value.ToString());
+                    if (item.Attribute("selected") != null && item.Attribute("selected").Value.ToString() == "1")
+                    {
+                        selected = item.Attribute("name").Value.ToString();
+                        cBox.SelectedIndex = cBox.Items.Count - 1;
+                    }
+                }
+                leaveBox(cBox, new EventArgs());
+
+            }
+            else
+            {
+                cBox.SelectedValue = xdoc.XPathSelectElement(parent + "[@ControlName = '" + cBox.Name + "']") != null ? xdoc.XPathSelectElement(parent + "[@ControlName = '" + cBox.Name + "']").Attribute("name").Value.ToString() : 
+                    "Default";
+            }
+
+        }
+
+        /// <summary>
+        /// When a new selection is made in a combobox, this ensures that the change is reflected in the acompanying XDocument
+        /// </summary>
+        /// <param name="cBox">The ComboBox where the selection has been changed.</param>
+        private void exchangeSelections(ComboBox cBox)
+        {
+            int level = int.Parse(cBox.Tag.ToString());
+            //get the old and newly selected elements
+
+            //this is the item still 'selected' in the xdoc
+            XElement docSelection = xdoc.XPathSelectElement(Program.Path.Access(level, "[@selected = '1']"));
+
+            //this is the item currently selected in the UI
+            XElement uiSelection = xdoc.XPathSelectElement(Program.Path.Access(level, "[@name = '" + cBox.SelectedItem.ToString() + "']"));
+
+            //remove the previous element's "seleted" attribute, and add it to the newly selected attribute
+            if (docSelection != null)
+            {
+                docSelection.SetAttributeValue("selected", null);
+            }
+            uiSelection.SetAttributeValue("selected", 1);
+        }
+
+        #endregion
 
         #region UI data interactions
         // This code handles loading data to the form
@@ -33,8 +317,9 @@ namespace CS_MonsoonProjectSelector
 
         private void LoadDefaults()
         {
-            KeyIDTextBox.Text = "Default";
-            OrgTextBox.Text = Environment.GetEnvironmentVariable("USERNAME").ToLower();
+            UserIDTextBox.Text = "Default";
+            OrgComboBox.Items.Add(Environment.GetEnvironmentVariable("USERNAME").ToLower());
+            OrgComboBox.SelectedIndex = OrgComboBox.Items.Count - 1;
             DevkitBinTextBox.Text = "\\chef\\embedded";
             MinGWBinTextBox.Text = "\\chef\\embedded\\migwin\\bin";
             ChefEmbeddedBinTextBox.Text = "\\chef\\embedded\\bin";
@@ -48,12 +333,11 @@ namespace CS_MonsoonProjectSelector
             VagrantEmbeddedBinTextBox.Text = "\\Vagrant\\embedded\\bin";
             KitchentLogLevelComboBox.Text = "Default";
             puTTYgenTextBox.Text = "C:\\Program Files (x86)\\PuTTY\\puttygen.exe";
-            UserIDComboBox.Items.Add(Environment.GetEnvironmentVariable("USERNAME").ToLower());
-            UserIDComboBox.SelectedItem = (string)Environment.GetEnvironmentVariable("USERNAME").ToLower();
+            KeyIDTextBox.Text = (string)Environment.GetEnvironmentVariable("USERNAME").ToLower();
 
             //set all of these controls to gray to indicate default values
-            KeyIDTextBox.ForeColor = System.Drawing.Color.Gray;
-            OrgTextBox.ForeColor = System.Drawing.Color.Gray;
+            UserIDTextBox.ForeColor = System.Drawing.Color.Gray;
+            OrgComboBox.ForeColor = System.Drawing.Color.Gray;
             DevkitBinTextBox.ForeColor = System.Drawing.Color.Gray;
             MinGWBinTextBox.ForeColor = System.Drawing.Color.Gray;
             ChefEmbeddedBinTextBox.ForeColor = System.Drawing.Color.Gray;
@@ -67,15 +351,15 @@ namespace CS_MonsoonProjectSelector
             VagrantEmbeddedBinTextBox.ForeColor = System.Drawing.Color.Gray;
             puTTYgenTextBox.ForeColor = System.Drawing.Color.Gray;
             KitchentLogLevelComboBox.ForeColor = System.Drawing.Color.Gray;
-            UserIDComboBox.ForeColor = System.Drawing.Color.Gray;
+            KeyIDTextBox.ForeColor = System.Drawing.Color.Gray;
         }
 
         private void LoadData()
         {
             //load values from file into text boxes 
-            readXMLtoForm(KeyIDTextBox, fileSettings);
+            readXMLtoForm(UserIDTextBox, fileSettings);
             readXMLtoForm(AccessKeyTextBox, fileSettings);
-            readXMLtoForm(OrgTextBox, fileSettings);
+            readXMLtoForm(OrgComboBox, fileSettings);
             readXMLtoForm(SecretKeyTextBox, fileSettings);
             readXMLtoForm(PublicKeyTextBox, fileSettings);
             readXMLtoForm(PrivateKeyTextBox, fileSettings);
@@ -96,12 +380,12 @@ namespace CS_MonsoonProjectSelector
             readXMLtoForm(puTTYgenTextBox, fileSettings);
             readXMLtoForm(ProjectNameComboBox, fileSettings);
             //valueReader(KitchentLogLevelComboBox, fileSettings);  <-- This is not necessary, because adding values is not allowed.
-            readXMLtoForm(UserIDComboBox, fileSettings);
+            readXMLtoForm(KeyIDTextBox, fileSettings);
 
             //set selected items in combo boxes
             setSelections(ProjectNameComboBox, fileSettings);
             setSelections(KitchentLogLevelComboBox, fileSettings);  //but we do need to get the selected value from the XML File
-            setSelections(UserIDComboBox, fileSettings);
+            setSelections(OrgComboBox, fileSettings);
         }
 
         private void SaveData(XDocument form = null)
@@ -334,7 +618,7 @@ namespace CS_MonsoonProjectSelector
         {
             System.Diagnostics.Process.Start(
                 "https://monsoon.mo.sap.corp/users/" +
-                UserIDComboBox.Text +
+                KeyIDTextBox.Text +
                 "/keys"
                 );
         }
@@ -343,7 +627,7 @@ namespace CS_MonsoonProjectSelector
         {
             System.Diagnostics.Process.Start(
                 "https://monsoon.mo.sap.corp/organizations/" +
-                UserIDComboBox.Text +
+                KeyIDTextBox.Text +
                 "/projects/" +
                 ProjectNameComboBox.Text
                 );
@@ -556,12 +840,12 @@ namespace CS_MonsoonProjectSelector
             XElement formContents = newForm.XPathSelectElement("settings[@id = 'current']");
 
             //load the form data into the new element
-            formContents = writeFormToXML(UserIDComboBox, formContents);
+            formContents = writeFormToXML(KeyIDTextBox, formContents);
             formContents = writeFormToXML(PublicKeyTextBox, formContents);
             formContents = writeFormToXML(PrivateKeyTextBox, formContents);
-            formContents = writeFormToXML(OrgTextBox, formContents);
+            formContents = writeFormToXML(OrgComboBox, formContents);
             formContents = writeFormToXML(ProjectNameComboBox, formContents);
-            formContents = writeFormToXML(KeyIDTextBox, formContents);
+            formContents = writeFormToXML(UserIDTextBox, formContents);
             formContents = writeFormToXML(AccessKeyTextBox, formContents);
             formContents = writeFormToXML(SecretKeyTextBox, formContents);
             formContents = writeFormToXML(DevkitBinTextBox, formContents);

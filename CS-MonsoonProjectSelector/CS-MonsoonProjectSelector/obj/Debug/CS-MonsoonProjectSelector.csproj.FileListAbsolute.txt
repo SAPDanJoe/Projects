@@ -7,5 +7,4 @@ C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonP
 C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\obj\Debug\CS-MonsoonProjectSelector.exe
 C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\obj\Debug\CS-MonsoonProjectSelector.pdb
 C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\obj\Debug\CS_MonsoonProjectSelector.MonsoonSettingsMainForm.resources
-C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\obj\Debug\Interop.MSXML2.dll
 C:\Users\i837633\Documents\GitHub\projects\CS-MonsoonProjectSelector\CS-MonsoonProjectSelector\obj\Debug\CS-MonsoonProjectSelector.csproj.ResolveComReference.cache
