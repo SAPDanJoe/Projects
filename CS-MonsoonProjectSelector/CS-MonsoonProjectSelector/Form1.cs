@@ -456,19 +456,19 @@ namespace CS_MonsoonProjectSelector
 
             defaults.Add(new Default(UserIDTextBox, Environment.GetEnvironmentVariable("USERNAME").ToLower()));
             defaults.Add(new Default(OrgComboBox, (string)Environment.GetEnvironmentVariable("USERNAME").ToLower()));
-            defaults.Add(new Default(DevkitBinTextBox, "\\chef\\embedded"));
-            defaults.Add(new Default(MinGWBinTextBox, "\\chef\\embedded\\migwin\\bin"));
-            defaults.Add(new Default(ChefEmbeddedBinTextBox, "\\chef\\embedded\\bin"));
-            defaults.Add(new Default(ChefRootTextBox, "\\chef"));
-            defaults.Add(new Default(GitSSHTextBox, "C:\\Program Files (x86)\\Git\\bin\\ssh.exe"));
+            defaults.Add(new Default(DevkitBinPathTextBox, "\\chef\\embedded"));
+            defaults.Add(new Default(MinGWBinPathTextBox, "\\chef\\embedded\\migwin\\bin"));
+            defaults.Add(new Default(ChefEmbeddedBinPathTextBox, "\\chef\\embedded\\bin"));
+            defaults.Add(new Default(ChefRootPathTextBox, "\\chef"));
+            defaults.Add(new Default(GitSSHPathTextBox, "C:\\Program Files (x86)\\Git\\bin\\ssh.exe"));
             defaults.Add(new Default(GEMPathTextBox, "\\Vagrant\\embedded\\gems"));
             defaults.Add(new Default(GEMSourcesTextBox, "http://moo-repo.wdf.sap.corp:8080/geminabox/" + Environment.NewLine + "http://moo-repo.wdf.sap.corp:8080/rubygemsorg/"));
-            defaults.Add(new Default(EC2HomeTextBox, "\\ec2-api-tools-1.6.9.0"));
+            defaults.Add(new Default(EC2HomePathTextBox, "\\ec2-api-tools-1.6.9.0"));
             defaults.Add(new Default(EC2UrlTextBox, "https://ec2-us-west.api.monsoon.mo.sap.corp:443"));
-            defaults.Add(new Default(VagrantEmbeddedTextBox, "\\Vagrant\\embedded"));
-            defaults.Add(new Default(VagrantEmbeddedBinTextBox, "\\Vagrant\\embedded\\bin"));
+            defaults.Add(new Default(VagrantEmbeddedPathTextBox, "\\Vagrant\\embedded"));
+            defaults.Add(new Default(VagrantEmbeddedBinPathTextBox, "\\Vagrant\\embedded\\bin"));
             defaults.Add(new Default(KitchentLogLevelComboBox, "Default"));
-            defaults.Add(new Default(puTTYgenTextBox, "C:\\Program Files (x86)\\PuTTY\\puttygen.exe"));
+            defaults.Add(new Default(puTTYgenPathTextBox, "C:\\Program Files (x86)\\PuTTY\\puttygen.exe"));
             defaults.Add(new Default(KeyIDTextBox, "Default"));
             defaults.Add(new Default(ProjectNameComboBox, "Enter a project name"));
             return defaults;
@@ -500,41 +500,7 @@ namespace CS_MonsoonProjectSelector
                 }
             }
         }
-
-        //private void LoadData()
-        //{
-        //    //load values from file into text boxes 
-        //    readXMLtoForm(UserIDTextBox, fileSettings);
-        //    readXMLtoForm(AccessKeyTextBox, fileSettings);
-        //    readXMLtoForm(OrgComboBox, fileSettings);
-        //    readXMLtoForm(SecretKeyTextBox, fileSettings);
-        //    readXMLtoForm(PublicKeyTextBox, fileSettings);
-        //    readXMLtoForm(PrivateKeyTextBox, fileSettings);
-        //    readXMLtoForm(DevkitBinTextBox, fileSettings);
-        //    readXMLtoForm(MinGWBinTextBox, fileSettings);
-        //    readXMLtoForm(ChefEmbeddedBinTextBox, fileSettings);
-        //    readXMLtoForm(ChefRootTextBox, fileSettings);
-        //    readXMLtoForm(GitSSHTextBox, fileSettings);
-        //    readXMLtoForm(GitEmailAddressTextBox, fileSettings);
-        //    readXMLtoForm(GitFirstNameTextBox, fileSettings);
-        //    readXMLtoForm(GitLastNameTextBox, fileSettings);
-        //    readXMLtoForm(GEMPathTextBox, fileSettings);
-        //    readXMLtoForm(GEMSourcesTextBox, fileSettings);
-        //    readXMLtoForm(EC2HomeTextBox, fileSettings);
-        //    readXMLtoForm(EC2UrlTextBox, fileSettings);
-        //    readXMLtoForm(VagrantEmbeddedTextBox, fileSettings);
-        //    readXMLtoForm(VagrantEmbeddedBinTextBox, fileSettings);
-        //    readXMLtoForm(puTTYgenTextBox, fileSettings);
-        //    readXMLtoForm(ProjectNameComboBox, fileSettings);
-        //    //valueReader(KitchentLogLevelComboBox, fileSettings);  <-- This is not necessary, because adding values is not allowed.
-        //    readXMLtoForm(KeyIDTextBox, fileSettings);
-
-        //    //set selected items in combo boxes
-        //    setSelections(ProjectNameComboBox, fileSettings);
-        //    setSelections(KitchentLogLevelComboBox, fileSettings);  //but we do need to get the selected value from the XML File
-        //    setSelections(OrgComboBox, fileSettings);
-        //}
-
+        
         private void SaveData(bool contextualResponse = false)
         {
             //need to re-access the config file to ensure we have the most recent copy...
@@ -596,87 +562,6 @@ namespace CS_MonsoonProjectSelector
                     System.Windows.Forms.MessageBoxIcon.Information);
             }
         }
-
-        //private XElement writeFormToXML(TextBox tBox, XElement current)
-        //{
-        //    if (tBox.Text != string.Empty)
-        //    {   //add the box's name and value                  
-        //        current.Add(
-        //            new XElement(
-        //                tBox.Name.ToString(),
-        //                tBox.Text.ToString()
-        //                )
-        //            );
-        //    }
-        //    return current;
-        //}
-
-        //private XElement writeFormToXML(ComboBox cBox, XElement current)
-        //{
-        //    //add a new element in the node for the comboBox
-        //    current.Add(new XElement(cBox.Name.ToString()), string.Empty);
-
-        //    //select the newly added element
-        //    XElement cBoxElement = current.Element(cBox.Name.ToString());
-
-        //    foreach (var item in cBox.Items)
-        //    {
-        //        if ((string)cBox.SelectedItem == item.ToString())
-        //        { //this is the currently selected item in the form
-
-        //            cBoxElement.Add(
-        //                new XElement("item", item.ToString(),
-        //                new XAttribute("selected", "1")));
-        //        }
-        //        else
-        //        {
-        //            cBoxElement.Add(new XElement("item", item.ToString()));
-        //        }
-        //    }
-        //    return current;
-        //}
-
-        //private void readXMLtoForm(TextBox cBox, XElement root)
-        //{
-        //    string xmlValue = (string)root.Element(cBox.Name.ToString());
-        //    if ((xmlValue != string.Empty) && (xmlValue != null))
-        //    {
-        //        cBox.Text = xmlValue;
-        //        cBox.ForeColor = System.Drawing.Color.Black;
-        //    }
-        //}
-
-        //private void readXMLtoForm(ComboBox cBox, XElement root)
-        //{
-        //    XElement branch = root.XPathSelectElement(cBox.Name.ToString());
-        //    if (branch != null)
-        //    {
-        //        IEnumerable<XElement> ComboBoxitems =
-        //            from branchItems in branch.Descendants()
-        //            select branchItems;
-
-        //        if (cBox.Items.Count > 0)
-        //        {   //if there are already items in the combo box, clear them
-        //            cBox.Items.Clear();
-        //        }
-
-        //        foreach (XElement xmlData in ComboBoxitems)
-        //        {
-        //            cBox.Items.Add(xmlData.Value);
-        //            cBox.ForeColor = System.Drawing.Color.Black;
-        //        }
-        //    }
-
-        //}
-
-        //private void setSelections(ComboBox cBox, XElement root)
-        //{
-        //    string value = (string)root.XPathSelectElement(cBox.Name.ToString() + "/item[@selected = '1']");
-        //    if ((value != string.Empty) && (value != null))
-        //    {
-        //        cBox.SelectedItem = value;
-        //    }
-        //}
 
         #endregion
 
@@ -764,20 +649,22 @@ namespace CS_MonsoonProjectSelector
                             System.Windows.Forms.MessageBoxIcon.Error);
                         return false;
                     }
-                    if (!(!string.IsNullOrEmpty(box.Text) &&
-                    box.Name.Contains("path") &&
-                    (
-                        System.IO.File.Exists(box.Text) ||
-                        System.IO.Directory.Exists(box.Text)
-                    )))
+                    if (box.Name.Contains("Path") || box.Name.Contains("Bin"))
                     {
-                        MessageBox.Show(
-                            "The path {" + box.Text + "} could not be accessed.",
-                            "Error in " + box.Name.ToString(),
-                            System.Windows.Forms.MessageBoxButtons.OK,
-                            System.Windows.Forms.MessageBoxIcon.Error);
-                        return false;
-                    }
+                        if (System.IO.File.Exists(box.Text) || System.IO.Directory.Exists(box.Text))
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            MessageBox.Show(
+                                 "The path {" + box.Text + "} could not be accessed.",
+                                 "Error in " + box.Name.ToString(),
+                                 System.Windows.Forms.MessageBoxButtons.OK,
+                                 System.Windows.Forms.MessageBoxIcon.Error);
+                            return false;
+                        }
+                    }                    
                 }               
             }
             return true;

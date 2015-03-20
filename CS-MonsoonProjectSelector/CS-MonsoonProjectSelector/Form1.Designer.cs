@@ -34,13 +34,13 @@
             this.ProjectNameToolTipPictureBox = new System.Windows.Forms.PictureBox();
             this.WorkstationInformationTab = new System.Windows.Forms.TabPage();
             this.puTTYGroupBox = new System.Windows.Forms.GroupBox();
-            this.puTTYgenTextBox = new System.Windows.Forms.TextBox();
+            this.puTTYgenPathTextBox = new System.Windows.Forms.TextBox();
             this.puTTYgenLabel = new System.Windows.Forms.Label();
             this.VagrantInstallationGroupBox = new System.Windows.Forms.GroupBox();
-            this.VagrantEmbeddedTextBox = new System.Windows.Forms.TextBox();
+            this.VagrantEmbeddedPathTextBox = new System.Windows.Forms.TextBox();
             this.VagrantEmbeddedLabel = new System.Windows.Forms.Label();
             this.VagrantEmbeddedBinLabel = new System.Windows.Forms.Label();
-            this.VagrantEmbeddedBinTextBox = new System.Windows.Forms.TextBox();
+            this.VagrantEmbeddedBinPathTextBox = new System.Windows.Forms.TextBox();
             this.GEMSourcesGroupBox = new System.Windows.Forms.GroupBox();
             this.GEMPathLabel = new System.Windows.Forms.Label();
             this.GEMPathTextBox = new System.Windows.Forms.TextBox();
@@ -49,12 +49,12 @@
             this.GEMSourcesLabel = new System.Windows.Forms.Label();
             this.EC2CLISettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.EC2NoteLabel = new System.Windows.Forms.Label();
-            this.EC2HomeTextBox = new System.Windows.Forms.TextBox();
+            this.EC2HomePathTextBox = new System.Windows.Forms.TextBox();
             this.EC2HomeLabel = new System.Windows.Forms.Label();
             this.EC2UrlLabel = new System.Windows.Forms.Label();
             this.EC2UrlTextBox = new System.Windows.Forms.TextBox();
             this.GitGroupBox = new System.Windows.Forms.GroupBox();
-            this.GitSSHTextBox = new System.Windows.Forms.TextBox();
+            this.GitSSHPathTextBox = new System.Windows.Forms.TextBox();
             this.GitSSHPathLabel = new System.Windows.Forms.Label();
             this.GitEmailAddressTextBox = new System.Windows.Forms.TextBox();
             this.GitFirstNameLabel = new System.Windows.Forms.Label();
@@ -64,14 +64,14 @@
             this.GitLastNameLabel = new System.Windows.Forms.Label();
             this.ChefGroupBox = new System.Windows.Forms.GroupBox();
             this.KitchentLogLevelComboBox = new System.Windows.Forms.ComboBox();
-            this.ChefRootTextBox = new System.Windows.Forms.TextBox();
+            this.ChefRootPathTextBox = new System.Windows.Forms.TextBox();
             this.KitchenLogLevelLabel = new System.Windows.Forms.Label();
             this.ChefRootLabel = new System.Windows.Forms.Label();
-            this.DevkitBinTextBox = new System.Windows.Forms.TextBox();
+            this.DevkitBinPathTextBox = new System.Windows.Forms.TextBox();
             this.ChefEmebbedBinLabel = new System.Windows.Forms.Label();
             this.DevkitBinLabel = new System.Windows.Forms.Label();
-            this.ChefEmbeddedBinTextBox = new System.Windows.Forms.TextBox();
-            this.MinGWBinTextBox = new System.Windows.Forms.TextBox();
+            this.ChefEmbeddedBinPathTextBox = new System.Windows.Forms.TextBox();
+            this.MinGWBinPathTextBox = new System.Windows.Forms.TextBox();
             this.MinGWBinLabel = new System.Windows.Forms.Label();
             this.MonsoonAccountInformationTab = new System.Windows.Forms.TabPage();
             this.level3TextBox = new System.Windows.Forms.TextBox();
@@ -158,7 +158,7 @@
             // 
             // puTTYGroupBox
             // 
-            this.puTTYGroupBox.Controls.Add(this.puTTYgenTextBox);
+            this.puTTYGroupBox.Controls.Add(this.puTTYgenPathTextBox);
             this.puTTYGroupBox.Controls.Add(this.puTTYgenLabel);
             this.puTTYGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.puTTYGroupBox.Location = new System.Drawing.Point(6, 282);
@@ -168,16 +168,16 @@
             this.puTTYGroupBox.TabStop = false;
             this.puTTYGroupBox.Text = "puTTY";
             // 
-            // puTTYgenTextBox
+            // puTTYgenPathTextBox
             // 
-            this.puTTYgenTextBox.Location = new System.Drawing.Point(116, 13);
-            this.puTTYgenTextBox.Name = "puTTYgenTextBox";
-            this.puTTYgenTextBox.Size = new System.Drawing.Size(168, 20);
-            this.puTTYgenTextBox.TabIndex = 11;
-            this.puTTYgenTextBox.Tag = "2";
-            this.puTTYgenTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
-            this.puTTYgenTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
-            this.puTTYgenTextBox.Leave += new System.EventHandler(this.leaveBox);
+            this.puTTYgenPathTextBox.Location = new System.Drawing.Point(116, 13);
+            this.puTTYgenPathTextBox.Name = "puTTYgenPathTextBox";
+            this.puTTYgenPathTextBox.Size = new System.Drawing.Size(168, 20);
+            this.puTTYgenPathTextBox.TabIndex = 11;
+            this.puTTYgenPathTextBox.Tag = "2";
+            this.puTTYgenPathTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
+            this.puTTYgenPathTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
+            this.puTTYgenPathTextBox.Leave += new System.EventHandler(this.leaveBox);
             // 
             // puTTYgenLabel
             // 
@@ -190,10 +190,10 @@
             // 
             // VagrantInstallationGroupBox
             // 
-            this.VagrantInstallationGroupBox.Controls.Add(this.VagrantEmbeddedTextBox);
+            this.VagrantInstallationGroupBox.Controls.Add(this.VagrantEmbeddedPathTextBox);
             this.VagrantInstallationGroupBox.Controls.Add(this.VagrantEmbeddedLabel);
             this.VagrantInstallationGroupBox.Controls.Add(this.VagrantEmbeddedBinLabel);
-            this.VagrantInstallationGroupBox.Controls.Add(this.VagrantEmbeddedBinTextBox);
+            this.VagrantInstallationGroupBox.Controls.Add(this.VagrantEmbeddedBinPathTextBox);
             this.VagrantInstallationGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.VagrantInstallationGroupBox.Location = new System.Drawing.Point(311, 253);
             this.VagrantInstallationGroupBox.Name = "VagrantInstallationGroupBox";
@@ -202,16 +202,16 @@
             this.VagrantInstallationGroupBox.TabStop = false;
             this.VagrantInstallationGroupBox.Text = "Vagrant Installation Data";
             // 
-            // VagrantEmbeddedTextBox
+            // VagrantEmbeddedPathTextBox
             // 
-            this.VagrantEmbeddedTextBox.Location = new System.Drawing.Point(116, 13);
-            this.VagrantEmbeddedTextBox.Name = "VagrantEmbeddedTextBox";
-            this.VagrantEmbeddedTextBox.Size = new System.Drawing.Size(168, 20);
-            this.VagrantEmbeddedTextBox.TabIndex = 16;
-            this.VagrantEmbeddedTextBox.Tag = "2";
-            this.VagrantEmbeddedTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
-            this.VagrantEmbeddedTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
-            this.VagrantEmbeddedTextBox.Leave += new System.EventHandler(this.leaveBox);
+            this.VagrantEmbeddedPathTextBox.Location = new System.Drawing.Point(116, 13);
+            this.VagrantEmbeddedPathTextBox.Name = "VagrantEmbeddedPathTextBox";
+            this.VagrantEmbeddedPathTextBox.Size = new System.Drawing.Size(168, 20);
+            this.VagrantEmbeddedPathTextBox.TabIndex = 16;
+            this.VagrantEmbeddedPathTextBox.Tag = "2";
+            this.VagrantEmbeddedPathTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
+            this.VagrantEmbeddedPathTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
+            this.VagrantEmbeddedPathTextBox.Leave += new System.EventHandler(this.leaveBox);
             // 
             // VagrantEmbeddedLabel
             // 
@@ -231,16 +231,16 @@
             this.VagrantEmbeddedBinLabel.TabIndex = 0;
             this.VagrantEmbeddedBinLabel.Text = "Vagrant Emb. Bin";
             // 
-            // VagrantEmbeddedBinTextBox
+            // VagrantEmbeddedBinPathTextBox
             // 
-            this.VagrantEmbeddedBinTextBox.Location = new System.Drawing.Point(116, 39);
-            this.VagrantEmbeddedBinTextBox.Name = "VagrantEmbeddedBinTextBox";
-            this.VagrantEmbeddedBinTextBox.Size = new System.Drawing.Size(168, 20);
-            this.VagrantEmbeddedBinTextBox.TabIndex = 17;
-            this.VagrantEmbeddedBinTextBox.Tag = "2";
-            this.VagrantEmbeddedBinTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
-            this.VagrantEmbeddedBinTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
-            this.VagrantEmbeddedBinTextBox.Leave += new System.EventHandler(this.leaveBox);
+            this.VagrantEmbeddedBinPathTextBox.Location = new System.Drawing.Point(116, 39);
+            this.VagrantEmbeddedBinPathTextBox.Name = "VagrantEmbeddedBinPathTextBox";
+            this.VagrantEmbeddedBinPathTextBox.Size = new System.Drawing.Size(168, 20);
+            this.VagrantEmbeddedBinPathTextBox.TabIndex = 17;
+            this.VagrantEmbeddedBinPathTextBox.Tag = "2";
+            this.VagrantEmbeddedBinPathTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
+            this.VagrantEmbeddedBinPathTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
+            this.VagrantEmbeddedBinPathTextBox.Leave += new System.EventHandler(this.leaveBox);
             // 
             // GEMSourcesGroupBox
             // 
@@ -313,7 +313,7 @@
             // EC2CLISettingsGroupBox
             // 
             this.EC2CLISettingsGroupBox.Controls.Add(this.EC2NoteLabel);
-            this.EC2CLISettingsGroupBox.Controls.Add(this.EC2HomeTextBox);
+            this.EC2CLISettingsGroupBox.Controls.Add(this.EC2HomePathTextBox);
             this.EC2CLISettingsGroupBox.Controls.Add(this.EC2HomeLabel);
             this.EC2CLISettingsGroupBox.Controls.Add(this.EC2UrlLabel);
             this.EC2CLISettingsGroupBox.Controls.Add(this.EC2UrlTextBox);
@@ -336,16 +336,16 @@
     "tomatically based on these \r\nsettings, and some of the settings from the previou" +
     "s tab.";
             // 
-            // EC2HomeTextBox
+            // EC2HomePathTextBox
             // 
-            this.EC2HomeTextBox.Location = new System.Drawing.Point(116, 13);
-            this.EC2HomeTextBox.Name = "EC2HomeTextBox";
-            this.EC2HomeTextBox.Size = new System.Drawing.Size(168, 20);
-            this.EC2HomeTextBox.TabIndex = 14;
-            this.EC2HomeTextBox.Tag = "2";
-            this.EC2HomeTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
-            this.EC2HomeTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
-            this.EC2HomeTextBox.Leave += new System.EventHandler(this.leaveBox);
+            this.EC2HomePathTextBox.Location = new System.Drawing.Point(116, 13);
+            this.EC2HomePathTextBox.Name = "EC2HomePathTextBox";
+            this.EC2HomePathTextBox.Size = new System.Drawing.Size(168, 20);
+            this.EC2HomePathTextBox.TabIndex = 14;
+            this.EC2HomePathTextBox.Tag = "2";
+            this.EC2HomePathTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
+            this.EC2HomePathTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
+            this.EC2HomePathTextBox.Leave += new System.EventHandler(this.leaveBox);
             // 
             // EC2HomeLabel
             // 
@@ -377,7 +377,7 @@
             // 
             // GitGroupBox
             // 
-            this.GitGroupBox.Controls.Add(this.GitSSHTextBox);
+            this.GitGroupBox.Controls.Add(this.GitSSHPathTextBox);
             this.GitGroupBox.Controls.Add(this.GitSSHPathLabel);
             this.GitGroupBox.Controls.Add(this.GitEmailAddressTextBox);
             this.GitGroupBox.Controls.Add(this.GitFirstNameLabel);
@@ -393,16 +393,16 @@
             this.GitGroupBox.TabStop = false;
             this.GitGroupBox.Text = "Git Installation Data";
             // 
-            // GitSSHTextBox
+            // GitSSHPathTextBox
             // 
-            this.GitSSHTextBox.Location = new System.Drawing.Point(116, 13);
-            this.GitSSHTextBox.Name = "GitSSHTextBox";
-            this.GitSSHTextBox.Size = new System.Drawing.Size(168, 20);
-            this.GitSSHTextBox.TabIndex = 7;
-            this.GitSSHTextBox.Tag = "2";
-            this.GitSSHTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
-            this.GitSSHTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
-            this.GitSSHTextBox.Leave += new System.EventHandler(this.leaveBox);
+            this.GitSSHPathTextBox.Location = new System.Drawing.Point(116, 13);
+            this.GitSSHPathTextBox.Name = "GitSSHPathTextBox";
+            this.GitSSHPathTextBox.Size = new System.Drawing.Size(168, 20);
+            this.GitSSHPathTextBox.TabIndex = 7;
+            this.GitSSHPathTextBox.Tag = "2";
+            this.GitSSHPathTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
+            this.GitSSHPathTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
+            this.GitSSHPathTextBox.Leave += new System.EventHandler(this.leaveBox);
             // 
             // GitSSHPathLabel
             // 
@@ -473,14 +473,14 @@
             // ChefGroupBox
             // 
             this.ChefGroupBox.Controls.Add(this.KitchentLogLevelComboBox);
-            this.ChefGroupBox.Controls.Add(this.ChefRootTextBox);
+            this.ChefGroupBox.Controls.Add(this.ChefRootPathTextBox);
             this.ChefGroupBox.Controls.Add(this.KitchenLogLevelLabel);
             this.ChefGroupBox.Controls.Add(this.ChefRootLabel);
-            this.ChefGroupBox.Controls.Add(this.DevkitBinTextBox);
+            this.ChefGroupBox.Controls.Add(this.DevkitBinPathTextBox);
             this.ChefGroupBox.Controls.Add(this.ChefEmebbedBinLabel);
             this.ChefGroupBox.Controls.Add(this.DevkitBinLabel);
-            this.ChefGroupBox.Controls.Add(this.ChefEmbeddedBinTextBox);
-            this.ChefGroupBox.Controls.Add(this.MinGWBinTextBox);
+            this.ChefGroupBox.Controls.Add(this.ChefEmbeddedBinPathTextBox);
+            this.ChefGroupBox.Controls.Add(this.MinGWBinPathTextBox);
             this.ChefGroupBox.Controls.Add(this.MinGWBinLabel);
             this.ChefGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ChefGroupBox.Location = new System.Drawing.Point(6, 6);
@@ -506,16 +506,16 @@
             this.KitchentLogLevelComboBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.KitchentLogLevelComboBox.Leave += new System.EventHandler(this.leaveBox);
             // 
-            // ChefRootTextBox
+            // ChefRootPathTextBox
             // 
-            this.ChefRootTextBox.Location = new System.Drawing.Point(116, 13);
-            this.ChefRootTextBox.Name = "ChefRootTextBox";
-            this.ChefRootTextBox.Size = new System.Drawing.Size(168, 20);
-            this.ChefRootTextBox.TabIndex = 2;
-            this.ChefRootTextBox.Tag = "2";
-            this.ChefRootTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
-            this.ChefRootTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
-            this.ChefRootTextBox.Leave += new System.EventHandler(this.leaveBox);
+            this.ChefRootPathTextBox.Location = new System.Drawing.Point(116, 13);
+            this.ChefRootPathTextBox.Name = "ChefRootPathTextBox";
+            this.ChefRootPathTextBox.Size = new System.Drawing.Size(168, 20);
+            this.ChefRootPathTextBox.TabIndex = 2;
+            this.ChefRootPathTextBox.Tag = "2";
+            this.ChefRootPathTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
+            this.ChefRootPathTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
+            this.ChefRootPathTextBox.Leave += new System.EventHandler(this.leaveBox);
             // 
             // KitchenLogLevelLabel
             // 
@@ -535,16 +535,16 @@
             this.ChefRootLabel.TabIndex = 0;
             this.ChefRootLabel.Text = "Chef Install Bin:";
             // 
-            // DevkitBinTextBox
+            // DevkitBinPathTextBox
             // 
-            this.DevkitBinTextBox.Location = new System.Drawing.Point(116, 91);
-            this.DevkitBinTextBox.Name = "DevkitBinTextBox";
-            this.DevkitBinTextBox.Size = new System.Drawing.Size(168, 20);
-            this.DevkitBinTextBox.TabIndex = 5;
-            this.DevkitBinTextBox.Tag = "2";
-            this.DevkitBinTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
-            this.DevkitBinTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
-            this.DevkitBinTextBox.Leave += new System.EventHandler(this.leaveBox);
+            this.DevkitBinPathTextBox.Location = new System.Drawing.Point(116, 91);
+            this.DevkitBinPathTextBox.Name = "DevkitBinPathTextBox";
+            this.DevkitBinPathTextBox.Size = new System.Drawing.Size(168, 20);
+            this.DevkitBinPathTextBox.TabIndex = 5;
+            this.DevkitBinPathTextBox.Tag = "2";
+            this.DevkitBinPathTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
+            this.DevkitBinPathTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
+            this.DevkitBinPathTextBox.Leave += new System.EventHandler(this.leaveBox);
             // 
             // ChefEmebbedBinLabel
             // 
@@ -564,27 +564,27 @@
             this.DevkitBinLabel.TabIndex = 0;
             this.DevkitBinLabel.Text = "Chef RI Devkit Bin:";
             // 
-            // ChefEmbeddedBinTextBox
+            // ChefEmbeddedBinPathTextBox
             // 
-            this.ChefEmbeddedBinTextBox.Location = new System.Drawing.Point(116, 39);
-            this.ChefEmbeddedBinTextBox.Name = "ChefEmbeddedBinTextBox";
-            this.ChefEmbeddedBinTextBox.Size = new System.Drawing.Size(168, 20);
-            this.ChefEmbeddedBinTextBox.TabIndex = 3;
-            this.ChefEmbeddedBinTextBox.Tag = "2";
-            this.ChefEmbeddedBinTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
-            this.ChefEmbeddedBinTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
-            this.ChefEmbeddedBinTextBox.Leave += new System.EventHandler(this.leaveBox);
+            this.ChefEmbeddedBinPathTextBox.Location = new System.Drawing.Point(116, 39);
+            this.ChefEmbeddedBinPathTextBox.Name = "ChefEmbeddedBinPathTextBox";
+            this.ChefEmbeddedBinPathTextBox.Size = new System.Drawing.Size(168, 20);
+            this.ChefEmbeddedBinPathTextBox.TabIndex = 3;
+            this.ChefEmbeddedBinPathTextBox.Tag = "2";
+            this.ChefEmbeddedBinPathTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
+            this.ChefEmbeddedBinPathTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
+            this.ChefEmbeddedBinPathTextBox.Leave += new System.EventHandler(this.leaveBox);
             // 
-            // MinGWBinTextBox
+            // MinGWBinPathTextBox
             // 
-            this.MinGWBinTextBox.Location = new System.Drawing.Point(116, 65);
-            this.MinGWBinTextBox.Name = "MinGWBinTextBox";
-            this.MinGWBinTextBox.Size = new System.Drawing.Size(168, 20);
-            this.MinGWBinTextBox.TabIndex = 4;
-            this.MinGWBinTextBox.Tag = "2";
-            this.MinGWBinTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
-            this.MinGWBinTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
-            this.MinGWBinTextBox.Leave += new System.EventHandler(this.leaveBox);
+            this.MinGWBinPathTextBox.Location = new System.Drawing.Point(116, 65);
+            this.MinGWBinPathTextBox.Name = "MinGWBinPathTextBox";
+            this.MinGWBinPathTextBox.Size = new System.Drawing.Size(168, 20);
+            this.MinGWBinPathTextBox.TabIndex = 4;
+            this.MinGWBinPathTextBox.Tag = "2";
+            this.MinGWBinPathTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
+            this.MinGWBinPathTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
+            this.MinGWBinPathTextBox.Leave += new System.EventHandler(this.leaveBox);
             // 
             // MinGWBinLabel
             // 
@@ -1033,19 +1033,19 @@
         private System.Windows.Forms.Label UserIDLabel;
         private System.Windows.Forms.TabControl MainFormTabs;
         private System.Windows.Forms.Label KitchenLogLevelLabel;
-        private System.Windows.Forms.TextBox DevkitBinTextBox;
+        private System.Windows.Forms.TextBox DevkitBinPathTextBox;
         private System.Windows.Forms.Label DevkitBinLabel;
-        private System.Windows.Forms.TextBox MinGWBinTextBox;
+        private System.Windows.Forms.TextBox MinGWBinPathTextBox;
         private System.Windows.Forms.Label MinGWBinLabel;
-        private System.Windows.Forms.TextBox ChefEmbeddedBinTextBox;
+        private System.Windows.Forms.TextBox ChefEmbeddedBinPathTextBox;
         private System.Windows.Forms.Label ChefEmebbedBinLabel;
-        private System.Windows.Forms.TextBox ChefRootTextBox;
+        private System.Windows.Forms.TextBox ChefRootPathTextBox;
         private System.Windows.Forms.Label ChefRootLabel;
         private System.Windows.Forms.GroupBox ChefGroupBox;
         private System.Windows.Forms.FolderBrowserDialog FolderBrowserDialog;
         private System.Windows.Forms.ComboBox KitchentLogLevelComboBox;
         private System.Windows.Forms.GroupBox GitGroupBox;
-        private System.Windows.Forms.TextBox GitSSHTextBox;
+        private System.Windows.Forms.TextBox GitSSHPathTextBox;
         private System.Windows.Forms.Label GitSSHPathLabel;
         private System.Windows.Forms.TextBox GitEmailAddressTextBox;
         private System.Windows.Forms.Label GitFirstNameLabel;
@@ -1062,22 +1062,22 @@
         private System.Windows.Forms.Label GEMSourcesLabel;
         private System.Windows.Forms.GroupBox EC2CLISettingsGroupBox;
         private System.Windows.Forms.Label EC2NoteLabel;
-        private System.Windows.Forms.TextBox EC2HomeTextBox;
+        private System.Windows.Forms.TextBox EC2HomePathTextBox;
         private System.Windows.Forms.Label EC2HomeLabel;
         private System.Windows.Forms.Label EC2UrlLabel;
         private System.Windows.Forms.TextBox EC2UrlTextBox;
         private System.Windows.Forms.GroupBox VagrantInstallationGroupBox;
-        private System.Windows.Forms.TextBox VagrantEmbeddedTextBox;
+        private System.Windows.Forms.TextBox VagrantEmbeddedPathTextBox;
         private System.Windows.Forms.Label VagrantEmbeddedLabel;
         private System.Windows.Forms.Label VagrantEmbeddedBinLabel;
-        private System.Windows.Forms.TextBox VagrantEmbeddedBinTextBox;
+        private System.Windows.Forms.TextBox VagrantEmbeddedBinPathTextBox;
         private System.Windows.Forms.Button SaveAllButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button LoadSessionButton;
         private System.Windows.Forms.Button LoadtoProfileButton;
         private System.Windows.Forms.Button openSettingsButton;
         private System.Windows.Forms.GroupBox puTTYGroupBox;
-        private System.Windows.Forms.TextBox puTTYgenTextBox;
+        private System.Windows.Forms.TextBox puTTYgenPathTextBox;
         private System.Windows.Forms.Label puTTYgenLabel;
         private System.Windows.Forms.TextBox level3TextBox;
         private System.Windows.Forms.TextBox level1TextBox;

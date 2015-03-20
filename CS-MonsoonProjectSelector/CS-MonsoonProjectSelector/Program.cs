@@ -414,7 +414,8 @@ namespace CS_MonsoonProjectSelector
             //environmental Variables
             //!!!!!Chef
             //!!!!!!!!Variables
-            addEnv(                 (string)config.Element("ChefRootTextBox"), mode);
+            config.Descendants("[@ControlName = 'ChefRootTextBox']");
+            addEnv(                 (string)config.Element("[@ChefRootTextBox"), mode);
             addEnv(                 (string)config.Element("ChefEmbeddedBinTextBox"), mode);
             addEnv(                 (string)config.Element("MinGWBinTextBox"), mode, "beginning");
             addEnv("RI_DEVKIT",     (string)config.Element("DevkitBinTextBox"), mode);
