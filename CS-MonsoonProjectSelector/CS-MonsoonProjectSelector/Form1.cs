@@ -821,39 +821,6 @@ namespace CS_MonsoonProjectSelector
             }
         }
 
-        //private void ComboBox_Leave(object sender, EventArgs e)
-        //{
-        //    //this *will* hold the code to add newly entered text into a
-        //    //combobox list, and then select the newly entered item.
-        //    ComboBox cBox = (ComboBox)sender;
-
-        //    if (cBox.Text.ToString() != string.Empty)
-        //    {   //There is text in this combo box
-
-        //        if (!cBox.Items.Contains(cBox.Text))
-        //        {   //The text is not in the item list, so add it
-        //            cBox.Items.Add(cBox.Text);
-        //            Debug.Write("{" + cBox.Name + "}: added {" + cBox.Text + "} to item list. \n");
-        //            //and select it
-        //            cBox.SelectedIndex = cBox.FindString(cBox.Text);
-        //            // cBox.SelectedItem = cBox.Items.Count - 1;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        //there is no text int he combo box, this shouldn't be an option
-        //        Debug.Write("{" + cBox.Name + "} was empty.\n");
-        //    }
-
-        //    //when leaving the userID box, run the mooLink checker
-        //    if (cBox.Name == "UserIDComboBox")
-        //    {
-        //        checkMooKeysLink();
-        //    }
-        //    Debug.Write("{" + cBox.Name + "}: selected item is {" + cBox.SelectedItem + "}.\n");
-        //    Debug.Write("{" + cBox.Name + "}: selected index is {" + cBox.SelectedIndex + "}.\n");
-        //}
-
         private void RestoreDefaultColor_Enter(object sender, EventArgs e)
         {
             if (sender is TextBox)
@@ -944,49 +911,6 @@ namespace CS_MonsoonProjectSelector
                      FileBrowserDialog.FileName;
             }
         }
-
-        ///// <summary>
-        ///// Collects all the data stored in the form in the specidied XML format.
-        ///// </summary>
-        ///// <returns>Returns and XDocument representing the data currently on the form.</returns>
-        //private XDocument xmlFormData()
-        //{   
-        //    XDocument newForm = new XDocument(
-        //        new XElement("settings",
-        //            new XAttribute("id", "current")
-        //            )
-        //        );
-
-        //    //select that single settings current element
-        //    XElement formContents = newForm.XPathSelectElement("settings[@id = 'current']");
-
-        //    //load the form data into the new element
-        //    formContents = writeFormToXML(KeyIDTextBox, formContents);
-        //    formContents = writeFormToXML(PublicKeyTextBox, formContents);
-        //    formContents = writeFormToXML(PrivateKeyTextBox, formContents);
-        //    formContents = writeFormToXML(OrgComboBox, formContents);
-        //    formContents = writeFormToXML(ProjectNameComboBox, formContents);
-        //    formContents = writeFormToXML(UserIDTextBox, formContents);
-        //    formContents = writeFormToXML(AccessKeyTextBox, formContents);
-        //    formContents = writeFormToXML(SecretKeyTextBox, formContents);
-        //    formContents = writeFormToXML(DevkitBinTextBox, formContents);
-        //    formContents = writeFormToXML(MinGWBinTextBox, formContents);
-        //    formContents = writeFormToXML(ChefEmbeddedBinTextBox, formContents);
-        //    formContents = writeFormToXML(ChefRootTextBox, formContents);
-        //    formContents = writeFormToXML(KitchentLogLevelComboBox, formContents);
-        //    formContents = writeFormToXML(GitSSHTextBox, formContents);
-        //    formContents = writeFormToXML(GitEmailAddressTextBox, formContents);
-        //    formContents = writeFormToXML(GitFirstNameTextBox, formContents);
-        //    formContents = writeFormToXML(GitLastNameTextBox, formContents);
-        //    formContents = writeFormToXML(GEMPathTextBox, formContents);
-        //    formContents = writeFormToXML(GEMSourcesTextBox, formContents);
-        //    formContents = writeFormToXML(EC2HomeTextBox, formContents);
-        //    formContents = writeFormToXML(EC2UrlTextBox, formContents);
-        //    formContents = writeFormToXML(VagrantEmbeddedTextBox, formContents);
-        //    formContents = writeFormToXML(VagrantEmbeddedBinTextBox, formContents);
-        //    formContents = writeFormToXML(puTTYgenTextBox, formContents);            
-        //    return newForm;
-        //}
 
         /// <summary>
         /// Checks to see if the data on the form is different from the data in the XML Settings.

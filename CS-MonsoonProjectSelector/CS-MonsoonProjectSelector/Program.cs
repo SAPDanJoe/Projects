@@ -403,27 +403,6 @@ namespace CS_MonsoonProjectSelector
         }
 
         #endregion
-       
-
-        /// <summary>
-        /// This generates a new empty XML settings file, and logs the date/time when the file was initialized.
-        /// </summary>
-        /// <param name="configFile">The FileInfo for the destination file.</param>
-        public static void generateNewConfig(FileInfo configFile)
-        {
-            XDocument xconfig = new XDocument(
-                new XElement("configFile",
-                    new XAttribute("created",
-                        DateTime.Now.ToString()
-                    ),
-                    new XElement("settings",
-                        new XAttribute("id","current"),
-                        new XAttribute("created",DateTime.Now.ToString())
-                    )
-                )
-            );
-            xconfig.Save(configFile.ToString());
-        }
 
         /// <summary>
         /// This will load the settings from the form into the environment based on the provided mode, then launch a command window. NOTE: some of these settings are environment variables, and some are files
