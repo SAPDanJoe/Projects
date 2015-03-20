@@ -797,7 +797,7 @@ namespace CS_MonsoonProjectSelector
             }
 
             //get a new conenction to the file and the current settings
-            XElement currentConfig = fileSettings;
+            XElement currentConfig = XDocument.Load(Program.settings.ToString()).XPathSelectElement(Program.xStructure.Access(1,"[@current = '1']"));
 
             //setup a new variable to store the scope of the configuration
             EnvironmentVariableTarget mode =
@@ -812,7 +812,7 @@ namespace CS_MonsoonProjectSelector
                 true;
 
             //run the setting loader
-            Program.loadEnvironment(xdoc.XPathSelectElement(Program.xStructure.Access(1,"[@current = '1']")) , mode);
+            Program.loadEnvironment(currentConfig , mode);
 
             //open the command prompt
             if (commandWindow)
