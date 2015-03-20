@@ -74,6 +74,9 @@
             this.MinGWBinTextBox = new System.Windows.Forms.TextBox();
             this.MinGWBinLabel = new System.Windows.Forms.Label();
             this.MonsoonAccountInformationTab = new System.Windows.Forms.TabPage();
+            this.level3TextBox = new System.Windows.Forms.TextBox();
+            this.level1TextBox = new System.Windows.Forms.TextBox();
+            this.level0TextBox = new System.Windows.Forms.TextBox();
             this.noteToSelf = new System.Windows.Forms.Label();
             this.DashboardLink = new System.Windows.Forms.LinkLabel();
             this.ProjectSettingsGroupBox = new System.Windows.Forms.GroupBox();
@@ -161,7 +164,7 @@
             this.puTTYGroupBox.Location = new System.Drawing.Point(6, 282);
             this.puTTYGroupBox.Name = "puTTYGroupBox";
             this.puTTYGroupBox.Size = new System.Drawing.Size(299, 49);
-            this.puTTYGroupBox.TabIndex = 16;
+            this.puTTYGroupBox.TabIndex = 2;
             this.puTTYGroupBox.TabStop = false;
             this.puTTYGroupBox.Text = "puTTY";
             // 
@@ -170,7 +173,7 @@
             this.puTTYgenTextBox.Location = new System.Drawing.Point(116, 13);
             this.puTTYgenTextBox.Name = "puTTYgenTextBox";
             this.puTTYgenTextBox.Size = new System.Drawing.Size(168, 20);
-            this.puTTYgenTextBox.TabIndex = 8;
+            this.puTTYgenTextBox.TabIndex = 11;
             this.puTTYgenTextBox.Tag = "2";
             this.puTTYgenTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
             this.puTTYgenTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
@@ -195,7 +198,7 @@
             this.VagrantInstallationGroupBox.Location = new System.Drawing.Point(311, 253);
             this.VagrantInstallationGroupBox.Name = "VagrantInstallationGroupBox";
             this.VagrantInstallationGroupBox.Size = new System.Drawing.Size(299, 69);
-            this.VagrantInstallationGroupBox.TabIndex = 15;
+            this.VagrantInstallationGroupBox.TabIndex = 5;
             this.VagrantInstallationGroupBox.TabStop = false;
             this.VagrantInstallationGroupBox.Text = "Vagrant Installation Data";
             // 
@@ -204,7 +207,7 @@
             this.VagrantEmbeddedTextBox.Location = new System.Drawing.Point(116, 13);
             this.VagrantEmbeddedTextBox.Name = "VagrantEmbeddedTextBox";
             this.VagrantEmbeddedTextBox.Size = new System.Drawing.Size(168, 20);
-            this.VagrantEmbeddedTextBox.TabIndex = 8;
+            this.VagrantEmbeddedTextBox.TabIndex = 16;
             this.VagrantEmbeddedTextBox.Tag = "2";
             this.VagrantEmbeddedTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
             this.VagrantEmbeddedTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
@@ -225,7 +228,7 @@
             this.VagrantEmbeddedBinLabel.Location = new System.Drawing.Point(6, 42);
             this.VagrantEmbeddedBinLabel.Name = "VagrantEmbeddedBinLabel";
             this.VagrantEmbeddedBinLabel.Size = new System.Drawing.Size(89, 13);
-            this.VagrantEmbeddedBinLabel.TabIndex = 2;
+            this.VagrantEmbeddedBinLabel.TabIndex = 0;
             this.VagrantEmbeddedBinLabel.Text = "Vagrant Emb. Bin";
             // 
             // VagrantEmbeddedBinTextBox
@@ -233,7 +236,7 @@
             this.VagrantEmbeddedBinTextBox.Location = new System.Drawing.Point(116, 39);
             this.VagrantEmbeddedBinTextBox.Name = "VagrantEmbeddedBinTextBox";
             this.VagrantEmbeddedBinTextBox.Size = new System.Drawing.Size(168, 20);
-            this.VagrantEmbeddedBinTextBox.TabIndex = 9;
+            this.VagrantEmbeddedBinTextBox.TabIndex = 17;
             this.VagrantEmbeddedBinTextBox.Tag = "2";
             this.VagrantEmbeddedBinTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
             this.VagrantEmbeddedBinTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
@@ -250,7 +253,7 @@
             this.GEMSourcesGroupBox.Location = new System.Drawing.Point(311, 6);
             this.GEMSourcesGroupBox.Name = "GEMSourcesGroupBox";
             this.GEMSourcesGroupBox.Size = new System.Drawing.Size(350, 122);
-            this.GEMSourcesGroupBox.TabIndex = 14;
+            this.GEMSourcesGroupBox.TabIndex = 3;
             this.GEMSourcesGroupBox.TabStop = false;
             this.GEMSourcesGroupBox.Text = "GEM Sources";
             // 
@@ -260,7 +263,7 @@
             this.GEMPathLabel.Location = new System.Drawing.Point(6, 16);
             this.GEMPathLabel.Name = "GEMPathLabel";
             this.GEMPathLabel.Size = new System.Drawing.Size(66, 13);
-            this.GEMPathLabel.TabIndex = 4;
+            this.GEMPathLabel.TabIndex = 0;
             this.GEMPathLabel.Text = "GEM_PATH";
             // 
             // GEMPathTextBox
@@ -268,7 +271,7 @@
             this.GEMPathTextBox.Location = new System.Drawing.Point(83, 13);
             this.GEMPathTextBox.Name = "GEMPathTextBox";
             this.GEMPathTextBox.Size = new System.Drawing.Size(201, 20);
-            this.GEMPathTextBox.TabIndex = 10;
+            this.GEMPathTextBox.TabIndex = 12;
             this.GEMPathTextBox.Tag = "2";
             this.GEMPathTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
             this.GEMPathTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
@@ -280,7 +283,7 @@
             this.GEMNoteLabel.Location = new System.Drawing.Point(6, 91);
             this.GEMNoteLabel.Name = "GEMNoteLabel";
             this.GEMNoteLabel.Size = new System.Drawing.Size(277, 26);
-            this.GEMNoteLabel.TabIndex = 2;
+            this.GEMNoteLabel.TabIndex = 0;
             this.GEMNoteLabel.Text = "Additional Gem settings will be generated to the ~/.gemrc\r\nbased on Monsoon\'s con" +
     "figuration documentation.";
             // 
@@ -291,7 +294,7 @@
             this.GEMSourcesTextBox.Multiline = true;
             this.GEMSourcesTextBox.Name = "GEMSourcesTextBox";
             this.GEMSourcesTextBox.Size = new System.Drawing.Size(258, 46);
-            this.GEMSourcesTextBox.TabIndex = 11;
+            this.GEMSourcesTextBox.TabIndex = 13;
             this.GEMSourcesTextBox.Tag = "2";
             this.GEMSourcesTextBox.Text = "http://moo-repo.wdf.sap.corp:8080/geminabox/\r\nhttp://moo-repo.wdf.sap.corp:8080/r" +
     "ubygemsorg/ ";
@@ -318,7 +321,7 @@
             this.EC2CLISettingsGroupBox.Location = new System.Drawing.Point(311, 134);
             this.EC2CLISettingsGroupBox.Name = "EC2CLISettingsGroupBox";
             this.EC2CLISettingsGroupBox.Size = new System.Drawing.Size(299, 113);
-            this.EC2CLISettingsGroupBox.TabIndex = 13;
+            this.EC2CLISettingsGroupBox.TabIndex = 4;
             this.EC2CLISettingsGroupBox.TabStop = false;
             this.EC2CLISettingsGroupBox.Text = "EC2 Command Line Settings";
             // 
@@ -328,7 +331,7 @@
             this.EC2NoteLabel.Location = new System.Drawing.Point(6, 68);
             this.EC2NoteLabel.Name = "EC2NoteLabel";
             this.EC2NoteLabel.Size = new System.Drawing.Size(292, 39);
-            this.EC2NoteLabel.TabIndex = 4;
+            this.EC2NoteLabel.TabIndex = 0;
             this.EC2NoteLabel.Text = "Some other ec2 Settings like CLASSPATH, EC2_SSH_KEY,\r\netc. are going to be set au" +
     "tomatically based on these \r\nsettings, and some of the settings from the previou" +
     "s tab.";
@@ -338,7 +341,7 @@
             this.EC2HomeTextBox.Location = new System.Drawing.Point(116, 13);
             this.EC2HomeTextBox.Name = "EC2HomeTextBox";
             this.EC2HomeTextBox.Size = new System.Drawing.Size(168, 20);
-            this.EC2HomeTextBox.TabIndex = 12;
+            this.EC2HomeTextBox.TabIndex = 14;
             this.EC2HomeTextBox.Tag = "2";
             this.EC2HomeTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
             this.EC2HomeTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
@@ -359,7 +362,7 @@
             this.EC2UrlLabel.Location = new System.Drawing.Point(6, 42);
             this.EC2UrlLabel.Name = "EC2UrlLabel";
             this.EC2UrlLabel.Size = new System.Drawing.Size(58, 13);
-            this.EC2UrlLabel.TabIndex = 2;
+            this.EC2UrlLabel.TabIndex = 0;
             this.EC2UrlLabel.Text = "EC2_URL:";
             // 
             // EC2UrlTextBox
@@ -367,7 +370,7 @@
             this.EC2UrlTextBox.Location = new System.Drawing.Point(116, 39);
             this.EC2UrlTextBox.Name = "EC2UrlTextBox";
             this.EC2UrlTextBox.Size = new System.Drawing.Size(168, 20);
-            this.EC2UrlTextBox.TabIndex = 13;
+            this.EC2UrlTextBox.TabIndex = 15;
             this.EC2UrlTextBox.Tag = "7";
             this.EC2UrlTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.EC2UrlTextBox.Leave += new System.EventHandler(this.leaveBox);
@@ -386,7 +389,7 @@
             this.GitGroupBox.Location = new System.Drawing.Point(6, 159);
             this.GitGroupBox.Name = "GitGroupBox";
             this.GitGroupBox.Size = new System.Drawing.Size(299, 117);
-            this.GitGroupBox.TabIndex = 10;
+            this.GitGroupBox.TabIndex = 1;
             this.GitGroupBox.TabStop = false;
             this.GitGroupBox.Text = "Git Installation Data";
             // 
@@ -395,7 +398,7 @@
             this.GitSSHTextBox.Location = new System.Drawing.Point(116, 13);
             this.GitSSHTextBox.Name = "GitSSHTextBox";
             this.GitSSHTextBox.Size = new System.Drawing.Size(168, 20);
-            this.GitSSHTextBox.TabIndex = 1;
+            this.GitSSHTextBox.TabIndex = 7;
             this.GitSSHTextBox.Tag = "2";
             this.GitSSHTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
             this.GitSSHTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
@@ -415,7 +418,7 @@
             this.GitEmailAddressTextBox.Location = new System.Drawing.Point(116, 91);
             this.GitEmailAddressTextBox.Name = "GitEmailAddressTextBox";
             this.GitEmailAddressTextBox.Size = new System.Drawing.Size(168, 20);
-            this.GitEmailAddressTextBox.TabIndex = 7;
+            this.GitEmailAddressTextBox.TabIndex = 10;
             this.GitEmailAddressTextBox.Tag = "2";
             this.GitEmailAddressTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.GitEmailAddressTextBox.Leave += new System.EventHandler(this.leaveBox);
@@ -426,7 +429,7 @@
             this.GitFirstNameLabel.Location = new System.Drawing.Point(6, 42);
             this.GitFirstNameLabel.Name = "GitFirstNameLabel";
             this.GitFirstNameLabel.Size = new System.Drawing.Size(80, 13);
-            this.GitFirstNameLabel.TabIndex = 2;
+            this.GitFirstNameLabel.TabIndex = 0;
             this.GitFirstNameLabel.Text = "Fisrt Name (git):";
             // 
             // GitEmailAddressLabel
@@ -435,7 +438,7 @@
             this.GitEmailAddressLabel.Location = new System.Drawing.Point(6, 94);
             this.GitEmailAddressLabel.Name = "GitEmailAddressLabel";
             this.GitEmailAddressLabel.Size = new System.Drawing.Size(100, 13);
-            this.GitEmailAddressLabel.TabIndex = 6;
+            this.GitEmailAddressLabel.TabIndex = 0;
             this.GitEmailAddressLabel.Text = "SAP eMail Address:";
             // 
             // GitFirstNameTextBox
@@ -443,7 +446,7 @@
             this.GitFirstNameTextBox.Location = new System.Drawing.Point(116, 39);
             this.GitFirstNameTextBox.Name = "GitFirstNameTextBox";
             this.GitFirstNameTextBox.Size = new System.Drawing.Size(168, 20);
-            this.GitFirstNameTextBox.TabIndex = 3;
+            this.GitFirstNameTextBox.TabIndex = 8;
             this.GitFirstNameTextBox.Tag = "2";
             this.GitFirstNameTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.GitFirstNameTextBox.Leave += new System.EventHandler(this.leaveBox);
@@ -453,7 +456,7 @@
             this.GitLastNameTextBox.Location = new System.Drawing.Point(116, 65);
             this.GitLastNameTextBox.Name = "GitLastNameTextBox";
             this.GitLastNameTextBox.Size = new System.Drawing.Size(168, 20);
-            this.GitLastNameTextBox.TabIndex = 5;
+            this.GitLastNameTextBox.TabIndex = 9;
             this.GitLastNameTextBox.Tag = "2";
             this.GitLastNameTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.GitLastNameTextBox.Leave += new System.EventHandler(this.leaveBox);
@@ -464,7 +467,7 @@
             this.GitLastNameLabel.Location = new System.Drawing.Point(6, 68);
             this.GitLastNameLabel.Name = "GitLastNameLabel";
             this.GitLastNameLabel.Size = new System.Drawing.Size(81, 13);
-            this.GitLastNameLabel.TabIndex = 4;
+            this.GitLastNameLabel.TabIndex = 0;
             this.GitLastNameLabel.Text = "Last Name (git):";
             // 
             // ChefGroupBox
@@ -483,7 +486,7 @@
             this.ChefGroupBox.Location = new System.Drawing.Point(6, 6);
             this.ChefGroupBox.Name = "ChefGroupBox";
             this.ChefGroupBox.Size = new System.Drawing.Size(299, 147);
-            this.ChefGroupBox.TabIndex = 1;
+            this.ChefGroupBox.TabIndex = 0;
             this.ChefGroupBox.TabStop = false;
             this.ChefGroupBox.Text = "Chef Installation Data";
             // 
@@ -497,7 +500,7 @@
             this.KitchentLogLevelComboBox.Location = new System.Drawing.Point(116, 117);
             this.KitchentLogLevelComboBox.Name = "KitchentLogLevelComboBox";
             this.KitchentLogLevelComboBox.Size = new System.Drawing.Size(168, 21);
-            this.KitchentLogLevelComboBox.TabIndex = 9;
+            this.KitchentLogLevelComboBox.TabIndex = 6;
             this.KitchentLogLevelComboBox.Tag = "2";
             this.KitchentLogLevelComboBox.Text = "Default";
             this.KitchentLogLevelComboBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
@@ -508,7 +511,7 @@
             this.ChefRootTextBox.Location = new System.Drawing.Point(116, 13);
             this.ChefRootTextBox.Name = "ChefRootTextBox";
             this.ChefRootTextBox.Size = new System.Drawing.Size(168, 20);
-            this.ChefRootTextBox.TabIndex = 1;
+            this.ChefRootTextBox.TabIndex = 2;
             this.ChefRootTextBox.Tag = "2";
             this.ChefRootTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
             this.ChefRootTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
@@ -520,7 +523,7 @@
             this.KitchenLogLevelLabel.Location = new System.Drawing.Point(6, 120);
             this.KitchenLogLevelLabel.Name = "KitchenLogLevelLabel";
             this.KitchenLogLevelLabel.Size = new System.Drawing.Size(96, 13);
-            this.KitchenLogLevelLabel.TabIndex = 8;
+            this.KitchenLogLevelLabel.TabIndex = 0;
             this.KitchenLogLevelLabel.Text = "Kitchen Log Level:";
             // 
             // ChefRootLabel
@@ -537,7 +540,7 @@
             this.DevkitBinTextBox.Location = new System.Drawing.Point(116, 91);
             this.DevkitBinTextBox.Name = "DevkitBinTextBox";
             this.DevkitBinTextBox.Size = new System.Drawing.Size(168, 20);
-            this.DevkitBinTextBox.TabIndex = 7;
+            this.DevkitBinTextBox.TabIndex = 5;
             this.DevkitBinTextBox.Tag = "2";
             this.DevkitBinTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
             this.DevkitBinTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
@@ -549,7 +552,7 @@
             this.ChefEmebbedBinLabel.Location = new System.Drawing.Point(6, 42);
             this.ChefEmebbedBinLabel.Name = "ChefEmebbedBinLabel";
             this.ChefEmebbedBinLabel.Size = new System.Drawing.Size(104, 13);
-            this.ChefEmebbedBinLabel.TabIndex = 2;
+            this.ChefEmebbedBinLabel.TabIndex = 0;
             this.ChefEmebbedBinLabel.Text = "Chef Embedded Bin:";
             // 
             // DevkitBinLabel
@@ -558,7 +561,7 @@
             this.DevkitBinLabel.Location = new System.Drawing.Point(6, 94);
             this.DevkitBinLabel.Name = "DevkitBinLabel";
             this.DevkitBinLabel.Size = new System.Drawing.Size(98, 13);
-            this.DevkitBinLabel.TabIndex = 6;
+            this.DevkitBinLabel.TabIndex = 0;
             this.DevkitBinLabel.Text = "Chef RI Devkit Bin:";
             // 
             // ChefEmbeddedBinTextBox
@@ -577,7 +580,7 @@
             this.MinGWBinTextBox.Location = new System.Drawing.Point(116, 65);
             this.MinGWBinTextBox.Name = "MinGWBinTextBox";
             this.MinGWBinTextBox.Size = new System.Drawing.Size(168, 20);
-            this.MinGWBinTextBox.TabIndex = 5;
+            this.MinGWBinTextBox.TabIndex = 4;
             this.MinGWBinTextBox.Tag = "2";
             this.MinGWBinTextBox.DoubleClick += new System.EventHandler(this.ffBrowser);
             this.MinGWBinTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
@@ -589,11 +592,14 @@
             this.MinGWBinLabel.Location = new System.Drawing.Point(6, 68);
             this.MinGWBinLabel.Name = "MinGWBinLabel";
             this.MinGWBinLabel.Size = new System.Drawing.Size(89, 13);
-            this.MinGWBinLabel.TabIndex = 4;
+            this.MinGWBinLabel.TabIndex = 0;
             this.MinGWBinLabel.Text = "Chef MinGW Bin:";
             // 
             // MonsoonAccountInformationTab
             // 
+            this.MonsoonAccountInformationTab.Controls.Add(this.level3TextBox);
+            this.MonsoonAccountInformationTab.Controls.Add(this.level1TextBox);
+            this.MonsoonAccountInformationTab.Controls.Add(this.level0TextBox);
             this.MonsoonAccountInformationTab.Controls.Add(this.noteToSelf);
             this.MonsoonAccountInformationTab.Controls.Add(this.DashboardLink);
             this.MonsoonAccountInformationTab.Controls.Add(this.ProjectSettingsGroupBox);
@@ -606,13 +612,40 @@
             this.MonsoonAccountInformationTab.Text = "Monsoon Info";
             this.MonsoonAccountInformationTab.UseVisualStyleBackColor = true;
             // 
+            // level3TextBox
+            // 
+            this.level3TextBox.Location = new System.Drawing.Point(219, 196);
+            this.level3TextBox.Name = "level3TextBox";
+            this.level3TextBox.Size = new System.Drawing.Size(100, 20);
+            this.level3TextBox.TabIndex = 0;
+            this.level3TextBox.Tag = "3";
+            this.level3TextBox.Visible = false;
+            // 
+            // level1TextBox
+            // 
+            this.level1TextBox.Location = new System.Drawing.Point(113, 196);
+            this.level1TextBox.Name = "level1TextBox";
+            this.level1TextBox.Size = new System.Drawing.Size(100, 20);
+            this.level1TextBox.TabIndex = 0;
+            this.level1TextBox.Tag = "1";
+            this.level1TextBox.Visible = false;
+            // 
+            // level0TextBox
+            // 
+            this.level0TextBox.Location = new System.Drawing.Point(7, 196);
+            this.level0TextBox.Name = "level0TextBox";
+            this.level0TextBox.Size = new System.Drawing.Size(100, 20);
+            this.level0TextBox.TabIndex = 0;
+            this.level0TextBox.Tag = "0";
+            this.level0TextBox.Visible = false;
+            // 
             // noteToSelf
             // 
             this.noteToSelf.AutoSize = true;
             this.noteToSelf.Location = new System.Drawing.Point(359, 225);
             this.noteToSelf.Name = "noteToSelf";
             this.noteToSelf.Size = new System.Drawing.Size(220, 39);
-            this.noteToSelf.TabIndex = 2;
+            this.noteToSelf.TabIndex = 0;
             this.noteToSelf.Text = "Note to Self:\r\nMight be able to get all this data from\r\nthe Toolbox, using the ac" +
     "count data above...";
             this.noteToSelf.Visible = false;
@@ -625,7 +658,7 @@
             this.DashboardLink.Location = new System.Drawing.Point(7, 7);
             this.DashboardLink.Name = "DashboardLink";
             this.DashboardLink.Size = new System.Drawing.Size(216, 17);
-            this.DashboardLink.TabIndex = 0;
+            this.DashboardLink.TabIndex = 10;
             this.DashboardLink.TabStop = true;
             this.DashboardLink.Text = "Click to access your Monsoon Dashboard.";
             this.DashboardLink.UseCompatibleTextRendering = true;
@@ -648,7 +681,7 @@
             this.ProjectSettingsGroupBox.Location = new System.Drawing.Point(306, 27);
             this.ProjectSettingsGroupBox.Name = "ProjectSettingsGroupBox";
             this.ProjectSettingsGroupBox.Size = new System.Drawing.Size(294, 163);
-            this.ProjectSettingsGroupBox.TabIndex = 0;
+            this.ProjectSettingsGroupBox.TabIndex = 1;
             this.ProjectSettingsGroupBox.TabStop = false;
             this.ProjectSettingsGroupBox.Text = "Project Level Data";
             // 
@@ -656,7 +689,7 @@
             // 
             this.ProjectSettingsLink.AutoSize = true;
             this.ProjectSettingsLink.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ProjectSettingsLink.Location = new System.Drawing.Point(5, 150);
+            this.ProjectSettingsLink.Location = new System.Drawing.Point(7, 145);
             this.ProjectSettingsLink.Name = "ProjectSettingsLink";
             this.ProjectSettingsLink.Size = new System.Drawing.Size(107, 13);
             this.ProjectSettingsLink.TabIndex = 0;
@@ -670,7 +703,7 @@
             this.AccessKeyTextBox.Location = new System.Drawing.Point(130, 99);
             this.AccessKeyTextBox.Name = "AccessKeyTextBox";
             this.AccessKeyTextBox.Size = new System.Drawing.Size(155, 20);
-            this.AccessKeyTextBox.TabIndex = 8;
+            this.AccessKeyTextBox.TabIndex = 3;
             this.AccessKeyTextBox.Tag = "7";
             this.AccessKeyTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.AccessKeyTextBox.Leave += new System.EventHandler(this.leaveBox);
@@ -690,8 +723,9 @@
             this.ProjectNameComboBox.Location = new System.Drawing.Point(130, 45);
             this.ProjectNameComboBox.Name = "ProjectNameComboBox";
             this.ProjectNameComboBox.Size = new System.Drawing.Size(155, 21);
-            this.ProjectNameComboBox.TabIndex = 6;
+            this.ProjectNameComboBox.TabIndex = 1;
             this.ProjectNameComboBox.Tag = "6";
+            this.ProjectNameComboBox.SelectedIndexChanged += new System.EventHandler(this.leaveBox);
             this.ProjectNameComboBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.ProjectNameComboBox.Leave += new System.EventHandler(this.leaveBox);
             // 
@@ -700,8 +734,9 @@
             this.OrgComboBox.Location = new System.Drawing.Point(129, 19);
             this.OrgComboBox.Name = "OrgComboBox";
             this.OrgComboBox.Size = new System.Drawing.Size(155, 21);
-            this.OrgComboBox.TabIndex = 7;
+            this.OrgComboBox.TabIndex = 0;
             this.OrgComboBox.Tag = "5";
+            this.OrgComboBox.SelectedIndexChanged += new System.EventHandler(this.leaveBox);
             this.OrgComboBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.OrgComboBox.Leave += new System.EventHandler(this.leaveBox);
             // 
@@ -737,8 +772,7 @@
             this.KeyIDTextBox.Location = new System.Drawing.Point(130, 72);
             this.KeyIDTextBox.Name = "KeyIDTextBox";
             this.KeyIDTextBox.Size = new System.Drawing.Size(155, 20);
-            this.KeyIDTextBox.TabIndex = 1;
-            this.KeyIDTextBox.TabStop = false;
+            this.KeyIDTextBox.TabIndex = 2;
             this.KeyIDTextBox.Tag = "7";
             this.KeyIDTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.KeyIDTextBox.Leave += new System.EventHandler(this.leaveBox);
@@ -748,7 +782,7 @@
             this.SecretKeyTextBox.Location = new System.Drawing.Point(130, 125);
             this.SecretKeyTextBox.Name = "SecretKeyTextBox";
             this.SecretKeyTextBox.Size = new System.Drawing.Size(155, 20);
-            this.SecretKeyTextBox.TabIndex = 9;
+            this.SecretKeyTextBox.TabIndex = 4;
             this.SecretKeyTextBox.Tag = "7";
             this.SecretKeyTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.SecretKeyTextBox.Leave += new System.EventHandler(this.leaveBox);
@@ -798,7 +832,7 @@
             this.UserIDTextBox.Location = new System.Drawing.Point(131, 20);
             this.UserIDTextBox.Name = "UserIDTextBox";
             this.UserIDTextBox.Size = new System.Drawing.Size(155, 20);
-            this.UserIDTextBox.TabIndex = 10;
+            this.UserIDTextBox.TabIndex = 0;
             this.UserIDTextBox.Tag = "4";
             this.UserIDTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.UserIDTextBox.Leave += new System.EventHandler(this.leaveBox);
@@ -810,7 +844,7 @@
             this.UserIDLink.Location = new System.Drawing.Point(55, 28);
             this.UserIDLink.Name = "UserIDLink";
             this.UserIDLink.Size = new System.Drawing.Size(67, 12);
-            this.UserIDLink.TabIndex = 25;
+            this.UserIDLink.TabIndex = 0;
             this.UserIDLink.TabStop = true;
             this.UserIDLink.Text = "(UserID onMo)";
             this.UserIDLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.UserIDLink_LinkClicked);
@@ -823,7 +857,7 @@
             this.PublicKeyTextBox.Name = "PublicKeyTextBox";
             this.PublicKeyTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.PublicKeyTextBox.Size = new System.Drawing.Size(155, 46);
-            this.PublicKeyTextBox.TabIndex = 2;
+            this.PublicKeyTextBox.TabIndex = 1;
             this.PublicKeyTextBox.Tag = "4";
             this.PublicKeyTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.PublicKeyTextBox.Leave += new System.EventHandler(this.leaveBox);
@@ -845,7 +879,7 @@
             this.PrivateKeyTextBox.Name = "PrivateKeyTextBox";
             this.PrivateKeyTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.PrivateKeyTextBox.Size = new System.Drawing.Size(155, 46);
-            this.PrivateKeyTextBox.TabIndex = 3;
+            this.PrivateKeyTextBox.TabIndex = 2;
             this.PrivateKeyTextBox.Tag = "4";
             this.PrivateKeyTextBox.Enter += new System.EventHandler(this.RestoreDefaultColor_Enter);
             this.PrivateKeyTextBox.Leave += new System.EventHandler(this.leaveBox);
@@ -892,7 +926,7 @@
             this.SaveAllButton.Location = new System.Drawing.Point(613, 9);
             this.SaveAllButton.Name = "SaveAllButton";
             this.SaveAllButton.Size = new System.Drawing.Size(75, 20);
-            this.SaveAllButton.TabIndex = 1;
+            this.SaveAllButton.TabIndex = 4;
             this.SaveAllButton.Text = "Save All";
             this.SaveAllButton.UseVisualStyleBackColor = true;
             this.SaveAllButton.Click += new System.EventHandler(this.SaveAllButton_Click);
@@ -906,7 +940,7 @@
             this.LoadSessionButton.Location = new System.Drawing.Point(528, 9);
             this.LoadSessionButton.Name = "LoadSessionButton";
             this.LoadSessionButton.Size = new System.Drawing.Size(79, 20);
-            this.LoadSessionButton.TabIndex = 2;
+            this.LoadSessionButton.TabIndex = 3;
             this.LoadSessionButton.Text = "Load Session";
             this.LoadSessionButton.UseVisualStyleBackColor = true;
             this.LoadSessionButton.Click += new System.EventHandler(this.LoadButton_Click);
@@ -916,7 +950,7 @@
             this.LoadtoProfileButton.Location = new System.Drawing.Point(434, 9);
             this.LoadtoProfileButton.Name = "LoadtoProfileButton";
             this.LoadtoProfileButton.Size = new System.Drawing.Size(88, 20);
-            this.LoadtoProfileButton.TabIndex = 3;
+            this.LoadtoProfileButton.TabIndex = 2;
             this.LoadtoProfileButton.Text = "Load to Profile";
             this.LoadtoProfileButton.UseVisualStyleBackColor = true;
             this.LoadtoProfileButton.Click += new System.EventHandler(this.LoadButton_Click);
@@ -926,7 +960,7 @@
             this.openSettingsButton.Location = new System.Drawing.Point(331, 9);
             this.openSettingsButton.Name = "openSettingsButton";
             this.openSettingsButton.Size = new System.Drawing.Size(97, 20);
-            this.openSettingsButton.TabIndex = 4;
+            this.openSettingsButton.TabIndex = 1;
             this.openSettingsButton.Text = "Open Config.xml";
             this.openSettingsButton.UseVisualStyleBackColor = true;
             this.openSettingsButton.Click += new System.EventHandler(this.openConfig);
@@ -1045,6 +1079,9 @@
         private System.Windows.Forms.GroupBox puTTYGroupBox;
         private System.Windows.Forms.TextBox puTTYgenTextBox;
         private System.Windows.Forms.Label puTTYgenLabel;
+        private System.Windows.Forms.TextBox level3TextBox;
+        private System.Windows.Forms.TextBox level1TextBox;
+        private System.Windows.Forms.TextBox level0TextBox;
 
     }
 }

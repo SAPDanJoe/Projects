@@ -14,6 +14,10 @@ namespace CS_MonsoonProjectSelector
 {
     static class Program
     {
+        //the very first thing that we do is to check for a config file
+        //and if one is missing we create one.
+        public static FileInfo settings = initializeConfig();
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -25,9 +29,43 @@ namespace CS_MonsoonProjectSelector
             Application.Run(new MonsoonSettingsMainForm());
         }
 
+        /// <summary>
+        /// Check if there is an existing config file, and if not creates one.
+        /// </summary>
+        /// <returns>Returns the file as a fileinfo object.</returns>
+        public static FileInfo initializeConfig ()
+        {
+            Debug.Write("ENTER METHOD: initializeConfig ()" + Environment.NewLine);
+            
+            //string components of path to confilg file
+            string appdata = System.Environment.GetEnvironmentVariable("APPDATA");
+            string configPath = @"\SAPIT\Monsoon\";
+            string configFile = "Config.xml";
+
+            //convert strings into FileInfo Objects
+            System.IO.DirectoryInfo configDir = new System.IO.DirectoryInfo(appdata + configPath);
+            System.IO.FileInfo config = new System.IO.FileInfo(configDir.ToString() + configFile);
+
+            if (!configDir.Exists) //Test to see if the directory exists
+            {   //directory not present, therfore file is not present, create a both
+                Debug.Write("The directory {" + configDir.ToString() + "} does not exist, creating it..." + Environment.NewLine);
+
+                configDir.Create();
+                initializeConfig();
+            }
+            else if (!config.Exists)
+            {   //directory is present, but file is not, create the file
+                Debug.Write("The config file is not present in the directory, creating it..." + Environment.NewLine);
+            
+                makeXML(config);
+            }
+            Debug.Write("LEAVE METHOD: initializeConfig ()" + Environment.NewLine);
+            return config;
+        }
+
         #region XMLdata
 
-        public static class Path
+        public static class xStructure
         {
             #region LevelNames
             private static string rootName = "configFile";
@@ -39,11 +77,11 @@ namespace CS_MonsoonProjectSelector
             private static string level6 = "project";
             private static string level7 = "projectSetting";
 
-            private static string curr = "current";
+            private static string setID = "id";
             private static string sel = "selected";
             private static string cont = "ControlName";
 
-            private static string attribCurrent = "[@" + curr + " = '1']";
+            private static string attribCurrent = "[@" + setID + " = 'current']";
             private static string attribSelected = "[@" + sel + " = '1']";
             #endregion
 
@@ -54,6 +92,10 @@ namespace CS_MonsoonProjectSelector
             /// <returns>XPath formatted string of the parent of the specied level</returns>
             public static string AddNew(int level)
             {
+                Debug.Write("xStructure.AddNew ( int ) :Enter" + Environment.NewLine);
+                Debug.Write(
+                    "level:     " + level.ToString() + Environment.NewLine);
+
                 string pathString = string.Empty;
 
                 switch (level)
@@ -84,6 +126,9 @@ namespace CS_MonsoonProjectSelector
                         Debug.Write("Error in Path.AddNew: an error is expected accessing the xDoc." + Environment.NewLine);
                         break;
                 }
+                Debug.Write("The XPath to add a new element or attribute at level {" + level.ToString() + "} is:" + Environment.NewLine +
+                    "{" + pathString + "}." + Environment.NewLine);
+                Debug.Write("xStructure.AddNew ( int ) :Exit" + Environment.NewLine);
                 return pathString;
             }
 
@@ -95,6 +140,11 @@ namespace CS_MonsoonProjectSelector
             /// <returns>XPath formatted string</returns>            
             public static string Access(int level, string additionAttributes = null)
             {
+                Debug.Write("xStructure.Access ( int, [string] ) :Enter" + Environment.NewLine);
+                Debug.Write(
+                    "level:                 " + level.ToString() + Environment.NewLine +
+                    "additionAttributes:    " + ((string.IsNullOrEmpty(additionAttributes)) ? string.Empty : additionAttributes) + Environment.NewLine);
+
                 string pathString = string.Empty;
                 string attribs = additionAttributes;
 
@@ -129,6 +179,10 @@ namespace CS_MonsoonProjectSelector
                         Debug.Write("Error in Path.Access: an error is expected accessing the xDoc." + Environment.NewLine);
                         break;
                 }
+
+                Debug.Write("The XPath to access and element or attribute at level {" + level.ToString() + "} is:" + Environment.NewLine +
+                    "{" + pathString + "}." + Environment.NewLine);
+                Debug.Write("xStructure.Access ( int, [string] ) :Exit" + Environment.NewLine);
                 return pathString;
             }
 
@@ -139,6 +193,12 @@ namespace CS_MonsoonProjectSelector
             /// <returns>string</returns>            
             public static string LevelName(int level, bool attrib = false, bool secondary = false)
             {
+                Debug.Write("xStructure.LevelName ( int, [bool], [bool] ) :Enter" + Environment.NewLine);
+                Debug.Write(
+                    "level:     " + level.ToString() + Environment.NewLine +
+                    "attrib:    " + attrib.ToString() + Environment.NewLine +
+                    "secondary: " + secondary.ToString() + Environment.NewLine);
+
                 string pathString = string.Empty;
 
                 switch (level)
@@ -147,7 +207,7 @@ namespace CS_MonsoonProjectSelector
                         pathString = rootName;
                         break;
                     case 1:
-                        pathString = attrib ? curr : level1;
+                        pathString = attrib ? setID : level1;
                         break;
                     case 2:
                         pathString = attrib ? cont : level2;
@@ -173,88 +233,45 @@ namespace CS_MonsoonProjectSelector
                             (attrib && secondary) ? cont : level7;
                         break;
                     default:
-                        Debug.Write("Error in Path.LevelName: the level {" + level.ToString() + "} was not recognized." + Environment.NewLine);
-                        Debug.Write("Error in Path.LevelName: an error is expected accessing the xDoc." + Environment.NewLine);
+                        Debug.Write("The level {" + level.ToString() + "} was not recognized." + Environment.NewLine);
+                        Debug.Write("An error is expected accessing the xDoc." + Environment.NewLine);
                         break;
                 }
+
+                Debug.Write("LevelName is {" + pathString.ToString() + "}" + Environment.NewLine);
+                Debug.Write("xStructure.LevelName ( int, [bool], [bool] ) :Exit" + Environment.NewLine);
                 return pathString;
             }
         }
 
         static void makeXML(FileInfo path)
         {
-            //create a document
+            Debug.Write("makeXML( FileInfo ): Enter" + Environment.NewLine);
+   
+            //create a shell document
+            Debug.Write("Creating a new XML Doc..." + Environment.NewLine);
             XDocument xdoc = XMLDoc();
 
-            //add a 1st level element under the root
-            xdoc = XMLDoc(xdoc, 1);
+            //create a level 1 container
+            xdoc.XPathSelectElement(xStructure.AddNew(1)).Add(new XElement(xStructure.LevelName(1)));
+            xdoc.XPathSelectElement(xStructure.Access(1)).Add(new XAttribute(xStructure.LevelName(1, true),"current"));
 
-            //add the "current" attribute
-            xdoc = XMLDoc(xdoc, 1, "1", true);
+            //create a level 3 container
+            xdoc.XPathSelectElement(xStructure.AddNew(3)).Add(new XElement(xStructure.LevelName(3)));
+            
+            //create a level 4 container
+            xdoc.XPathSelectElement(xStructure.AddNew(4)).Add(new XElement(xStructure.LevelName(4)));
 
-            //add another 1st level element under the root, without the current attribute
-            xdoc = XMLDoc(xdoc, 1, "These are some other non-current settings, without the \"current\" attribute.");
+            ////create a level 5 container
+            //xdoc.XPathSelectElement(xStructure.AddNew(5)).Add(new XElement(xStructure.LevelName(5)));
+            //xdoc.XPathSelectElement(xStructure.Access(5)).Add(new XAttribute(xStructure.LevelName(5, true), "1"));
 
-            //generate some machine settings
-            for (int i = 0; i < 10; i++)
-            {
-                string controlName = "someControl" + i.ToString(); //some randon name for a control
-                xdoc = XMLDoc(xdoc, 2, @"C:\monsoon\chef\bin");
-                xdoc = XMLDoc(xdoc, 2, controlName, true);
-            }
-
-
-            //add a container element at the 3rd level (which actually resides at the same level as the 2nd level elements)
-            xdoc = XMLDoc(xdoc, 3);
-
-            //add a 4th level element 
-            xdoc = XMLDoc(xdoc, 4,
-                @"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjCLCr+dnXbKjguZ7okOJmwZnYzp8h2VWEMnnTMPyM/iL0A+EQebw2PzSFSZVtGQaAJ4rq5j5DD6dPOp7I6FrzVgWnie6RTUd7sqC+Uu1z/SoNOMIjPvzYvp8bmMi9lLK0S/zPq7fnTr00rLW6pRM0HoeH5IXqeoOfk0Zzz4qMcPpeR5j4Q2Snaq6KAu9xWiBfGkgWrmwYAc0ny8vqWlkGfqnFDhegZekW1v/g4s+NvMjFXb0ZJjB+u2zPe5MJmjSvE5PRqU3Tq953E0cpjPnie1H7bz5XBrFKEueXQ9mprfwe5aGKlggODlgEQMvVHXRDNiUtyRpnr8IWBzA2H1ZZ Generated key for I837633 (Dan Joe Lopez)"
-                );
-            xdoc = XMLDoc(xdoc, 4, "publicKeyTextBox", true);
-
-            //add another 4th level element 
-            xdoc = XMLDoc(xdoc, 4, "A very private Key");
-            xdoc = XMLDoc(xdoc, 4, "privateKeyTextBox", true);
-
-            //add the 5th level element and an attribute indicating that it is selected (as for a comboBox)
-            xdoc = XMLDoc(xdoc, 5);
-            xdoc = XMLDoc(xdoc, 5, "OrgComboBox", true);
-            xdoc = XMLDoc(xdoc, 5, Environment.GetEnvironmentVariable("USERNAME"), true, "name");
-            xdoc = XMLDoc(xdoc, 5, "1", true);
-
-            //add another level5 without the selected atribute
-            xdoc = XMLDoc(xdoc, 5);
-            xdoc = XMLDoc(xdoc, 5, "OrgComboBox", true);
-            xdoc = XMLDoc(xdoc, 5, "some other org", true, "name");
-
-            //generate some level 6 elements
-            for (int i = 0; i < 5; i++)
-            {
-                bool test = i == 2 ? true : false;
-                string num = (i + 1).ToString();
-                string projectName = "project_" + num + "_name";
-
-                xdoc = XMLDoc(xdoc, 6);
-                xdoc = XMLDoc(xdoc, 6, "ProjectNameComboBox", true);
-                xdoc = XMLDoc(xdoc, 6, projectName, true, "name");
-
-                //set one of the projects to be 'selected'
-                if (test)
-                {
-                    xdoc = XMLDoc(xdoc, 6, "1", true);
-                }
-            }
-
-            //in the selected project add some relevant data
-            xdoc = XMLDoc(xdoc, 7, @"https://ec2-us-west.api.monsoon.mo.sap.corp:443");
-            xdoc = XMLDoc(xdoc, 7, "EC2UrlTextBox", true);
-            xdoc = XMLDoc(xdoc, 7, @"STgzNzYzMzo6MTc3OTc%3D%0A");
-            xdoc = XMLDoc(xdoc, 7, "AccessKeyTextBox", true);
-            xdoc = XMLDoc(xdoc, 7, @"hRfAb%2FmOz6Phg%2B%2B73%2BwuQhMmqz%2BmSAHg%2FZ%2FyR1Ch4b4%3D%0A");
-            xdoc = XMLDoc(xdoc, 7, "SecretKeyTextBox", true);
             //store the xml file to disk
+            Debug.Write("File creation complete.  Saving file to  {" + path.ToString() + "}..." + Environment.NewLine);
+
             xdoc.Save(path.ToString());
+
+            Debug.Write("makeXML ( FileInfo ): Exit" + Environment.NewLine);
         }
 
         /// <summary>
@@ -262,11 +279,15 @@ namespace CS_MonsoonProjectSelector
         /// </summary>
         /// <param name="rootNode">Name of the root node. default is the conde configured Program.Path.rootName</param>
         /// <returns>XDocument</returns>
-        static XDocument XMLDoc(string rootNode = null)
+        public static XDocument XMLDoc(string rootNode = null)
         {
-            rootNode = (rootNode == null) ? Program.Path.AddNew(1) : rootNode;
+            Debug.Write("XMLDoc ( string ): Enter" + Environment.NewLine);
+            rootNode = (rootNode == null) ? Program.xStructure.AddNew(1) : rootNode;
+            Debug.Write("The rootNade has been set to {" + rootNode + "}, creating document..." + Environment.NewLine);
             XDocument doc = new XDocument(new XElement(rootNode));
+            Debug.Write("Document created, returning..." + Environment.NewLine);
             return doc;
+            Debug.Write("XMLDoc ( string ): Exit" + Environment.NewLine);
         }
 
         /// <summary>
@@ -278,34 +299,50 @@ namespace CS_MonsoonProjectSelector
         /// <param name="value">The (optional)string value of the element or attribute.</param>
         /// <param name="attrib">a(optional) bool indicating if this should be an attribute of an existing element.</param>
         /// <returns>A new XDocument based on the document that you supplied, with the specified changes.</returns>
-        public static XDocument XMLDoc(XDocument doc, int level, string value = null, bool attrib = false, string customName = null)
+        public static XDocument XMLDoc(XDocument doc, Control box, string value = null, bool attrib = false, string customName = null)
         {
+            int level = int.Parse(box.Tag.ToString());
+
+            Debug.Write("XMLDoc ( XDocument, int, [string], [bool], [string]): Enter" + Environment.NewLine);
+
+            bool customNameIsNull = string.IsNullOrEmpty(customName);
+            string cleanValue = value == null ? string.Empty : value;
+            string cleanCustomName = customNameIsNull ? string.Empty : customName;
+
+            Debug.Write(
+                "level:     " + level.ToString() + Environment.NewLine +
+                "value:     " + cleanValue.ToString() + Environment.NewLine +
+                "attrib:    " + attrib.ToString() + Environment.NewLine +
+                "customName:" + cleanCustomName.ToString() + Environment.NewLine);
+
             //check for null parameters
             if (doc == null || level == null)
             {
-                Debug.Write("Null parameters are not valid!");
+                Debug.Write("XDocument doc and int level are required, but were passed null!");
                 return null;
             }
 
-            //setup a string for the name of the element or attribute
-            string name = Path.LevelName(level, attrib);
+            //determine the Lookup level for the attribute (primary or secondary)
+            bool secondaryAtrib = new bool();
+            secondaryAtrib = (attrib && customNameIsNull && !(value == "current" || value == "1")) ?
+                true :
+                false;
+            Debug.Write("secondaryAttrib is set to {" + secondaryAtrib.ToString() + "}" + Environment.NewLine);
 
-            if (attrib && value != "1" && customName == null)
-            {
-                name = Path.LevelName(level, attrib, true);
-            }
-
-            if (customName != null)
-            {
-                name = customName;
-            }
+            //setup a string for the name of the element or attribute         
+            string name = (!customNameIsNull) ?
+                cleanCustomName :
+                xStructure.LevelName(level, attrib, secondaryAtrib);
+            Debug.Write("element/attribute 'name' is set to {" + name.ToString() + "}" + Environment.NewLine);
 
             //setup a srting name for the path to the parent element
-            string parent = attrib ? Path.Access(level) : Path.AddNew(level);
+            string parent = attrib ? xStructure.Access(level) : xStructure.AddNew(level);
+            Debug.Write("parent path is set to {" + parent.ToString() + "}" + Environment.NewLine);
 
             //need to add a [last()] identifier to the path if multiples are found
             if (doc.XPathSelectElements(parent) != null && doc.XPathSelectElements(parent).Count() > 1)
             {
+                Debug.Write("multiple elements were found in {" + parent.ToString() + "}, appending identified '[last()]'..." + Environment.NewLine);
                 parent += "[last()]";
             }
 
@@ -314,61 +351,59 @@ namespace CS_MonsoonProjectSelector
             if (doc.XPathSelectElement(parent) == null)
             {
                 Debug.Write("The parent path {" + parent + "} was not found in the XML document.");
-                return null;
+                if (box.Text != "Enter a project name")
+                {
+                throw new Exception("The xPath {" + parent + "} could not be found in the configuration file!" + Environment.NewLine
+                    + "If this is your first time using the tool, please try entering your settings in order.");
+                }
+                else
+                {
+                    return doc;
+                }                    
             }
 
             //if the value is null (default) then add a valuless element
             if (value == null)
             {
+                Debug.Write("No value was specified, adding empty element with name {" + name.ToString() + "}" + Environment.NewLine);
                 doc.XPathSelectElement(parent).Add(new XElement(name));
             }
 
             //if the value is not null, and attrib is true, add an attribute with a value
             else if (attrib)
             {
-                doc.XPathSelectElement(parent).Add(new XAttribute(name, value));
+                if (doc.XPathSelectElement(parent).Attribute(name) != null)
+                {
+                    doc.XPathSelectElement(parent).Attribute(name).Value = value;
+                }else
+                {
+                    Debug.Write("adding attribute  {" + name.ToString() + "} with value {" + value.ToString() + "}" + Environment.NewLine);
+                    doc.XPathSelectElement(parent).Add(new XAttribute(name, value));
+                }
+                
             }
-            //otherwise add the information as a new child element
+            //otherwise add the information as a child element
             else
             {
-                doc.XPathSelectElement(parent).Add(new XElement(name, value));
+                if (doc.XPathSelectElement(parent + "/" + name.ToString()) != null && doc.XPathSelectElement(parent + "/" + name.ToString()).Attributes().Count() == 0)
+                {   //The element is already present, changing value
+                    Debug.Write("Changing value {" + value.ToString() + "} to existing element {" + name.ToString() + "}." + Environment.NewLine);
+                    doc.XPathSelectElement(parent + "/" + name.ToString()).Value = value;
+                }
+                else
+                {
+                    Debug.Write("adding child element  {" + name.ToString() + "} with value {" + value.ToString() + "}" + Environment.NewLine);
+                    doc.XPathSelectElement(parent).Add(new XElement(name, value));
+                }
             }
 
+            Debug.Write("Competed writing document." + Environment.NewLine);
+            Debug.Write("XMLDoc ( XDocument, int, [string], [bool], [string]): Exit" + Environment.NewLine);
             return doc;
         }
 
         #endregion
-
-        public static FileInfo settings = initializeConfig();
        
-        /// <summary>
-        /// Check if there is an existing config file, and if not creates one.
-        /// </summary>
-        /// <returns>Returns the file as a fileinfo object.</returns>
-        public static FileInfo initializeConfig ()
-        {   
-            //string components of path to confilg file
-            string appdata = System.Environment.GetEnvironmentVariable("APPDATA");
-            string configPath = @"\SAPIT\Monsoon\";
-            string configFile = "Config.xml";
-
-            //convert strings into FileInfo Objects
-            System.IO.DirectoryInfo configDir = new System.IO.DirectoryInfo(appdata + configPath);
-            System.IO.FileInfo config = new System.IO.FileInfo(configDir.ToString() + configFile);
-
-            if (!configDir.Exists) //Test to see if the directory exists
-            {   //directory not present, therfore file is not present, create a both
-                configDir.Create();
-               // generateNewConfig(config);
-                makeXML(config);
-            }
-            else if (!config.Exists)
-            {   //directory is present, but file is not, create the file
-                //generateNewConfig(config);
-                makeXML(config);
-            }
-            return config;
-        }
 
         /// <summary>
         /// This generates a new empty XML settings file, and logs the date/time when the file was initialized.
@@ -618,6 +653,7 @@ namespace CS_MonsoonProjectSelector
             addEnv("Mo_Configured", DateTime.Now.ToString(), mode);
         }
 
+
         #region Environment
         //All of the handlers for the environmental variables and local setting files
 
@@ -794,61 +830,5 @@ namespace CS_MonsoonProjectSelector
 
         #endregion
 
-        static void auto()
-        {//this was my scratch code for the automation
-            
-            //using System.Diagnostics;
-            //using System.Windows.Automation;
-            //added references for Framework: UIAutomationClient and UIAutomationTypes
-
-            //the goal is to launch puttygen with a specific private key, and save it in 
-            //putty's ppk format without any user interaction
-
-            //define some variables
-            string puTTYgenPath =
-                Environment.GetEnvironmentVariable("ProgramFiles(x86)") +
-                @"\putty\puttygen.exe"; //location of Puttygen
-            string ID_RSA =
-                Environment.GetEnvironmentVariable("USERPROFILE") +
-                @"\.ssh\ID_RSA";        //location of file to convert
-
-            //create a process
-            System.Diagnostics.Process PPKgenerator = new System.Diagnostics.Process();
-
-            //add start info to the process
-            PPKgenerator.StartInfo.FileName = puTTYgenPath;
-            PPKgenerator.StartInfo.Arguments = ID_RSA;
-
-            //start the process
-            PPKgenerator.Start();
-
-            //get the process ID
-            int procID = PPKgenerator.Id;
-
-            Debug.Write("Clicking the OK button...");
-            clickButton(procID, "OK");
-
-            Debug.Write("Clicking the Save Key button...");
-            clickButton(procID, "Save private key");
-
-            Debug.Write("Clicking the Yes button...");
-            clickButton(procID, "Yes", "PuTTYgen Warning");
-
-            Debug.Write("Writing the destination path...");
-            enterText(
-                procID,
-                Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\id_rsa.ppk",
-                @"Save private key as:");
-
-            Debug.Write("Clicking the Save file button...");
-            clickButton(procID, "Save", @"Save private key as:");
-
-            while (!System.IO.File.Exists(Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\id_rsa.ppk"))
-            {
-                System.Threading.Thread.Sleep(50);
-            }
-
-            Process.GetProcessById(procID).Kill();
-        }
     }
 }
