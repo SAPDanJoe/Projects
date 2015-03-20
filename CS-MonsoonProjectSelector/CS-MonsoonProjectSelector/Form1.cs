@@ -535,7 +535,7 @@ namespace CS_MonsoonProjectSelector
         //    setSelections(OrgComboBox, fileSettings);
         //}
 
-        private void SaveData(XDocument form = null)
+        private void SaveData(bool contextualResponse = false)
         {
             //need to re-access the config file to ensure we have the most recent copy...
 
@@ -579,13 +579,16 @@ namespace CS_MonsoonProjectSelector
                 //* 4) save the file to disk
                 //save the changes back to the document
                 latestFile.Save(Program.settings.ToString());
-                MessageBox.Show(
-                    "The configuration was saved successfully.", 
-                    "Save Complete",
-                    System.Windows.Forms.MessageBoxButtons.OK ,
-                    System.Windows.Forms.MessageBoxIcon.Information);
+                if (contextualResponse)
+                {   
+                    MessageBox.Show(
+                        "The configuration was saved successfully.", 
+                        "Save Complete",
+                        System.Windows.Forms.MessageBoxButtons.OK ,
+                        System.Windows.Forms.MessageBoxIcon.Information);
+                }
             }
-            else
+            else if (contextualResponse)
             {
                 MessageBox.Show("There were no configuration changes to save.", 
                     "Save Skipped",
@@ -717,7 +720,7 @@ namespace CS_MonsoonProjectSelector
         //Individual actions: Other
         private void SaveAllButton_Click(object sender, EventArgs e)
         {
-            SaveData();
+            SaveData(true);
         }
 
         private void GitLastNameTextBox_Leave()
@@ -740,34 +743,76 @@ namespace CS_MonsoonProjectSelector
             Process.Start(editArgs);
         }
 
+        private bool dataVerified()
+        {
+            //enumerate populable fields
+            List<Control> boxes = listControls(this, new TextBox());
+            boxes.AddRange(listControls(this, new ComboBox()));
+
+            foreach (Control box in boxes)
+            {
+                if (!(box == level0TextBox || box == level1TextBox || box == level3TextBox))
+                {
+                    if (string.IsNullOrEmpty(box.Text))
+                    {
+                        MessageBox.Show(
+                            box.Name.ToString() + " was empty." + Environment.NewLine + 
+                                "You must complete all of the settings before launching a session." + Environment.NewLine + Environment.NewLine + 
+                                "Please check the form and try again.",
+                            "Error in " + box.Name.ToString(),
+                            System.Windows.Forms.MessageBoxButtons.OK,
+                            System.Windows.Forms.MessageBoxIcon.Error);
+                        return false;
+                    }
+                    if (!(!string.IsNullOrEmpty(box.Text) &&
+                    box.Name.Contains("path") &&
+                    (
+                        System.IO.File.Exists(box.Text) ||
+                        System.IO.Directory.Exists(box.Text)
+                    )))
+                    {
+                        MessageBox.Show(
+                            "The path {" + box.Text + "} could not be accessed.",
+                            "Error in " + box.Name.ToString(),
+                            System.Windows.Forms.MessageBoxButtons.OK,
+                            System.Windows.Forms.MessageBoxIcon.Error);
+                        return false;
+                    }
+                }               
+            }
+            return true;
+        }
+
 
         //Reusued actions
         private void LoadButton_Click(object sender, EventArgs e)
         {
             //save the current settings
             SaveData();
+
+            //check if all the data is valid
+            if (!dataVerified())
+            {
+                return;
+            }
+
+            //get a new conenction to the file and the current settings
             XElement currentConfig = fileSettings;
 
             //setup a new variable to store the scope of the configuration
-            EnvironmentVariableTarget mode = new EnvironmentVariableTarget();
-
-            //setup a var to determine if the command window should be opened
-            bool commandWindow = new bool();
+            EnvironmentVariableTarget mode =
+                sender.ToString().Contains("User") ?
+                EnvironmentVariableTarget.User : 
+                EnvironmentVariableTarget.Process;
 
             //check to see which button called the fucntion, and set the scope accordingly
-            if (sender.ToString().Contains("User"))
-            {
-                mode = EnvironmentVariableTarget.User;
-                commandWindow = false;
-            }
-            else if (sender.ToString().Contains("Session"))
-            {
-                mode = EnvironmentVariableTarget.Process;
-                commandWindow = true;
-            }
+            bool commandWindow = 
+                sender.ToString().Contains("User") ?
+                false : 
+                true;
 
             //run the setting loader
-            Program.loadEnvironment(currentConfig, mode);
+            Program.loadEnvironment(xdoc.XPathSelectElement(Program.xStructure.Access(1,"[@current = '1']")) , mode);
 
             //open the command prompt
             if (commandWindow)
