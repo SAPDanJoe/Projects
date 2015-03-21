@@ -740,23 +740,7 @@ namespace CS_MonsoonProjectSelector
         #region Helpers
         //These are all helper methods for the form
         //they handle any tasks that are not directly
-        //initiated by a form action        
-
-        private void entryToItems(ComboBox cBox, string entry)
-        {
-            if (cBox.Items.Contains(entry))
-            {
-                Debug.Write(cBox.Name + " contains {" + entry + "}\n");
-                cBox.SelectedText = entry;
-                Debug.Write(cBox.Name + " now has a selected index of {" + cBox.SelectedIndex + "} with a value of {" + cBox.SelectedValue + "}.\n");
-            }
-            else
-            {
-                Debug.Write(cBox.Name + " is missing {" + entry + "}\n");
-                cBox.Items.Add(entry);
-                entryToItems(cBox, entry);
-            }
-        }
+        //initiated by a form action  
 
         private void ffBrowser(object sender, EventArgs e)
         {

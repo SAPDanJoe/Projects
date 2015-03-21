@@ -403,6 +403,12 @@ namespace CS_MonsoonProjectSelector
         }
 
         #endregion
+        public static XElement getElementByAttribute(XElement root, string attributeName, string attributeValue)
+        {
+            XElement result = 
+                root.Descendants().Where(x => (string)x.Attribute(attributeName).Value == attributeValue).Single(); 
+            return result;
+        }
 
         /// <summary>
         /// This will load the settings from the form into the environment based on the provided mode, then launch a command window. NOTE: some of these settings are environment variables, and some are files
