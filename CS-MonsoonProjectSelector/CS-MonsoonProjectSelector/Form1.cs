@@ -684,7 +684,7 @@ namespace CS_MonsoonProjectSelector
             }
 
             //get a new conenction to the file and the current settings
-            XElement currentConfig = XDocument.Load(Program.settings.ToString()).XPathSelectElement(Program.xStructure.Access(1,"[@current = '1']"));
+            XElement currentConfig = XDocument.Load(Program.settings.ToString()).XPathSelectElement(Program.xStructure.Access(1,"[@id = 'current']"));
 
             //setup a new variable to store the scope of the configuration
             EnvironmentVariableTarget mode =

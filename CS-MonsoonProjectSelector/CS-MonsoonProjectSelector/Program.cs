@@ -403,11 +403,19 @@ namespace CS_MonsoonProjectSelector
         }
 
         #endregion
-        public static XElement getElementByAttribute(XElement root, string attributeName, string attributeValue)
+
+        /// <summary>
+        /// Returns the string value of an element found by using an attribute.
+        /// </summary>
+        /// <param name="root">XElement: The root where the search is performed (the dataset).</param>
+        /// <param name="attributeValue">string: The value of the attribute.</param>
+        /// <param name="attributeName">string:[optional] The  value of the attribute name.  [DEFAULT = "ControlName"]</param>
+        /// <returns>string: that value of the located element.</returns>
+        public static string getElementByAttribute(XElement root, string attributeValue, string attributeName = "ControlName")
         {
             XElement result = 
-                root.Descendants().Where(x => (string)x.Attribute(attributeName).Value == attributeValue).Single(); 
-            return result;
+                root.Descendants().Where(element => (string)element.Attribute(attributeName) == attributeValue).Single(); 
+            return result.Value.ToString();
         }
 
         /// <summary>
@@ -420,24 +428,23 @@ namespace CS_MonsoonProjectSelector
             //environmental Variables
             //!!!!!Chef
             //!!!!!!!!Variables
-            config.Descendants("[@ControlName = 'ChefRootTextBox']");
-            addEnv(                 (string)config.Element("[@ChefRootTextBox"), mode);
-            addEnv(                 (string)config.Element("ChefEmbeddedBinTextBox"), mode);
-            addEnv(                 (string)config.Element("MinGWBinTextBox"), mode, "beginning");
-            addEnv("RI_DEVKIT",     (string)config.Element("DevkitBinTextBox"), mode);
-            addEnv("KITCHEN_LOG",   (string)config.Element("KitchentLogLevelComboBox"), mode); //might be a little more complicated to set the combo boxes...
+            addEnv(                 getElementByAttribute(config, "ChefRootTextBox"), mode);
+            addEnv(                 getElementByAttribute(config, "ChefEmbeddedBinTextBox"), mode);
+            addEnv(                 getElementByAttribute(config, "MinGWBinTextBox"), mode, "beginning");
+            addEnv("RI_DEVKIT",     getElementByAttribute(config, "DevkitBinTextBox"), mode);
+            addEnv("KITCHEN_LOG",   getElementByAttribute(config, "KitchentLogLevelComboBox"), mode); //might be a little more complicated to set the combo boxes...
 
             //!!!!!git
             //!!!!!!!!Variables
-            addEnv("GIT_SSH",       (string)config.Element("GitSSHTextBox"), mode);
+            addEnv("GIT_SSH",       getElementByAttribute(config, "GitSSHTextBox"), mode);
             addEnv("HOME", Environment.GetEnvironmentVariable("USERPROFILE"), mode);
             //!!!!!git
             //!!!!!!!!Configuration actions
             System.Diagnostics.Process.Start("git","config --global user.name \"" +
-                    (string)config.Element("GitFirstNameTextBox") +
-                    (string)config.Element("GitFirstNameTextBox") + "\"");
+                    getElementByAttribute(config, "GitFirstNameTextBox") +
+                    getElementByAttribute(config, "GitFirstNameTextBox") + "\"");
             System.Diagnostics.Process.Start("git","config --global user.email \"" +
-                    (string)config.Element("GitEmailAddressTextBox") + "\"");
+                    getElementByAttribute(config, "GitEmailAddressTextBox") + "\"");
             System.Diagnostics.Process.Start("git","config --global color.ui true");
             System.Diagnostics.Process.Start("git","config --global http.sslVerify false");
 
@@ -454,7 +461,7 @@ namespace CS_MonsoonProjectSelector
             bool sshBackupExist = Directory.Exists(sshBackup);
 
             //Create a backup if .ssh\id_rsa exists and .ssh\backup does not
-            if (sshFileExist & !sshBackupExist)
+            if (sshFileExist && !sshBackupExist)
             {
                 Directory.CreateDirectory(sshBackup);
 
@@ -482,87 +489,92 @@ namespace CS_MonsoonProjectSelector
                 }
             }
                 
-            //create the new files
+            //create the new files if the private key has changed
+            string ID_RSA = getElementByAttribute(config, "PrivateKeyTextBox");
 
-            //private key
-            string ID_RSA = (string)config.Element("PrivateKeyTextBox");
-            File.WriteAllText(sshFile,ID_RSA);
-
-            //public key
-            string ID_RSA_PUB = (string)config.Element("PublicKeyTextBox");
-            File.WriteAllText(sshFile +".pub", ID_RSA_PUB);
-
-            //puTTY Key
-            string ppkFile = Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\id_rsa.ppk";            
-            
-            string puTTYgenPath = (string)config.Element("puTTYgenTextBox");
-            if (File.Exists(puTTYgenPath))
+            if (File.ReadAllText(sshFile) != ID_RSA)
             {
-                if (System.IO.File.Exists(ppkFile))
-                {   //the file already exists, so delete it first
-                    System.IO.File.Delete(ppkFile);
-                }                
-                
-                Process PPKgenerator = new Process();
-                PPKgenerator.StartInfo.FileName = puTTYgenPath;
-                PPKgenerator.StartInfo.Arguments = sshFile;
-                PPKgenerator.Start();
+                //private key
+                File.WriteAllText(sshFile, ID_RSA);
 
-                int PPKid = PPKgenerator.Id;
+                //public key
+                string ID_RSA_PUB = getElementByAttribute(config, "PublicKeyTextBox");
+                File.WriteAllText(sshFile + ".pub", ID_RSA_PUB);
 
-                Debug.Write("Clicking the OK button...");
-                clickButton(PPKid, "OK");
+                //puTTY Key
+                string ppkFile = Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\id_rsa.ppk";
 
-                Debug.Write("Clicking the Save Key button...");
-                clickButton(PPKid, "Save private key");
-
-                Debug.Write("Clicking the Yes button...");
-                clickButton(PPKid, "Yes", "PuTTYgen Warning");
-
-                Debug.Write("Writing the destination path...");
-                enterText(PPKid, ppkFile,@"Save private key as:");
-
-                Debug.Write("Clicking the Save file button...");
-                clickButton(PPKid, "Save", @"Save private key as:");
-
-                //wait for the file to be written to the system
-                while (!System.IO.File.Exists(ppkFile))
+                string puTTYgenPath = getElementByAttribute(config, "puTTYgenTextBox");
+                if (File.Exists(puTTYgenPath))
                 {
-                    System.Threading.Thread.Sleep(50);
+                    if (System.IO.File.Exists(ppkFile))
+                    {   //the file already exists, so delete it first
+                        System.IO.File.Delete(ppkFile);
+                    }
+
+                    Process PPKgenerator = new Process();
+                    PPKgenerator.StartInfo.FileName = puTTYgenPath;
+                    PPKgenerator.StartInfo.Arguments = sshFile;
+                    PPKgenerator.Start();
+
+                    int PPKid = PPKgenerator.Id;
+
+                    Debug.Write("Clicking the OK button...");
+                    clickButton(PPKid, "OK");
+
+                    Debug.Write("Clicking the Save Key button...");
+                    clickButton(PPKid, "Save private key");
+
+                    Debug.Write("Clicking the Yes button...");
+                    clickButton(PPKid, "Yes", "PuTTYgen Warning");
+
+                    Debug.Write("Writing the destination path...");
+                    enterText(PPKid, ppkFile, @"Save private key as:");
+
+                    Debug.Write("Clicking the Save file button...");
+                    clickButton(PPKid, "Save", @"Save private key as:");
+
+                    //wait for the file to be written to the system
+                    while (!System.IO.File.Exists(ppkFile))
+                    {
+                        System.Threading.Thread.Sleep(50);
+                    }
+
+                    //close the window
+                    PPKgenerator.Kill();
+                }
+                else
+                {
+                    Debug.Write("The PuTTY key generator does not appear to be installed.  A PuTTY keyfile has not been generated.");
                 }
 
-                //close the window
-                PPKgenerator.Kill();
-            }
-            else
-            {
-                Debug.Write("The PuTTY key generator does not appear to be installed.  A PuTTY keyfile has not been generated.");
             }
 
+            
 
             //!!!!!AWS
             //!!!!!!!!Variables
-            addEnv("AWS_ORGANIZATION",(string)config.Element("OrgTextBox"), mode);
-            addEnv("AWS_PROJECT",   (string)config.Element("ProjectNameComboBox"), mode);
-            addEnv("AWS_ACCESS_KEY",(string)config.Element("AccessKeyTextBox"), mode);
-            addEnv("AWS_SECRET_KEY",(string)config.Element("SecretKeyTextBox"), mode);
-            addEnv("AWS_SSH_KEY_ID",(string)config.Element("KeyIDTextBox"), mode);
+            addEnv("AWS_ORGANIZATION",getElementByAttribute(config, "OrgTextBox"), mode);
+            addEnv("AWS_PROJECT",   getElementByAttribute(config, "ProjectNameComboBox"), mode);
+            addEnv("AWS_ACCESS_KEY",getElementByAttribute(config, "AccessKeyTextBox"), mode);
+            addEnv("AWS_SECRET_KEY",getElementByAttribute(config, "SecretKeyTextBox"), mode);
+            addEnv("AWS_SSH_KEY_ID",getElementByAttribute(config, "KeyIDTextBox"), mode);
 
             //!!!!!EC2
             //!!!!!!!!Variables
-            addEnv("EC2_HOME",      (string)config.Element("EC2HomeTextBox"), mode);
-            addEnv("CLASSPATH",     (string)config.Element("EC2HomeTextBox")+"\\lib", mode);
-            addEnv(                 (string)config.Element("EC2HomeTextBox") + "\\bin", mode);
+            addEnv("EC2_HOME",      getElementByAttribute(config, "EC2HomeTextBox"), mode);
+            addEnv("CLASSPATH",     getElementByAttribute(config, "EC2HomeTextBox")+"\\lib", mode);
+            addEnv(                 getElementByAttribute(config, "EC2HomeTextBox") + "\\bin", mode);
             addEnv("EC2_SSH_KEY",   Environment.GetEnvironmentVariable("USERPROFILE") + "\\.ssh\\id_rsa", mode);
-            addEnv("EC2_URL",       (string)config.Element("EC2UrlTextBox"), mode);
+            addEnv("EC2_URL",       getElementByAttribute(config, "EC2UrlTextBox"), mode);
             
 
             //!!!!!FOG
             //!!!!!!!!FogFile: ~/.fog
             string[] fogFile= {
                                   "default:",
-                                  "  aws_access_key_id: " + (string)config.Element("AccessKeyTextBox"),
-                                  "  aws_secret_access_key: " + (string)config.Element("SecretKeyTextBox"),
+                                  "  aws_access_key_id: " + getElementByAttribute(config, "AccessKeyTextBox"),
+                                  "  aws_secret_access_key: " + getElementByAttribute(config, "SecretKeyTextBox"),
                                   "  host: monsoon.mo.sap.corp",
                                   "  path: /api/ec2"
                               };
@@ -571,14 +583,14 @@ namespace CS_MonsoonProjectSelector
 
             //!!!!!GEM
             //!!!!!!!!Variables
-            addEnv("GEM_PATH",      (string)config.Element("GEMPathTextBox"), mode);
+            addEnv("GEM_PATH",      getElementByAttribute(config, "GEMPathTextBox"), mode);
             //!!!!!GEM
             //!!!!!!!!GEMRC file: ~/.gemrc
             
             //The data from the XML file is from a multiline TextBox
             //We'll need this in seperate strings to add the lines to the file
             //fist load the whole element into a string
-            string lines = (string)config.Element("GEMSourcesTextBox").ToString();
+            string lines = getElementByAttribute(config, "GEMSourcesTextBox").ToString();
 
             //now take off the leading and training XML tags
             lines = lines.Substring(19);
@@ -606,7 +618,7 @@ namespace CS_MonsoonProjectSelector
             //    }
             //}
 
-            string line1 = (string)config.Element("GEMSourcesTextBox").ToString().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None)[0].Substring(19);
+            string line1 = getElementByAttribute(config, "GEMSourcesTextBox").ToString().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None)[0].Substring(19);
             string[] gemRCFile = {
                                      "---",
                                      "http_proxy: :no_proxy",
@@ -623,16 +635,16 @@ namespace CS_MonsoonProjectSelector
 
             //!!!!!kitchen-Monsoon
             //!!!!!!!!Variables
-            addEnv(                 (string)config.Element("VagrantEmbeddedBinTextBox"), mode);
+            addEnv(                 getElementByAttribute(config, "VagrantEmbeddedBinTextBox"), mode);
                 // seem to be missing ...\Vagrant\bin
 
             //!!!!!Vagrant
             //!!!!!!!!Variables
-            addEnv(                 (string)config.Element("VagrantEmbeddedTextBox"), mode);
+            addEnv(                 getElementByAttribute(config, "VagrantEmbeddedTextBox"), mode);
 
 
-            addEnv(                 (string)config.Element("PublicKeyTextBox"), mode);
-            addEnv(                 (string)config.Element("PrivateKeyTextBox"), mode);
+            addEnv(                 getElementByAttribute(config, "PublicKeyTextBox"), mode);
+            addEnv(                 getElementByAttribute(config, "PrivateKeyTextBox"), mode);
 
 
             //!!!!!Informational
