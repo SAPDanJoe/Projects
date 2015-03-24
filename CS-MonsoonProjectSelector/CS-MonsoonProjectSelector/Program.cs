@@ -428,21 +428,21 @@ namespace CS_MonsoonProjectSelector
             //environmental Variables
             //!!!!!Chef
             //!!!!!!!!Variables
-            addEnv(                 getElementByAttribute(config, "ChefRootTextBox"), mode);
-            addEnv(                 getElementByAttribute(config, "ChefEmbeddedBinTextBox"), mode);
-            addEnv(                 getElementByAttribute(config, "MinGWBinTextBox"), mode, "beginning");
-            addEnv("RI_DEVKIT",     getElementByAttribute(config, "DevkitBinTextBox"), mode);
+            addEnv(                 getElementByAttribute(config, "ChefRootPathTextBox"), mode);
+            addEnv(                 getElementByAttribute(config, "ChefEmbeddedBinPathTextBox"), mode);
+            addEnv(                 getElementByAttribute(config, "MinGWBinPathTextBox"), mode, "beginning");
+            addEnv("RI_DEVKIT",     getElementByAttribute(config, "DevkitBinPathTextBox"), mode);
             addEnv("KITCHEN_LOG",   getElementByAttribute(config, "KitchentLogLevelComboBox"), mode); //might be a little more complicated to set the combo boxes...
 
             //!!!!!git
             //!!!!!!!!Variables
-            addEnv("GIT_SSH",       getElementByAttribute(config, "GitSSHTextBox"), mode);
+            addEnv("GIT_SSH",       getElementByAttribute(config, "GitSSHPathTextBox"), mode);
             addEnv("HOME", Environment.GetEnvironmentVariable("USERPROFILE"), mode);
             //!!!!!git
             //!!!!!!!!Configuration actions
             System.Diagnostics.Process.Start("git","config --global user.name \"" +
                     getElementByAttribute(config, "GitFirstNameTextBox") +
-                    getElementByAttribute(config, "GitFirstNameTextBox") + "\"");
+                    getElementByAttribute(config, "GitLastNameTextBox") + "\"");
             System.Diagnostics.Process.Start("git","config --global user.email \"" +
                     getElementByAttribute(config, "GitEmailAddressTextBox") + "\"");
             System.Diagnostics.Process.Start("git","config --global color.ui true");
@@ -554,7 +554,7 @@ namespace CS_MonsoonProjectSelector
 
             //!!!!!AWS
             //!!!!!!!!Variables
-            addEnv("AWS_ORGANIZATION",getElementByAttribute(config, "OrgTextBox"), mode);
+            addEnv("AWS_ORGANIZATION",getElementByAttribute(config, "OrgComboBox"), mode);
             addEnv("AWS_PROJECT",   getElementByAttribute(config, "ProjectNameComboBox"), mode);
             addEnv("AWS_ACCESS_KEY",getElementByAttribute(config, "AccessKeyTextBox"), mode);
             addEnv("AWS_SECRET_KEY",getElementByAttribute(config, "SecretKeyTextBox"), mode);
@@ -562,9 +562,9 @@ namespace CS_MonsoonProjectSelector
 
             //!!!!!EC2
             //!!!!!!!!Variables
-            addEnv("EC2_HOME",      getElementByAttribute(config, "EC2HomeTextBox"), mode);
-            addEnv("CLASSPATH",     getElementByAttribute(config, "EC2HomeTextBox")+"\\lib", mode);
-            addEnv(                 getElementByAttribute(config, "EC2HomeTextBox") + "\\bin", mode);
+            addEnv("EC2_HOME",      getElementByAttribute(config, "EC2HomePathTextBox"), mode);
+            addEnv("CLASSPATH",     getElementByAttribute(config, "EC2HomePathTextBox") + "\\lib", mode);
+            addEnv(                 getElementByAttribute(config, "EC2HomePathTextBox") + "\\bin", mode);
             addEnv("EC2_SSH_KEY",   Environment.GetEnvironmentVariable("USERPROFILE") + "\\.ssh\\id_rsa", mode);
             addEnv("EC2_URL",       getElementByAttribute(config, "EC2UrlTextBox"), mode);
             
@@ -635,12 +635,12 @@ namespace CS_MonsoonProjectSelector
 
             //!!!!!kitchen-Monsoon
             //!!!!!!!!Variables
-            addEnv(                 getElementByAttribute(config, "VagrantEmbeddedBinTextBox"), mode);
+            addEnv(                 getElementByAttribute(config, "VagrantEmbeddedBinPathTextBox"), mode);
                 // seem to be missing ...\Vagrant\bin
 
             //!!!!!Vagrant
             //!!!!!!!!Variables
-            addEnv(                 getElementByAttribute(config, "VagrantEmbeddedTextBox"), mode);
+            addEnv(                 getElementByAttribute(config, "VagrantEmbeddedPathTextBox"), mode);
 
 
             addEnv(                 getElementByAttribute(config, "PublicKeyTextBox"), mode);

@@ -244,12 +244,22 @@ namespace CS_MonsoonProjectSelector
                 docValue = (xdoc.XPathSelectElement(Program.xStructure.Access(level,"[@ControlName = '" + box.Name.ToString() + "']")) == null) ? 
                     string.Empty : xdoc.XPathSelectElement(Program.xStructure.Access(level,"[@ControlName = '" + box.Name.ToString() + "']")).Value.ToString();
 
-                if (uiValue != docValue && !string.IsNullOrEmpty(uiValue))
+                    if (uiValue != docValue && !string.IsNullOrEmpty(uiValue))
                 {
-                    Debug.Write("The control's value is not in the document, adding..." + Environment.NewLine);
-                    //store uiValue in xdoc
-                    xdoc = Program.XMLDoc(xdoc, box, uiValue);
-                    xdoc = Program.XMLDoc(xdoc, box, box.Name.ToString(), true);
+                    if (string.IsNullOrEmpty(docValue))
+                    {
+                        Debug.Write("The control's value is not in the document, adding..." + Environment.NewLine);
+                        //store uiValue in xdoc
+                        xdoc = Program.XMLDoc(xdoc, box, uiValue);
+                        xdoc = Program.XMLDoc(xdoc, box, box.Name.ToString(), true);
+                    }
+                    else
+                    {
+                        Debug.Write("The control's value is not current in the document, updating..." + Environment.NewLine);
+                        //store uiValue in xdoc
+                        xdoc.XPathSelectElement(Program.xStructure.Access(level, "[@ControlName = '" + box.Name.ToString() + "']")).Value = uiValue;
+                    }
+                   
                 }
                 else
                 {
@@ -307,7 +317,7 @@ namespace CS_MonsoonProjectSelector
                             string.Empty;
                         Debug.Write("The box's text was set to {" + box.Text + "}. (if empty, xdoc.XPathSelectElement({" + boxPath + "}) == null)" + Environment.NewLine);
 
-                        leaveBox(box, new EventArgs());
+                        //leaveBox(box, new EventArgs());
                         break;
                     case "System.Windows.Forms.ComboBox":
                         Debug.Write("This is a ComboBox." + Environment.NewLine);
@@ -746,12 +756,14 @@ namespace CS_MonsoonProjectSelector
         {
             //cast sender as a textbox
             TextBox tBox = (TextBox)sender;
+            bool isFolder = false;
 
-            if (tBox.Tag.ToString().Equals("Folder"))
+            if (! (tBox == GitSSHPathTextBox || tBox == puTTYgenPathTextBox))
             {                
                 FileBrowserDialog.CheckFileExists = false;
                 string defaultFilename = "Select this folder";
                 FileBrowserDialog.FileName = defaultFilename;
+                isFolder = true;
             }
             else
             {
@@ -777,9 +789,12 @@ namespace CS_MonsoonProjectSelector
                 if (index > 0)
                     folder = folder.Substring(0, index);
 
-                 tBox.Text = tBox.Tag.ToString().Equals("Folder") ?
+                 tBox.Text = isFolder ?
                      folder :
                      FileBrowserDialog.FileName;
+
+                 Debug.Write("Folder? " + isFolder.ToString() + Environment.NewLine + 
+                     "folder name is " + folder.ToString() + Environment.NewLine);
             }
         }
 
