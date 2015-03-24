@@ -46,10 +46,9 @@ namespace CS_MonsoonProjectSelector
             initializDefaults();
             //LoadDefaults();
             Debug.Write("**********Intial loading of form is completed!**********" + Environment.NewLine);
-        
-            //LoadData();
         }
 
+        #region FormInformation
 
         /// <summary>
         /// Recurses through a root control and gets all child controls by Type.
@@ -173,118 +172,57 @@ namespace CS_MonsoonProjectSelector
             return result;
         }
 
-        #region Save entries to XML
-
-        /// <summary>
-        /// Main event handler for the TextChanged events of the Text and Combo boxes
-        /// </summary>
-        /// <param name="sender">Box in which the text changed.</param>
-        /// <param name="e">Not currently impimented, use new EventArgs()</param>
-        public void leaveBox(object sender, EventArgs e)
-        {
-            string uiValue = string.Empty;
-            string docValue = string.Empty;
-
-            var dbg = (Control)sender;
-            Debug.Write("Leaving a {" + dbg.GetType().ToString() + "} named {" + dbg.Name.ToString() + "} at level {" + dbg.Tag + "} ." + Environment.NewLine);
-
-            if (sender is ComboBox)
-            {
-                ComboBox box = (ComboBox)sender;
-                int level = int.Parse(box.Tag.ToString());
-                uiValue = box.Text.ToString();
-                docValue = (xdoc.XPathSelectElement(Program.xStructure.Access(level, "[@selected = '1']")) == null) ? string.Empty : xdoc.XPathSelectElement(Program.xStructure.Access(level, "[@selected = '1']")).Attribute("name").Value.ToString();
-                bool existsInDoc = (xdoc.XPathSelectElement(Program.xStructure.Access(level, "[@name = '" + box.Text.ToString() + "']")) != null) ? true : false;
-
-                if (!existsInDoc && !string.IsNullOrEmpty(uiValue))
-                {   //if the uiValue in the Combobox is not yet in the document, add it
-                    Debug.Write("The control's value {" + uiValue + "} is not in the document, adding..." + Environment.NewLine);
-
-                    //store uiValue in xdoc
-                    xdoc = Program.XMLDoc(xdoc, box);
-                    xdoc = Program.XMLDoc(xdoc, box, box.Name.ToString(), true);
-                    xdoc = Program.XMLDoc(xdoc, box, uiValue, true, "name");
-                }
-
-                if (!box.Items.Contains(uiValue) && !string.IsNullOrEmpty(uiValue))
-                {   //if the uiValue is not already in the combobox's list...
-                    Debug.Write("The control's value {" + uiValue + "} is not in the list, adding and selecting..." + Environment.NewLine);
-
-                    //add new item to box list
-                    box.Items.Add(box.Text);
-
-                    //select new value in combobox
-                    box.SelectedIndex = box.Items.Count - 1;
-                }
-                if (uiValue != docValue)
-                {
-                    //if the value in the UI has deviated from that in the document, fire selection changed event
-                    Debug.Write("The form entered value {" + uiValue + "} does not match the selected document's value {" + docValue + "}, updating document to reflect the changes..." + Environment.NewLine);
-
-                    //comboSelectionChanged(box, new EventArgs());
-                    exchangeSelections(box);
-                }
-                else
-                {
-                    Debug.Write("{" + box.Name + "} had no changes to commit." + Environment.NewLine);
-                }
-                //Debug.Write("{" + box.Name + "} has {" + childrenOf(box).Count + "} children to populate..." + Environment.NewLine);
-                //populate(childrenOf(box));
-
-                if (box == ProjectNameComboBox)
-                {
-                    checkLink(box, ProjectSettingsLink);
-                }
-            }
-            else if (sender is TextBox)
-            {
-                TextBox box = (TextBox)sender;
-                int level = int.Parse(box.Tag.ToString());
-                uiValue = box.Text.ToString();
-                docValue = (xdoc.XPathSelectElement(Program.xStructure.Access(level,"[@ControlName = '" + box.Name.ToString() + "']")) == null) ? 
-                    string.Empty : xdoc.XPathSelectElement(Program.xStructure.Access(level,"[@ControlName = '" + box.Name.ToString() + "']")).Value.ToString();
-
-                    if (uiValue != docValue && !string.IsNullOrEmpty(uiValue))
-                {
-                    if (string.IsNullOrEmpty(docValue))
-                    {
-                        Debug.Write("The control's value is not in the document, adding..." + Environment.NewLine);
-                        //store uiValue in xdoc
-                        xdoc = Program.XMLDoc(xdoc, box, uiValue);
-                        xdoc = Program.XMLDoc(xdoc, box, box.Name.ToString(), true);
-                    }
-                    else
-                    {
-                        Debug.Write("The control's value is not current in the document, updating..." + Environment.NewLine);
-                        //store uiValue in xdoc
-                        xdoc.XPathSelectElement(Program.xStructure.Access(level, "[@ControlName = '" + box.Name.ToString() + "']")).Value = uiValue;
-                    }
-                   
-                }
-                else
-                {
-                    Debug.Write("{" + box.Name + "} had no changes to commit." + Environment.NewLine);
-                }
-
-                //toggle link visibility and autofill
-                if (box == UserIDTextBox)
-                {
-                    checkLink(box, MonsoonKeysLink);
-                }
-                else if (box == KeyIDTextBox)
-                {
-                    checkLink(box, ProjectSettingsLink);
-                }
-                else if (box == GitLastNameTextBox || box == GitFirstNameTextBox)
-                {
-                    GitLastNameTextBox_Leave();
-                }
-            }            
-        }
-
         #endregion
 
-        #region Populate Boxes from xdoc
+        #region DataDefinitions
+
+        /// <summary>
+        /// Defines the structure of a default value
+        /// </summary>
+        public class Default
+        {
+            public Control control { get; set; }
+            public string value { get; set; }
+            public System.Drawing.Color color { get; set; }
+            public Default(Control cont, string val)
+            {
+                control = cont;
+                value = val;
+                color = System.Drawing.Color.Gray;
+            }
+        }
+
+        /// <summary>
+        /// Gets the default values for the form's text and combo boxes.
+        /// </summary>
+        /// <returns>List<Default> of default values.</Default></returns>
+        public List<Default> listDefaults()
+        {
+            List<Default> defaults = new List<Default>();
+
+            defaults.Add(new Default(ProjectNameComboBox, "Enter a project name"));
+            defaults.Add(new Default(OrgComboBox, (string)Environment.GetEnvironmentVariable("USERNAME").ToLower()));
+            defaults.Add(new Default(KitchentLogLevelComboBox, "Default"));
+            defaults.Add(new Default(UserIDTextBox, Environment.GetEnvironmentVariable("USERNAME").ToLower()));
+            defaults.Add(new Default(DevkitBinPathTextBox, "\\chef\\embedded"));
+            defaults.Add(new Default(MinGWBinPathTextBox, "\\chef\\embedded\\migwin\\bin"));
+            defaults.Add(new Default(ChefEmbeddedBinPathTextBox, "\\chef\\embedded\\bin"));
+            defaults.Add(new Default(ChefRootPathTextBox, "\\chef"));
+            defaults.Add(new Default(GitSSHPathTextBox, "C:\\Program Files (x86)\\Git\\bin\\ssh.exe"));
+            defaults.Add(new Default(GEMPathTextBox, "\\Vagrant\\embedded\\gems"));
+            defaults.Add(new Default(GEMSourcesTextBox, "http://moo-repo.wdf.sap.corp:8080/geminabox/" + Environment.NewLine + "http://moo-repo.wdf.sap.corp:8080/rubygemsorg/"));
+            defaults.Add(new Default(EC2HomePathTextBox, "\\ec2-api-tools-1.6.9.0"));
+            defaults.Add(new Default(EC2UrlTextBox, "https://ec2-us-west.api.monsoon.mo.sap.corp:443"));
+            defaults.Add(new Default(VagrantEmbeddedPathTextBox, "\\Vagrant\\embedded"));
+            defaults.Add(new Default(VagrantEmbeddedBinPathTextBox, "\\Vagrant\\embedded\\bin"));
+            defaults.Add(new Default(puTTYgenPathTextBox, "C:\\Program Files (x86)\\PuTTY\\puttygen.exe"));
+            defaults.Add(new Default(KeyIDTextBox, "Default"));
+            return defaults;
+        }
+        
+        #endregion
+
+        #region UIDataInsertion
 
         /// <summary>
         /// Populates TextBoxes and ComboBoxes
@@ -412,78 +350,8 @@ namespace CS_MonsoonProjectSelector
         }
 
         /// <summary>
-        /// When a new selection is made in a combobox, this ensures that the change is reflected in the acompanying XDocument
+        /// Inserts the default form data into the corresponding form fields.
         /// </summary>
-        /// <param name="cBox">The ComboBox where the selection has been changed.</param>
-        private void exchangeSelections(ComboBox cBox)
-        {
-            int level = int.Parse(cBox.Tag.ToString());
-            //get the old and newly selected elements
-
-            //this is the item still 'selected' in the xdoc
-            XElement docSelection = xdoc.XPathSelectElement(Program.xStructure.Access(level, "[@selected = '1']"));
-
-            //this is the item currently selected in the UI
-            XElement uiSelection = xdoc.XPathSelectElement(Program.xStructure.Access(level, "[@name = '" + cBox.SelectedItem.ToString() + "']"));
-
-            //remove the previous element's "seleted" attribute, and add it to the newly selected attribute
-            if (docSelection != null)
-            {
-                docSelection.SetAttributeValue("selected", null);
-            }
-            if (uiSelection != null)
-            {
-                uiSelection.SetAttributeValue("selected", 1);                
-            }
-            if (childrenOf(cBox).Count > 0)
-            {
-                populate(childrenOf(cBox));
-            }
-        }
-
-        #endregion
-
-        #region UI data interactions
-        // This code handles loading data to the form
-        // fields, and saving data from them
-
-        public class Default
-        {
-            public Control control { get; set; }
-            public string value { get; set; }
-            public System.Drawing.Color color { get; set; }
-            public Default(Control cont, string val)
-            {
-                control = cont;
-                value = val;
-                color = System.Drawing.Color.Gray;
-            }
-        }
-
-        public List<Default> listDefaults()
-        {
-            List<Default> defaults = new List<Default>();
-
-            defaults.Add(new Default(UserIDTextBox, Environment.GetEnvironmentVariable("USERNAME").ToLower()));
-            defaults.Add(new Default(OrgComboBox, (string)Environment.GetEnvironmentVariable("USERNAME").ToLower()));
-            defaults.Add(new Default(DevkitBinPathTextBox, "\\chef\\embedded"));
-            defaults.Add(new Default(MinGWBinPathTextBox, "\\chef\\embedded\\migwin\\bin"));
-            defaults.Add(new Default(ChefEmbeddedBinPathTextBox, "\\chef\\embedded\\bin"));
-            defaults.Add(new Default(ChefRootPathTextBox, "\\chef"));
-            defaults.Add(new Default(GitSSHPathTextBox, "C:\\Program Files (x86)\\Git\\bin\\ssh.exe"));
-            defaults.Add(new Default(GEMPathTextBox, "\\Vagrant\\embedded\\gems"));
-            defaults.Add(new Default(GEMSourcesTextBox, "http://moo-repo.wdf.sap.corp:8080/geminabox/" + Environment.NewLine + "http://moo-repo.wdf.sap.corp:8080/rubygemsorg/"));
-            defaults.Add(new Default(EC2HomePathTextBox, "\\ec2-api-tools-1.6.9.0"));
-            defaults.Add(new Default(EC2UrlTextBox, "https://ec2-us-west.api.monsoon.mo.sap.corp:443"));
-            defaults.Add(new Default(VagrantEmbeddedPathTextBox, "\\Vagrant\\embedded"));
-            defaults.Add(new Default(VagrantEmbeddedBinPathTextBox, "\\Vagrant\\embedded\\bin"));
-            defaults.Add(new Default(KitchentLogLevelComboBox, "Default"));
-            defaults.Add(new Default(puTTYgenPathTextBox, "C:\\Program Files (x86)\\PuTTY\\puttygen.exe"));
-            defaults.Add(new Default(KeyIDTextBox, "Default"));
-            defaults.Add(new Default(ProjectNameComboBox, "Enter a project name"));
-            return defaults;
-        }
-
         private void initializDefaults()
         {
             List<Default> defaultables = listDefaults();
@@ -510,7 +378,423 @@ namespace CS_MonsoonProjectSelector
                 }
             }
         }
+
+        #endregion
+
         
+        #region EventHandlers:FocusChange
+        
+        /// <summary>
+        /// Event Handler that compares the content in the UI with the content in the working settings, and updates the settings if necessary.
+        /// </summary>
+        /// <param name="sender">Box in which the text changed.</param>
+        /// <param name="e">Not currently impimented, use new EventArgs()</param>
+        public void leaveBox(object sender, EventArgs e)
+        {
+            string uiValue = string.Empty;
+            string docValue = string.Empty;
+
+            Control dbg = (Control)sender;
+            Debug.Write("Leaving a {" + dbg.GetType().ToString() + "} named {" + dbg.Name.ToString() + "} at level {" + dbg.Tag + "} ." + Environment.NewLine);
+
+            if (sender is ComboBox)
+            {
+                ComboBox box = (ComboBox)sender;
+                int level = int.Parse(box.Tag.ToString());
+                uiValue = box.Text.ToString();
+                docValue = (xdoc.XPathSelectElement(Program.xStructure.Access(level, "[@selected = '1']")) == null) ? string.Empty : xdoc.XPathSelectElement(Program.xStructure.Access(level, "[@selected = '1']")).Attribute("name").Value.ToString();
+                bool existsInDoc = (xdoc.XPathSelectElement(Program.xStructure.Access(level, "[@name = '" + box.Text.ToString() + "']")) != null) ? true : false;
+
+                if (!existsInDoc && !string.IsNullOrEmpty(uiValue))
+                {   //if the uiValue in the Combobox is not yet in the document, add it
+                    Debug.Write("The control's value {" + uiValue + "} is not in the document, adding..." + Environment.NewLine);
+
+                    //store uiValue in xdoc
+                    xdoc = Program.XMLDoc(xdoc, box);
+                    xdoc = Program.XMLDoc(xdoc, box, box.Name.ToString(), true);
+                    xdoc = Program.XMLDoc(xdoc, box, uiValue, true, "name");
+                }
+
+                if (!box.Items.Contains(uiValue) && !string.IsNullOrEmpty(uiValue))
+                {   //if the uiValue is not already in the combobox's list...
+                    Debug.Write("The control's value {" + uiValue + "} is not in the list, adding and selecting..." + Environment.NewLine);
+
+                    //add new item to box list
+                    box.Items.Add(box.Text);
+
+                    //select new value in combobox
+                    box.SelectedIndex = box.Items.Count - 1;
+                }
+                if (uiValue != docValue)
+                {
+                    //if the value in the UI has deviated from that in the document, fire selection changed event
+                    Debug.Write("The form entered value {" + uiValue + "} does not match the selected document's value {" + docValue + "}, updating document to reflect the changes..." + Environment.NewLine);
+
+                    //comboSelectionChanged(box, new EventArgs());
+                    exchangeSelections(box);
+                }
+                else
+                {
+                    Debug.Write("{" + box.Name + "} had no changes to commit." + Environment.NewLine);
+                }
+                //Debug.Write("{" + box.Name + "} has {" + childrenOf(box).Count + "} children to populate..." + Environment.NewLine);
+                //populate(childrenOf(box));
+
+                if (box == ProjectNameComboBox)
+                {
+                    checkLink(box, ProjectSettingsLink);
+                }
+            }
+            else if (sender is TextBox)
+            {
+                TextBox box = (TextBox)sender;
+                int level = int.Parse(box.Tag.ToString());
+                uiValue = box.Text.ToString();
+                docValue = (xdoc.XPathSelectElement(Program.xStructure.Access(level,"[@ControlName = '" + box.Name.ToString() + "']")) == null) ? 
+                    string.Empty : xdoc.XPathSelectElement(Program.xStructure.Access(level,"[@ControlName = '" + box.Name.ToString() + "']")).Value.ToString();
+
+                    if (uiValue != docValue && !string.IsNullOrEmpty(uiValue))
+                {
+                    if (string.IsNullOrEmpty(docValue))
+                    {
+                        Debug.Write("The control's value is not in the document, adding..." + Environment.NewLine);
+                        //store uiValue in xdoc
+                        xdoc = Program.XMLDoc(xdoc, box, uiValue);
+                        xdoc = Program.XMLDoc(xdoc, box, box.Name.ToString(), true);
+                    }
+                    else
+                    {
+                        Debug.Write("The control's value is not current in the document, updating..." + Environment.NewLine);
+                        //store uiValue in xdoc
+                        xdoc.XPathSelectElement(Program.xStructure.Access(level, "[@ControlName = '" + box.Name.ToString() + "']")).Value = uiValue;
+                    }
+                   
+                }
+                else
+                {
+                    Debug.Write("{" + box.Name + "} had no changes to commit." + Environment.NewLine);
+                }
+
+                //toggle link visibility and autofill
+                if (box == UserIDTextBox)
+                {
+                    checkLink(box, MonsoonKeysLink);
+                }
+                else if (box == KeyIDTextBox)
+                {
+                    checkLink(box, ProjectSettingsLink);
+                }
+                else if (box == GitLastNameTextBox || box == GitFirstNameTextBox)
+                {
+                    autoFillEmailAddress();
+                }
+            }            
+        }
+
+        /// <summary>
+        /// Indirect event handler called by leaveBox after the other operations are performed.  Combines the 1st and last anme into an SAP standard email address if they are non-blank.
+        /// </summary>
+        private void autoFillEmailAddress()
+        {
+            if (GitFirstNameTextBox.Text != string.Empty && GitLastNameTextBox.Text != string.Empty)
+            {
+                GitEmailAddressTextBox.Text =
+                    GitFirstNameTextBox.Text +
+                    "." +
+                    GitLastNameTextBox.Text +
+                    "@sap.com";
+            }
+        }
+
+        /// <summary>
+        /// Indirect event handler called by leaveBox.  When a new selection is made in a combobox, this ensures that the change is reflected in the acompanying XDocument.
+        /// </summary>
+        /// <param name="cBox">The ComboBox where the selection has been changed.</param>
+        private void exchangeSelections(ComboBox cBox)
+        {
+            int level = int.Parse(cBox.Tag.ToString());
+            //get the old and newly selected elements
+
+            //this is the item still 'selected' in the xdoc
+            XElement docSelection = xdoc.XPathSelectElement(Program.xStructure.Access(level, "[@selected = '1']"));
+
+            //this is the item currently selected in the UI
+            XElement uiSelection = xdoc.XPathSelectElement(Program.xStructure.Access(level, "[@name = '" + cBox.SelectedItem.ToString() + "']"));
+
+            //remove the previous element's "seleted" attribute, and add it to the newly selected attribute
+            if (docSelection != null)
+            {
+                docSelection.SetAttributeValue("selected", null);
+            }
+            if (uiSelection != null)
+            {
+                uiSelection.SetAttributeValue("selected", 1);
+            }
+            if (childrenOf(cBox).Count > 0)
+            {
+                populate(childrenOf(cBox));
+            }
+        }
+
+        /// <summary>
+        /// Changes the text color from Gray to Black, to indicate that a value is no longer default.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RestoreDefaultColor_Enter(object sender, EventArgs e)
+        {
+            Control box = (Control)sender;
+            if (box.ForeColor == System.Drawing.Color.Gray)
+            {                
+                box.ForeColor = System.Drawing.Color.Black;
+            }
+        }
+        #endregion
+
+        #region EventHandlers:Clicks
+        private void DashboardLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://monsoon.mo.sap.corp/organizations/sandbox");
+        }
+
+        private void UserIDLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://monsoon.mo.sap.corp/users/my_profile");
+        }
+
+        private void MonsoonKeysLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(
+                "https://monsoon.mo.sap.corp/users/" +
+                UserIDTextBox.Text +
+                "/keys"
+                );
+        }
+
+        private void ProjectSettingsLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(
+                "https://monsoon.mo.sap.corp/organizations/" +
+                OrgComboBox.Text +
+                "/projects/" +
+                ProjectNameComboBox.Text
+                );
+        }
+
+        private void LoadButton_Click(object sender, EventArgs e)
+        {
+            //save the current settings
+            SaveData();
+
+            //check if all the data is valid
+            if (!dataVerified())
+            {
+                return;
+            }
+
+            //get a new conenction to the file and the current settings
+            XElement currentConfig = XDocument.Load(Program.settings.ToString()).XPathSelectElement(Program.xStructure.Access(1, "[@id = 'current']"));
+
+            //setup a new variable to store the scope of the configuration
+            EnvironmentVariableTarget mode =
+                sender.ToString().Contains("User") ?
+                EnvironmentVariableTarget.User :
+                EnvironmentVariableTarget.Process;
+
+            //check to see which button called the fucntion, and set the scope accordingly
+            bool commandWindow =
+                sender.ToString().Contains("User") ?
+                false :
+                true;
+
+            //run the setting loader
+            Program.loadEnvironment(currentConfig, mode);
+
+            //open the command prompt
+            if (commandWindow)
+            {
+                System.Diagnostics.Process.Start("cmd");
+            }
+        }
+
+        /// <summary>
+        /// Called on doubleclick of a path or file input box, opend the file browser to select a folder or file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ffBrowser(object sender, EventArgs e)
+        {
+            //cast sender as a textbox
+            TextBox tBox = (TextBox)sender;
+            bool isFolder = false;
+
+            if (!(tBox == GitSSHPathTextBox || tBox == puTTYgenPathTextBox))
+            {
+                FileBrowserDialog.CheckFileExists = false;
+                string defaultFilename = "Select this folder";
+                FileBrowserDialog.FileName = defaultFilename;
+                isFolder = true;
+            }
+            else
+            {
+                FileBrowserDialog.CheckFileExists = true;
+                string defaultFilename = null;
+                FileBrowserDialog.FileName = defaultFilename;
+                if (tBox.Text != "")//if the text box is not empty
+                {
+                    //set the selected path to the text box's current contents (incase of accidental entry)
+                    string test = tBox.Tag.ToString().Equals("Folder") ? "Folder" : "File";
+                    FileBrowserDialog.FileName = tBox.Text;
+                }
+            }
+            if (FileBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                //Sanitize the folder selection
+                //Remove everything after the last '\'
+                string folder = FileBrowserDialog.FileName;
+                int index = folder.LastIndexOf(@"\");
+                Debug.Write("The selected folder path was: {" + folder + "}.\n");
+                Debug.Write("The index of the last \\: {" + index + "}.\n");
+                if (index > 0)
+                    folder = folder.Substring(0, index);
+
+                tBox.Text = isFolder ?
+                    folder :
+                    FileBrowserDialog.FileName;
+
+                Debug.Write("Folder? " + isFolder.ToString() + Environment.NewLine +
+                    "folder name is " + folder.ToString() + Environment.NewLine);
+            }
+        }
+
+        /// <summary>
+        /// Handles the buttonClick event for the open Config.xml file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void openConfig(object sender, EventArgs e)
+        {
+            ProcessStartInfo editArgs = new ProcessStartInfo();
+            editArgs.FileName = "iexplore.exe";
+            editArgs.Arguments = Program.settings.ToString();
+            Process.Start(editArgs);
+        }  
+      
+        /// <summary>
+        /// Calls the SaveData method with the contextualResponse option enabled. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SaveAllButton_Click(object sender, EventArgs e)
+        {
+            SaveData(true);
+        }
+        #endregion
+
+
+        #region Checks
+
+        /// <summary>
+        /// Checks to ensure that all of the boxes are filled in, and contain valid paths where applicable.
+        /// </summary>
+        /// <returns>bool: True if there are no invalid paths or empty boxes.</returns>
+        private bool dataVerified()
+        {
+            //enumerate populable fields
+            List<Control> boxes = listControls(this, new TextBox());
+            boxes.AddRange(listControls(this, new ComboBox()));
+
+            foreach (Control box in boxes)
+            {
+                if (!(box == level0TextBox || box == level1TextBox || box == level3TextBox))
+                {
+                    if (string.IsNullOrEmpty(box.Text))
+                    {
+                        MessageBox.Show(
+                            box.Name.ToString() + " was empty." + Environment.NewLine +
+                                "You must complete all of the settings before launching a session." + Environment.NewLine + Environment.NewLine +
+                                "Please check the form and try again.",
+                            "Error in " + box.Name.ToString(),
+                            System.Windows.Forms.MessageBoxButtons.OK,
+                            System.Windows.Forms.MessageBoxIcon.Error);
+                        return false;
+                    }
+                    if (box.Name.Contains("Path") || box.Name.Contains("Bin"))
+                    {
+                        if (System.IO.File.Exists(box.Text) || System.IO.Directory.Exists(box.Text))
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            MessageBox.Show(
+                                 "The path {" + box.Text + "} could not be accessed.",
+                                 "Error in " + box.Name.ToString(),
+                                 System.Windows.Forms.MessageBoxButtons.OK,
+                                 System.Windows.Forms.MessageBoxIcon.Error);
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Checks to see a linkLabel should be invisible, as when text components of the link are not yet entered into the form.
+        /// </summary>
+        /// <param name="box">Control: The box that contains data that is a part of the link.</param>
+        /// <param name="link">LinkLabel: The label on which visibility should be toggled.</param>
+        private void checkLink(Control box, LinkLabel link)
+        {
+            Debug.Write("{" + box.Name + "} currently has text : {" + box.Text + "}.\n");
+            if (string.IsNullOrEmpty(box.Text))
+            {
+                link.Visible = false;
+            }
+            else
+            {
+                link.Visible = true;
+            }
+        }
+        
+        /// <summary>
+        /// Checks to see if the data on the form is different from the data in the XML Settings.
+        /// </summary>
+        /// <param name="xForm">XDocument representing the Form</param>
+        /// <param name="xFileSettings">XElement representing the current settings in the file.</param>
+        /// <returns>Returns bool</returns>
+        /// 
+        private bool formChanged(XDocument xForm, XElement xFileSettings)
+        {
+            //sanitize both for comparision by removing attribute from 'settings'
+            //must store sanitization in a new element to avoid damage to the original structures
+
+            XElement cleanedFileSettings = new XElement(xFileSettings);
+            cleanedFileSettings.RemoveAttributes();
+            XElement cleanedFormData = new XElement(xForm.XPathSelectElement(Program.xStructure.Access(1, "[@id = 'current']")));
+            cleanedFormData.RemoveAttributes();
+
+            if (XNode.DeepEquals(cleanedFormData, cleanedFileSettings))
+            {   //no variance detected, no action required
+                //reserving this space in the condition to present debugging data if needed
+                Debug.Write("formChanged: No changes were found.\n");
+                return false;
+            }
+            else
+            { //variance detected, return true
+                Debug.Write("formChanged: The data does not match.\n");
+                return true;
+            }
+        }
+
+        #endregion
+
+       
+        /// <summary>
+        /// Saves the data in the form to a new XElement in the file.
+        /// </summary>
+        /// <param name="contextualResponse">bool: provides a message box to confirm completion or failure.</param>
         private void SaveData(bool contextualResponse = false)
         {
             //need to re-access the config file to ensure we have the most recent copy...
@@ -520,16 +804,8 @@ namespace CS_MonsoonProjectSelector
 
             if (formChanged(xdoc, latestSettings))
             {
-                //connect to the file
-                //XDocument xFile = XDocument.Load(Program.settings.ToString());
-
-                //connect to the the 'current' settings node in the file
-                //XElement currentFileSettings = xdoc.XPathSelectElement("configFile/settings[@id = 'current']");
-
-                //* 1) Make room in the file!!!!!!
-                
                 //start by taking the file's 'current' settings and giving them an ID number instead
-                //connect to the document and count the number of settings already there
+                //count the number of settings already in the file
                 int settingID = latestFile.Root.Elements().Count() - 1;
 
                 //modify attributes: 'current' --> last
@@ -572,263 +848,6 @@ namespace CS_MonsoonProjectSelector
                     System.Windows.Forms.MessageBoxIcon.Information);
             }
         }
-
-        #endregion
-
-
-        #region UI Validation and Automation
-        //The code below handles the direct form actions
-        //and actions like link creation and 
-        //changing, labels, Folder browsing, etc. 
-
-        //Indivudual actions: Links
-        private void DashboardLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://monsoon.mo.sap.corp/organizations/sandbox");
-        }
-
-        private void UserIDLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://monsoon.mo.sap.corp/users/my_profile");
-        }
-
-        private void MonsoonKeysLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start(
-                "https://monsoon.mo.sap.corp/users/" +
-                UserIDTextBox.Text +
-                "/keys"
-                );
-        }
-
-        private void ProjectSettingsLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start(
-                "https://monsoon.mo.sap.corp/organizations/" +
-                OrgComboBox.Text +
-                "/projects/" +
-                ProjectNameComboBox.Text
-                );
-        }
-
-
-        //Individual actions: Other
-        private void SaveAllButton_Click(object sender, EventArgs e)
-        {
-            SaveData(true);
-        }
-
-        private void GitLastNameTextBox_Leave()
-        {
-            if (GitFirstNameTextBox.Text != string.Empty && GitLastNameTextBox.Text != string.Empty)
-            {
-                GitEmailAddressTextBox.Text =
-                    GitFirstNameTextBox.Text +
-                    "." +
-                    GitLastNameTextBox.Text +
-                    "@sap.com";
-            }
-        }
-
-        private void openConfig(object sender, EventArgs e)
-        {
-            ProcessStartInfo editArgs = new ProcessStartInfo();
-            editArgs.FileName = "iexplore.exe";
-            editArgs.Arguments = Program.settings.ToString();
-            Process.Start(editArgs);
-        }
-
-        private bool dataVerified()
-        {
-            //enumerate populable fields
-            List<Control> boxes = listControls(this, new TextBox());
-            boxes.AddRange(listControls(this, new ComboBox()));
-
-            foreach (Control box in boxes)
-            {
-                if (!(box == level0TextBox || box == level1TextBox || box == level3TextBox))
-                {
-                    if (string.IsNullOrEmpty(box.Text))
-                    {
-                        MessageBox.Show(
-                            box.Name.ToString() + " was empty." + Environment.NewLine + 
-                                "You must complete all of the settings before launching a session." + Environment.NewLine + Environment.NewLine + 
-                                "Please check the form and try again.",
-                            "Error in " + box.Name.ToString(),
-                            System.Windows.Forms.MessageBoxButtons.OK,
-                            System.Windows.Forms.MessageBoxIcon.Error);
-                        return false;
-                    }
-                    if (box.Name.Contains("Path") || box.Name.Contains("Bin"))
-                    {
-                        if (System.IO.File.Exists(box.Text) || System.IO.Directory.Exists(box.Text))
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            MessageBox.Show(
-                                 "The path {" + box.Text + "} could not be accessed.",
-                                 "Error in " + box.Name.ToString(),
-                                 System.Windows.Forms.MessageBoxButtons.OK,
-                                 System.Windows.Forms.MessageBoxIcon.Error);
-                            return false;
-                        }
-                    }                    
-                }               
-            }
-            return true;
-        }
-
-
-        //Reusued actions
-        private void LoadButton_Click(object sender, EventArgs e)
-        {
-            //save the current settings
-            SaveData();
-
-            //check if all the data is valid
-            if (!dataVerified())
-            {
-                return;
-            }
-
-            //get a new conenction to the file and the current settings
-            XElement currentConfig = XDocument.Load(Program.settings.ToString()).XPathSelectElement(Program.xStructure.Access(1,"[@id = 'current']"));
-
-            //setup a new variable to store the scope of the configuration
-            EnvironmentVariableTarget mode =
-                sender.ToString().Contains("User") ?
-                EnvironmentVariableTarget.User : 
-                EnvironmentVariableTarget.Process;
-
-            //check to see which button called the fucntion, and set the scope accordingly
-            bool commandWindow = 
-                sender.ToString().Contains("User") ?
-                false : 
-                true;
-
-            //run the setting loader
-            Program.loadEnvironment(currentConfig , mode);
-
-            //open the command prompt
-            if (commandWindow)
-            {
-                System.Diagnostics.Process.Start("cmd");
-            }
-        }
-
-        private void RestoreDefaultColor_Enter(object sender, EventArgs e)
-        {
-            if (sender is TextBox)
-            {
-                TextBox box = (TextBox)sender;
-                box.ForeColor = System.Drawing.Color.Black;
-            }
-            else if (sender is ComboBox)
-            {
-                ComboBox box = (ComboBox)sender;
-                box.ForeColor = System.Drawing.Color.Black;
-            }
-        }
-
-        private void checkLink(Control box, LinkLabel link)
-        {
-            Debug.Write("{" + box.Name + "} currently has text : {" + box.Text + "}.\n");
-            if (string.IsNullOrEmpty(box.Text))
-            {
-                link.Visible = false;
-            }
-            else
-            {
-                link.Visible = true;
-            }
-        }
-
-        #endregion
-
-        #region Helpers
-        //These are all helper methods for the form
-        //they handle any tasks that are not directly
-        //initiated by a form action  
-
-        private void ffBrowser(object sender, EventArgs e)
-        {
-            //cast sender as a textbox
-            TextBox tBox = (TextBox)sender;
-            bool isFolder = false;
-
-            if (! (tBox == GitSSHPathTextBox || tBox == puTTYgenPathTextBox))
-            {                
-                FileBrowserDialog.CheckFileExists = false;
-                string defaultFilename = "Select this folder";
-                FileBrowserDialog.FileName = defaultFilename;
-                isFolder = true;
-            }
-            else
-            {
-                FileBrowserDialog.CheckFileExists = true;
-                string defaultFilename = null;
-                FileBrowserDialog.FileName = defaultFilename;
-                if (tBox.Text != "")//if the text box is not empty
-                {
-                    //set the selected path to the text box's current contents (incase of accidental entry)
-                    string test = tBox.Tag.ToString().Equals("Folder") ? "Folder" : "File";
-                    MessageBox.Show("Test: " + test);
-                    FileBrowserDialog.FileName = tBox.Text;
-                }
-            }
-            if (FileBrowserDialog.ShowDialog() == DialogResult.OK)
-            {
-                //Sanitize the folder selection
-                //Remove everything after the last '\'
-                string folder = FileBrowserDialog.FileName;
-                int index = folder.LastIndexOf(@"\");
-                Debug.Write("The selected folder path was: {" + folder + "}.\n");
-                Debug.Write("The index of the last \\: {" + index + "}.\n");
-                if (index > 0)
-                    folder = folder.Substring(0, index);
-
-                 tBox.Text = isFolder ?
-                     folder :
-                     FileBrowserDialog.FileName;
-
-                 Debug.Write("Folder? " + isFolder.ToString() + Environment.NewLine + 
-                     "folder name is " + folder.ToString() + Environment.NewLine);
-            }
-        }
-
-        /// <summary>
-        /// Checks to see if the data on the form is different from the data in the XML Settings.
-        /// </summary>
-        /// <param name="xForm">XDocument representing the Form</param>
-        /// <param name="xFileSettings">XElement representing the current settings in the file.</param>
-        /// <returns>Returns bool</returns>
-        /// 
-        private bool formChanged(XDocument xForm, XElement xFileSettings)
-        {
-            //sanitize both for comparision by removing attribute from 'settings'
-            //must store sanitization in a new element to avoid damage to the original structures
-
-            XElement cleanedFileSettings = new XElement(xFileSettings);
-            cleanedFileSettings.RemoveAttributes();
-            XElement cleanedFormData = new XElement(xForm.XPathSelectElement(Program.xStructure.Access(1,"[@id = 'current']")));
-            cleanedFormData.RemoveAttributes();
-
-            if (XNode.DeepEquals(cleanedFormData, cleanedFileSettings))
-            {   //no variance detected, no action required
-                //reserving this space in the condition to present debugging data if needed
-                Debug.Write("formChanged: No changes were found.\n");
-                return false;
-            }
-            else
-            { //variance detected, return true
-                Debug.Write("formChanged: The data does not match.\n");
-                return true;                
-            }
-        }
-
-        #endregion
 
     }
 }

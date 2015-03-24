@@ -65,6 +65,9 @@ namespace CS_MonsoonProjectSelector
 
         #region XMLdata
 
+        /// <summary>
+        /// Centrally defines the structure of the setting document
+        /// </summary>
         public static class xStructure
         {
             #region LevelNames
@@ -244,6 +247,10 @@ namespace CS_MonsoonProjectSelector
             }
         }
 
+        /// <summary>
+        /// Creates a new XML file in the specified location.
+        /// </summary>
+        /// <param name="path">FileInfo: The location of the desired document.</param>
         static void makeXML(FileInfo path)
         {
             Debug.Write("makeXML( FileInfo ): Enter" + Environment.NewLine);
@@ -402,26 +409,26 @@ namespace CS_MonsoonProjectSelector
             return doc;
         }
 
-        #endregion
-
         /// <summary>
-        /// Returns the string value of an element found by using an attribute.
+        /// Finds an Element by its attribute\value pair.
         /// </summary>
         /// <param name="root">XElement: The root where the search is performed (the dataset).</param>
         /// <param name="attributeValue">string: The value of the attribute.</param>
         /// <param name="attributeName">string:[optional] The  value of the attribute name.  [DEFAULT = "ControlName"]</param>
-        /// <returns>string: that value of the located element.</returns>
+        /// <returns>string: The value of the located element.</returns>
         public static string getElementByAttribute(XElement root, string attributeValue, string attributeName = "ControlName")
         {
-            XElement result = 
-                root.Descendants().Where(element => (string)element.Attribute(attributeName) == attributeValue).Single(); 
+            XElement result =
+                root.Descendants().Where(element => (string)element.Attribute(attributeName) == attributeValue).Single();
             return result.Value.ToString();
         }
 
+        #endregion
+        
         /// <summary>
-        /// This will load the settings from the form into the environment based on the provided mode, then launch a command window. NOTE: some of these settings are environment variables, and some are files
+        /// This will load the settings from the form into the environment based on the provided mode, then launch a command window. NOTE: some of these settings are environment variables, and some are files.
         /// </summary>
-        /// <param name="config">This XElement is the XML configuration element</param>
+        /// <param name="config">XElement: The XML configuration element to be loaded.</param>
         /// <param name="mode">The intended scope for the settings. {Process, User, Machine}</param>
         public static void loadEnvironment(XElement config, EnvironmentVariableTarget mode)
         {
@@ -652,9 +659,7 @@ namespace CS_MonsoonProjectSelector
         }
 
 
-        #region Environment
-        //All of the handlers for the environmental variables and local setting files
-
+        #region SetEnvironmentalVariables
         /// <summary>
         /// Adds value to the PATH, in the specified order.
         /// </summary>
@@ -691,7 +696,7 @@ namespace CS_MonsoonProjectSelector
         }
         #endregion
 
-        #region UIAutomation
+        #region PPKGeneratorUIAutomation
         //Contains the code for the UI automation that the PPK generation requires
 
         /// <summary>
