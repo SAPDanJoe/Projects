@@ -499,7 +499,7 @@ namespace CS_MonsoonProjectSelector
             //create the new files if the private key has changed
             string ID_RSA = getElementByAttribute(config, "PrivateKeyTextBox");
 
-            if (File.ReadAllText(sshFile) != ID_RSA)
+            if (!File.Exists(sshFile) || File.ReadAllText(sshFile) != ID_RSA)
             {
                 //private key
                 File.WriteAllText(sshFile, ID_RSA);
@@ -511,7 +511,7 @@ namespace CS_MonsoonProjectSelector
                 //puTTY Key
                 string ppkFile = Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\id_rsa.ppk";
 
-                string puTTYgenPath = getElementByAttribute(config, "puTTYgenTextBox");
+                string puTTYgenPath = getElementByAttribute(config, "puTTYgenPathTextBox");
                 if (File.Exists(puTTYgenPath))
                 {
                     if (System.IO.File.Exists(ppkFile))
@@ -526,24 +526,25 @@ namespace CS_MonsoonProjectSelector
 
                     int PPKid = PPKgenerator.Id;
 
-                    Debug.Write("Clicking the OK button...");
+                    Debug.Write(@"Clicking the ""OK"" button..." + Environment.NewLine);
                     clickButton(PPKid, "OK");
 
-                    Debug.Write("Clicking the Save Key button...");
+                    Debug.Write(@"Clicking the ""Save Private Key"" button..." + Environment.NewLine);
                     clickButton(PPKid, "Save private key");
 
-                    Debug.Write("Clicking the Yes button...");
+                    Debug.Write(@"Clicking the ""Yes"" button..." + Environment.NewLine);
                     clickButton(PPKid, "Yes", "PuTTYgen Warning");
 
-                    Debug.Write("Writing the destination path...");
-                    enterText(PPKid, ppkFile, @"Save private key as:");
+                    Debug.Write("Writing the destination path {" + ppkFile.ToString() + "}." + Environment.NewLine);
+                    enterText(PPKid, ppkFile, @"Save private key as:" + Environment.NewLine);
 
-                    Debug.Write("Clicking the Save file button...");
-                    clickButton(PPKid, "Save", @"Save private key as:");
+                    Debug.Write(@"Clicking the ""Save file"" button..." + Environment.NewLine);
+                    clickButton(PPKid, "Save", @"Save private key");
 
                     //wait for the file to be written to the system
                     while (!System.IO.File.Exists(ppkFile))
                     {
+                        Debug.Write(@"Waiting for the file to be written..." + Environment.NewLine);
                         System.Threading.Thread.Sleep(50);
                     }
 
@@ -709,50 +710,50 @@ namespace CS_MonsoonProjectSelector
         static void clickButton(int ProcID, string ButtonName, string subWindowName = null)
         {
             //binds to the desktop (root element of all windows)
-            Debug.Write("Binding to the root desktop element." + Environment.NewLine);
+            Debug.Write(ProcID.ToString() + "    Binding to the root desktop element." + Environment.NewLine);
             AutomationElement root = AutomationElement.RootElement;
 
-            Debug.Write("Setting PropertyCondition UIAProcID." + Environment.NewLine);
+            Debug.Write(ProcID.ToString() + "    Setting PropertyCondition UIAProcID." + Environment.NewLine);
             PropertyCondition UIAProcID = new PropertyCondition(
                 AutomationElement.ProcessIdProperty, ProcID);
 
-            Debug.Write("Setting AutomationElement Window." + Environment.NewLine);
+            Debug.Write(ProcID.ToString() + "    Setting AutomationElement Window." + Environment.NewLine);
             AutomationElement Window = waitForElement(root,TreeScope.Children, UIAProcID);
 
             AutomationElement sub = null;
             if (subWindowName != null)
             {
-                Debug.Write("Setting PropertyCondition subWindow ." + Environment.NewLine);
+                Debug.Write(ProcID.ToString() + "    Setting PropertyCondition subWindow ." + Environment.NewLine);
                 PropertyCondition subWindow = new PropertyCondition(
                     AutomationElement.NameProperty, subWindowName);
 
-                Debug.Write("Setting the ActionElement sub to subWindow." + Environment.NewLine);
+                Debug.Write(ProcID.ToString() + "    Setting the ActionElement sub to subWindow." + Environment.NewLine);
                 sub = waitForElement(Window,TreeScope.Children, subWindow);
             }
             else
             {
-                Debug.Write("No sub-window specified, Setting the ActionElement sub to Window." + Environment.NewLine);
+                Debug.Write(ProcID.ToString() + "    No sub-window specified, Setting the ActionElement sub to Window." + Environment.NewLine);
                 sub = Window;
             }
 
-            Debug.Write("Setting PropertyCondition buttonName." + Environment.NewLine);
+            Debug.Write(ProcID.ToString() + "    Setting PropertyCondition buttonName." + Environment.NewLine);
             PropertyCondition buttonName = new PropertyCondition(
                 AutomationElement.NameProperty, ButtonName);
 
-            Debug.Write("Setting the button element." + Environment.NewLine);
+            Debug.Write(ProcID.ToString() + "    Setting the button element." + Environment.NewLine);
             //AutomationElement button = waitForElement(sub, TreeScope.Children, condition);
             AutomationElement button = waitForElement(sub, TreeScope.Children, buttonName);
 
-            Debug.Write("Setting the button invocation action." + Environment.NewLine);
+            Debug.Write(ProcID.ToString() + "    Setting the button invocation action." + Environment.NewLine);
             InvokePattern doClick = (InvokePattern)button.GetCurrentPattern(InvokePattern.Pattern);
 
 
-            Debug.Write("Invoking the button action (click)." + Environment.NewLine);
+            Debug.Write(ProcID.ToString() + "    Invoking the button action (click)." + Environment.NewLine);
             System.Threading.ThreadStart invokeModal = new System.Threading.ThreadStart(doClick.Invoke);
             System.Threading.Thread modal = new System.Threading.Thread(invokeModal);
             modal.Start();
 
-            Debug.Write("The button has been clicked." + Environment.NewLine);
+            Debug.Write(ProcID.ToString() + "    The button has been clicked." + Environment.NewLine);
         }
 
         /// <summary>
@@ -824,6 +825,7 @@ namespace CS_MonsoonProjectSelector
         {
             while (root.FindFirst(scope, condition) == null)
             {
+                Debug.Write("The element was not yet found, sleeping thread for 50ms..." + Environment.NewLine);
                 Thread.Sleep(50);
             }
 
