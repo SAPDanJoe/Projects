@@ -536,10 +536,10 @@ namespace CS_MonsoonProjectSelector
                     clickButton(PPKid, "Yes", "PuTTYgen Warning");
 
                     Debug.Write("Writing the destination path {" + ppkFile.ToString() + "}." + Environment.NewLine);
-                    enterText(PPKid, ppkFile, @"Save private key as:" + Environment.NewLine);
+                    enterText(PPKid, ppkFile, @"Save private key as:");
 
                     Debug.Write(@"Clicking the ""Save file"" button..." + Environment.NewLine);
-                    clickButton(PPKid, "Save", @"Save private key");
+                    clickButton(PPKid, "Save", @"Save private key as:");
 
                     //wait for the file to be written to the system
                     while (!System.IO.File.Exists(ppkFile))
@@ -711,14 +711,14 @@ namespace CS_MonsoonProjectSelector
         {
             //binds to the desktop (root element of all windows)
             Debug.Write(ProcID.ToString() + "    Binding to the root desktop element." + Environment.NewLine);
-            AutomationElement root = AutomationElement.RootElement;
+            AutomationElement desktop = AutomationElement.RootElement;
 
             Debug.Write(ProcID.ToString() + "    Setting PropertyCondition UIAProcID." + Environment.NewLine);
             PropertyCondition UIAProcID = new PropertyCondition(
                 AutomationElement.ProcessIdProperty, ProcID);
 
             Debug.Write(ProcID.ToString() + "    Setting AutomationElement Window." + Environment.NewLine);
-            AutomationElement Window = waitForElement(root,TreeScope.Children, UIAProcID);
+            AutomationElement Window = waitForElement(desktop,TreeScope.Children, UIAProcID);
 
             AutomationElement sub = null;
             if (subWindowName != null)
@@ -754,6 +754,7 @@ namespace CS_MonsoonProjectSelector
             modal.Start();
 
             Debug.Write(ProcID.ToString() + "    The button has been clicked." + Environment.NewLine);
+            System.Threading.Thread.Sleep(25);
         }
 
         /// <summary>
