@@ -608,7 +608,7 @@ namespace CS_MonsoonProjectSelector
                 true;
 
             //run the setting loader
-            Program.loadEnvironment(currentConfig, mode);
+            loadEnvironment(currentConfig, mode);
 
             //open the command prompt
             if (commandWindow)
@@ -689,6 +689,244 @@ namespace CS_MonsoonProjectSelector
         {
             SaveData(true);
         }
+
+        /// <summary>
+        /// This will load the settings from the form into the environment based on the provided mode, then launch a command window. NOTE: some of these settings are environment variables, and some are files.
+        /// </summary>
+        /// <param name="config">XElement: The XML configuration element to be loaded.</param>
+        /// <param name="mode">The intended scope for the settings. {Process, User, Machine}</param>
+        public  void loadEnvironment(XElement config, EnvironmentVariableTarget mode)
+        {
+            //environmental Variables
+            //!!!!!Chef
+            //!!!!!!!!Variables
+            Program.addEnv(                     ChefRootPathTextBox.Text.ToString(),            mode);
+            Program.addEnv(                     ChefEmbeddedBinPathTextBox.Text.ToString(),     mode);
+            Program.addEnv(                     MinGWBinPathTextBox.Text.ToString(),            mode, "beginning");
+            Program.addEnv("RI_DEVKIT",         DevkitBinPathTextBox.Text.ToString(),           mode);
+            Program.addEnv("KITCHEN_LOG",       KitchentLogLevelComboBox.Text.ToString(),       mode); //might be a little more complicated to set the combo boxes...
+
+            //!!!!!git
+            //!!!!!!!!Variables
+            Program.addEnv("GIT_SSH",           GitSSHPathTextBox.Text.ToString(),              mode);
+            Program.addEnv("HOME",              Environment.GetEnvironmentVariable("USERPROFILE").ToString(), mode);
+            //!!!!!git
+            //!!!!!!!!Configuration actions
+            string gitEXE = GitSSHPathTextBox.Text.ToString().Replace("ssh","git");
+            System.Diagnostics.Process.Start(gitEXE, "config --global user.name \"" +
+                    GitFirstNameTextBox.Text.ToString() +
+                    GitLastNameTextBox.Text.ToString() + "\"");
+            System.Diagnostics.Process.Start(gitEXE, "config --global user.email \"" +
+                    GitEmailAddressTextBox.Text.ToString() + "\"");
+            System.Diagnostics.Process.Start(gitEXE, "config --global color.ui true");
+            System.Diagnostics.Process.Start(gitEXE, "config --global http.sslVerify false");
+
+            //!!!!!Monsoon SSH Keys
+            //!!!!!!!!ID_RSA files
+
+            //this will backup the existing files on the 1st run
+            string sshPath = Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\";
+            string sshFile = Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\id_rsa";
+            string sshBackup = Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\backup\";
+
+            bool sshPathExist = System.IO.Directory.Exists(sshPath);
+            bool sshFileExist = System.IO.File.Exists(sshFile);
+            bool sshBackupExist = System.IO.Directory.Exists(sshBackup);
+
+            //Create a backup if .ssh\id_rsa exists and .ssh\backup does not
+            if (sshFileExist && !sshBackupExist)
+            {
+                System.IO.Directory.CreateDirectory(sshBackup);
+
+                //now backup the exiting private key                
+                System.IO.File.Move(
+                    sshFile,
+                    sshBackup + @"id_rsa_BAK_" + DateTime.Now.ToString("yyyy-MM-dd_hhmmss"));
+
+                //now backup the existing public key, after checking existence
+                string pubKey = sshFile + @".pub";
+                if (System.IO.File.Exists(pubKey))
+                {
+                    System.IO.File.Move(
+                        pubKey,
+                        sshBackup + @"id_rsa.pub_BAK_" + DateTime.Now.ToString("yyyy-MM-dd_hhmmss"));
+                }
+
+                //Also backup the putty key if it exists
+                string putKey = sshFile + @".ppk";
+                if (System.IO.File.Exists(putKey))
+                {
+                    System.IO.File.Move(
+                        putKey,
+                        sshBackup + @"id_rsa.ppk_BAK_" + DateTime.Now.ToString("yyyy-MM-dd_hhmmss"));
+                }
+            }
+
+            //create the new files if the private key has changed
+            string ID_RSA = PrivateKeyTextBox.Text.ToString();
+
+            if (!System.IO.File.Exists(sshFile) || System.IO.File.ReadAllText(sshFile) != ID_RSA)
+            {
+                //private key
+                System.IO.File.WriteAllText(sshFile, ID_RSA);
+
+                //public key
+                string ID_RSA_PUB = PublicKeyTextBox.Text.ToString();
+                System.IO.File.WriteAllText(sshFile + ".pub", ID_RSA_PUB);
+
+                //puTTY Key
+                string ppkFile = Environment.GetEnvironmentVariable("USERPROFILE") + @"\.ssh\id_rsa.ppk";
+
+                string puTTYgenPath = puTTYgenPathTextBox.Text.ToString();
+                if (System.IO.File.Exists(puTTYgenPath))
+                {
+                    if (System.IO.File.Exists(ppkFile))
+                    {   //the file already exists, so delete it first
+                        System.IO.File.Delete(ppkFile);
+                    }
+
+                    Process PPKgenerator = new Process();
+                    PPKgenerator.StartInfo.FileName = puTTYgenPath;
+                    PPKgenerator.StartInfo.Arguments = sshFile;
+                    PPKgenerator.Start();
+
+                    int PPKid = PPKgenerator.Id;
+
+                    Debug.Write(@"Clicking the ""OK"" button..." + Environment.NewLine);
+                    Program.clickButton(PPKid, "OK");
+
+                    Debug.Write(@"Clicking the ""Save Private Key"" button..." + Environment.NewLine);
+                    Program.clickButton(PPKid, "Save private key");
+
+                    Debug.Write(@"Clicking the ""Yes"" button..." + Environment.NewLine);
+                    Program.clickButton(PPKid, "Yes", "PuTTYgen Warning");
+
+                    Debug.Write("Writing the destination path {" + ppkFile.ToString() + "}." + Environment.NewLine);
+                    Program.enterText(PPKid, ppkFile, @"Save private key as:");
+
+                    Debug.Write(@"Clicking the ""Save file"" button..." + Environment.NewLine);
+                    Program.clickButton(PPKid, "Save", @"Save private key as:");
+
+                    //wait for the file to be written to the system
+                    while (System.IO.File.Exists(ppkFile))
+                    {
+                        Debug.Write(@"Waiting for the file to be written..." + Environment.NewLine);
+                        System.Threading.Thread.Sleep(50);
+                    }
+
+                    //close the window
+                    PPKgenerator.Kill();
+                }
+                else
+                {
+                    Debug.Write("The PuTTY key generator does not appear to be installed.  A PuTTY keyfile has not been generated.");
+                }
+
+            }
+
+
+
+            //!!!!!AWS
+            //!!!!!!!!Variables
+            Program.addEnv("AWS_ORGANIZATION",                  OrgComboBox.Text.ToString(),                    mode);
+            Program.addEnv("AWS_PROJECT",                       ProjectNameComboBox.Text.ToString(),            mode);
+            Program.addEnv("AWS_ACCESS_KEY",                    AccessKeyTextBox.Text.ToString(),               mode);
+            Program.addEnv("AWS_SECRET_KEY",                    SecretKeyTextBox.Text.ToString(),               mode);
+            Program.addEnv("AWS_SSH_KEY_ID",                    KeyIDTextBox.Text.ToString(),                   mode);
+
+            //!!!!!EC2
+            //!!!!!!!!Variables
+            Program.addEnv("EC2_HOME",                          EC2HomePathTextBox.Text.ToString(),             mode);
+            Program.addEnv("CLASSPATH",                         EC2HomePathTextBox.Text.ToString() + "\\lib",   mode);
+            Program.addEnv(                                     EC2HomePathTextBox.Text.ToString() + "\\bin",   mode);
+            Program.addEnv("EC2_SSH_KEY",                       Environment.GetEnvironmentVariable(
+                                                                    "USERPROFILE") + "\\.ssh\\id_rsa",          mode);
+            Program.addEnv("EC2_URL",                           EC2UrlTextBox.Text.ToString(),                  mode);
+
+
+            //!!!!!FOG
+            //!!!!!!!!FogFile: ~/.fog
+            string[] fogFile = {
+                                  "default:",
+                                  "  aws_access_key_id: " + AccessKeyTextBox.Text.ToString(),
+                                  "  aws_secret_access_key: " + SecretKeyTextBox.Text.ToString(),
+                                  "  host: monsoon.mo.sap.corp",
+                                  "  path: /api/ec2"
+                              };
+            System.IO.File.WriteAllLines(Environment.GetEnvironmentVariable("USERPROFILE").ToString() + @"\.fog", fogFile);
+
+
+            //!!!!!GEM
+            //!!!!!!!!Variables
+            Program.addEnv("GEM_PATH",                          GEMPathTextBox.Text.ToString(),                 mode);
+            //!!!!!GEM
+            //!!!!!!!!GEMRC file: ~/.gemrc
+
+            //The data from the XML file is from a multiline TextBox
+            //We'll need this in seperate strings to add the lines to the file
+            //fist load the whole element into a string
+            string lines = GEMSourcesTextBox.Text.ToString();
+
+            //now take off the leading and training XML tags
+            lines = lines.Substring(19);
+            lines = lines.Substring(0, lines.Length - 20);
+
+            //now split the lines into an aray seperated by the line breaks
+            //Also create a new string where the 
+            string[] linesArray = lines.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+            string newLines = string.Empty;
+
+            //itterate through the array and add each non-blank line to the file
+            foreach (string line in linesArray)
+            {
+                if (line != string.Empty)
+                {
+                    newLines = newLines + "- " + lines + Environment.NewLine;
+                }
+            }
+
+            //for (int i = 0; i < linesArray.Length; i++)
+            //{
+            //    if (linesArray[i] != string.Empty)
+            //    {
+            //        newLines = newLines + "- " + linesArray[i] + Environment.NewLine;                                       
+            //    }
+            //}
+
+            string line1 = GEMSourcesTextBox.Text.ToString().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None)[0];
+            string[] gemRCFile = {
+                                     "---",
+                                     "http_proxy: :no_proxy",
+                                     ":bulk_threshold: 1000",
+                                     ":update_sources: true",
+                                     ":backtrace: false",
+                                     ":verbose: true",
+                                     ":sources:",
+                                     newLines,
+                                     ":benchmark: false",
+                                     "gem: --no-http-proxy --no-ri --no-rdoc"
+                                 };
+            System.IO.File.WriteAllLines(Environment.GetEnvironmentVariable("USERPROFILE").ToString() + @"\.gemrc", gemRCFile);
+
+            //!!!!!kitchen-Monsoon
+            //!!!!!!!!Variables
+            Program.addEnv(VagrantEmbeddedBinPathTextBox.Text.ToString(), mode);
+            // seem to be missing ...\Vagrant\bin
+
+            //!!!!!Vagrant
+            //!!!!!!!!Variables
+            Program.addEnv(VagrantEmbeddedPathTextBox.Text.ToString(), mode);
+
+
+            Program.addEnv(PublicKeyTextBox.Text.ToString(), mode);
+            Program.addEnv(PrivateKeyTextBox.Text.ToString(), mode);
+
+
+            //!!!!!Informational
+            Program.addEnv("Mo_Configured", DateTime.Now.ToString(), mode);
+        }
+
+
         #endregion
 
 

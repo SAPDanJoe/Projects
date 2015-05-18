@@ -293,8 +293,8 @@ namespace CS_MonsoonProjectSelector
             Debug.Write("The rootNade has been set to {" + rootNode + "}, creating document..." + Environment.NewLine);
             XDocument doc = new XDocument(new XElement(rootNode));
             Debug.Write("Document created, returning..." + Environment.NewLine);
-            return doc;
             Debug.Write("XMLDoc ( string ): Exit" + Environment.NewLine);
+            return doc;
         }
 
         /// <summary>
@@ -418,8 +418,28 @@ namespace CS_MonsoonProjectSelector
         /// <returns>string: The value of the located element.</returns>
         public static string getElementByAttribute(XElement root, string attributeValue, string attributeName = "ControlName")
         {
-            XElement result =
-                root.Descendants().Where(element => (string)element.Attribute(attributeName) == attributeValue).Single();
+            XElement result = null;
+            try
+            {
+                result = root.Descendants().Where(
+                    element => (string)element.Attribute(attributeName) == attributeValue
+                    ).Single();
+            }
+            catch (Exception)
+            {
+
+                IEnumerable<XElement> results = (IEnumerable<XElement>)root.Descendants().Where(
+                    element => (string)element.Attribute(attributeName) == attributeValue
+                    && (string)element.Attribute("selected") == "1"
+                    );
+                
+                result = root.Descendants().Where(
+                    element => (string)element.Attribute(attributeName) == attributeValue
+                    && (string)element.Attribute("selected") == "1"
+                    ).Single();
+            }
+            
+                
             return result.Value.ToString();
         }
 
@@ -707,7 +727,7 @@ namespace CS_MonsoonProjectSelector
         /// <param name="ProcID">The process ID of the target application</param>
         /// <param name="ButtonName">The name of the button to click</param>
         /// <param name="subWindowName">[optional] The name of the subwindow</param>
-        static void clickButton(int ProcID, string ButtonName, string subWindowName = null)
+        public static void clickButton(int ProcID, string ButtonName, string subWindowName = null)
         {
             //binds to the desktop (root element of all windows)
             Debug.Write(ProcID.ToString() + "    Binding to the root desktop element." + Environment.NewLine);
@@ -764,7 +784,7 @@ namespace CS_MonsoonProjectSelector
         /// <param name="ProcID">The process ID of the target application</param>
         /// <param name="text">The text to be entered</param>
         /// <param name="subWindowName">[optional] The name of the subwindow</param>
-        static void enterText(int ProcID, string text, string subWindowName = null)
+        public static void enterText(int ProcID, string text, string subWindowName = null)
         {
             //binds to the desktop (root element of all windows)
             Debug.Write("Binding to the root desktop element." + Environment.NewLine);

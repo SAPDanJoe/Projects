@@ -6,3 +6,4 @@ C:\Users\i837633\Documents\GitHub\projects\ITdirect Processor Toolkit\ITdirect P
 C:\Users\i837633\Documents\GitHub\projects\ITdirect Processor Toolkit\ITdirect Processor Toolkit\obj\Release\ITdirect Processor Toolkit.csproj.GenerateResource.Cache
 C:\Users\i837633\Documents\GitHub\projects\ITdirect Processor Toolkit\ITdirect Processor Toolkit\obj\Release\ITdirect Processor Toolkit.exe
 C:\Users\i837633\Documents\GitHub\projects\ITdirect Processor Toolkit\ITdirect Processor Toolkit\obj\Release\ITdirect Processor Toolkit.pdb
+C:\Users\i837633\Documents\GitHub\Projects\ITdirect Processor Toolkit\ITdirect Processor Toolkit\obj\Release\ITdirect Processor Toolkit.csprojResolveAssemblyReference.cache
