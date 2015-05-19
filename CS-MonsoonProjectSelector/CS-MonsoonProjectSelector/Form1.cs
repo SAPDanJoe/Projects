@@ -613,7 +613,10 @@ namespace CS_MonsoonProjectSelector
             //open the command prompt
             if (commandWindow)
             {
-                System.Diagnostics.Process.Start("cmd");
+                System.Diagnostics.ProcessStartInfo cmdWindow = new System.Diagnostics.ProcessStartInfo();
+                cmdWindow.FileName = "cmd";
+                cmdWindow.WorkingDirectory = Environment.GetEnvironmentVariable("USERPROFILE");
+                System.Diagnostics.Process.Start(cmdWindow);
             }
         }
 
@@ -710,16 +713,16 @@ namespace CS_MonsoonProjectSelector
             //!!!!!!!!Variables
             Program.addEnv("GIT_SSH",           GitSSHPathTextBox.Text.ToString(),              mode);
             Program.addEnv("HOME",              Environment.GetEnvironmentVariable("USERPROFILE").ToString(), mode);
+            Program.addEnv(                     GitSSHPathTextBox.Text.ToString().Replace(@"\ssh.exe",""), mode);
             //!!!!!git
             //!!!!!!!!Configuration actions
-            string gitEXE = GitSSHPathTextBox.Text.ToString().Replace("ssh","git");
-            System.Diagnostics.Process.Start(gitEXE, "config --global user.name \"" +
+            System.Diagnostics.Process.Start("git", "config --global user.name \"" +
                     GitFirstNameTextBox.Text.ToString() +
                     GitLastNameTextBox.Text.ToString() + "\"");
-            System.Diagnostics.Process.Start(gitEXE, "config --global user.email \"" +
+            System.Diagnostics.Process.Start("git", "config --global user.email \"" +
                     GitEmailAddressTextBox.Text.ToString() + "\"");
-            System.Diagnostics.Process.Start(gitEXE, "config --global color.ui true");
-            System.Diagnostics.Process.Start(gitEXE, "config --global http.sslVerify false");
+            System.Diagnostics.Process.Start("git", "config --global color.ui true");
+            System.Diagnostics.Process.Start("git", "config --global http.sslVerify false");
 
             //!!!!!Monsoon SSH Keys
             //!!!!!!!!ID_RSA files
@@ -918,8 +921,9 @@ namespace CS_MonsoonProjectSelector
             Program.addEnv(VagrantEmbeddedPathTextBox.Text.ToString(), mode);
 
 
-            Program.addEnv(PublicKeyTextBox.Text.ToString(), mode);
-            Program.addEnv(PrivateKeyTextBox.Text.ToString(), mode);
+            //IDK why I put these in, they are completely wrong!
+            //Program.addEnv(PublicKeyTextBox.Text.ToString(), mode);
+            //Program.addEnv(PrivateKeyTextBox.Text.ToString(), mode);
 
 
             //!!!!!Informational
