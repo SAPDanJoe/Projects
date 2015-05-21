@@ -21,13 +21,51 @@ namespace ScratchPad
     {        
         static void Main(string[] args)
         {
-            makeXML();
-            System.Windows.Forms.Application.EnableVisualStyles();
-            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-            System.Windows.Forms.Application.Run(new ScratchForm());
+            
         }
 
-        
+        #region Recipe Generation
+
+        /// <summary>
+        /// Creates the chef code to write an Environmental Variable on a Windows client.
+        /// If the Variable exits, its value is overwritten.
+        /// </summary>
+        /// <param name="recipeFile"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        static void writeEnv (string recipeFile, string key, string value)
+        {
+            string fileText = 
+                "env "+ key + "do" + Environment.NewLine +
+                "  attribute " + value + Environment.NewLine +
+                "  action: create" + Environment.NewLine +
+                "end" + Environment.NewLine;
+            System.IO.File.AppendAllText(recipeFile, fileText);
+        }
+
+        static void appendEnv(string recipeFile, string key, string value, bool first = false)
+        {
+            string fileText = "varValue = ENV['" + key + "']" + Environment.NewLine;
+            if (first)
+            {
+                fileText += "varValue = " + value + " + varValue" + Environment.NewLine;
+            }
+            else
+            {
+                fileText += "varValue = varValue + " + value + Environment.NewLine;
+            }
+            
+            fileText += Environment.NewLine + 
+                "env " + key + "do" + Environment.NewLine +
+                "    attribute: varValue" + Environment.NewLine +
+                "    action: create" + Environment.NewLine +
+                "end" + Environment.NewLine;
+
+            System.IO.File.AppendAllText(recipeFile, fileText);
+        }
+
+        #endregion
+
         #region XMLdata
 
         public static class Path
