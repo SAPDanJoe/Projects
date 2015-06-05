@@ -865,38 +865,22 @@ namespace CS_MonsoonProjectSelector
             //!!!!!GEM
             //!!!!!!!!GEMRC file: ~/.gemrc
 
-            //The data from the XML file is from a multiline TextBox
-            //We'll need this in seperate strings to add the lines to the file
-            //fist load the whole element into a string
-            string lines = GEMSourcesTextBox.Text.ToString();
+            //Get the GEMSources from the textbox and format for the file.
+            //fist load the contents into a string narray seperated by line
+            string[] linesArray = GEMSourcesTextBox.Text.ToString().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
 
-            //now take off the leading and training XML tags
-            lines = lines.Substring(19);
-            lines = lines.Substring(0, lines.Length - 20);
-
-            //now split the lines into an aray seperated by the line breaks
-            //Also create a new string where the 
-            string[] linesArray = lines.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+            //Also create a new string where the new lines will be stored
             string newLines = string.Empty;
 
-            //itterate through the array and add each non-blank line to the file
+            //itterate through the array and format and add each non-blank line to the newLines string
             foreach (string line in linesArray)
             {
                 if (line != string.Empty)
                 {
-                    newLines = newLines + "- " + lines + Environment.NewLine;
+                    newLines = newLines + "- " + line + Environment.NewLine;
                 }
             }
 
-            //for (int i = 0; i < linesArray.Length; i++)
-            //{
-            //    if (linesArray[i] != string.Empty)
-            //    {
-            //        newLines = newLines + "- " + linesArray[i] + Environment.NewLine;                                       
-            //    }
-            //}
-
-            string line1 = GEMSourcesTextBox.Text.ToString().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None)[0];
             string[] gemRCFile = {
                                      "---",
                                      "http_proxy: :no_proxy",
