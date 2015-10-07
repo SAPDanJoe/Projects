@@ -1,0 +1,6 @@
+c:\users\i837633\documents\visual studio 2013\Projects\ProcessRestarter\ProcessRestarter\bin\Debug\ProcessRestarter.exe.config
+c:\users\i837633\documents\visual studio 2013\Projects\ProcessRestarter\ProcessRestarter\bin\Debug\ProcessRestarter.exe
+c:\users\i837633\documents\visual studio 2013\Projects\ProcessRestarter\ProcessRestarter\bin\Debug\ProcessRestarter.pdb
+c:\users\i837633\documents\visual studio 2013\Projects\ProcessRestarter\ProcessRestarter\obj\Debug\ProcessRestarter.csprojResolveAssemblyReference.cache
+c:\users\i837633\documents\visual studio 2013\Projects\ProcessRestarter\ProcessRestarter\obj\Debug\ProcessRestarter.exe
+c:\users\i837633\documents\visual studio 2013\Projects\ProcessRestarter\ProcessRestarter\obj\Debug\ProcessRestarter.pdb
